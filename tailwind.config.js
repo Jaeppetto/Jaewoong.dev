@@ -50,6 +50,9 @@ export default {
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))'
         }
+      },
+      boxShadow: {
+        default: '0px 4px 6px 0px rgba(0, 0, 0, 0.09)'
       }
     }
   },
