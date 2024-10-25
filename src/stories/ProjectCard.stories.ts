@@ -21,7 +21,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
     title: '마실가실',
     description: '실시간 산책 기록 & 공유 서비스',
