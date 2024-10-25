@@ -6,7 +6,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <Header />
-      <div className="flex flex-col w-full h-[2000rem] mt-[7.6rem]">
+      <div className="mt-[7.6rem] flex h-[2000rem] w-full flex-col">
         <div className="flex gap-2 p-2">
           <Link
             to="/about"

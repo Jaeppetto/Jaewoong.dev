@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react'
 import '@/index.css'
 
 import { ProjectCard } from '@/components/about'
+import dayjs from 'dayjs'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Example/ProjectCard',
+  title: 'Common/ProjectCard',
   component: ProjectCard,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
@@ -28,8 +29,8 @@ export const Default: Story = {
     logoImage: 'Project Image',
     bgImage: 'Project Image',
     date: {
-      from: '2024-01-01',
-      to: '2024-01-01'
+      from: dayjs('2024-01-01').toDate(),
+      to: dayjs('2024-01-01').toDate()
     },
     stacks: ['React', 'Next.js', 'TypeScript'],
     links: {
