@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    category: 'article',
+    category: '📚 회고',
     title: '조코딩 해커톤 본선 진출 후기',
     description: '인생 첫 해커톤을 다녀오다.',
     date: dayjs('2024-01-01').toDate()

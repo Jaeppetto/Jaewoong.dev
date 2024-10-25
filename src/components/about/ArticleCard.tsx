@@ -34,7 +34,7 @@ const ArticleCard = ({
           onClick={() => router.navigate({ to: `/archive/${category}` })}>
           {category}
         </button>
-        <h3 className="relative mb-[0.5rem] inline-block text-[2rem] font-bold leading-[2rem] text-slate-900">
+        <h3 className="relative my-[0.3rem] inline-block text-[2rem] font-bold leading-[2rem] text-slate-900">
           {title}
         </h3>
         <p className="text-[1.4rem] font-normal leading-[2rem]">
