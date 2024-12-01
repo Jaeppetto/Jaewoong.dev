@@ -12,10 +12,10 @@ import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as ArticleCategoryImport } from './routes/article_.$category'
-import { Route as ArchiveProjectTitleImport } from './routes/archive_.$projectTitle'
-import { Route as ArticleCategoryPostTitleImport } from './routes/article_.$category_.$postTitle'
+import { Route as rootRoute } from './app/routes/__root'
+import { Route as ArticleCategoryImport } from './app/routes/article_.$category'
+import { Route as ArchiveProjectTitleImport } from './app/routes/archive_.$projectTitle'
+import { Route as ArticleCategoryPostTitleImport } from './app/routes/article_.$category_.$postTitle'
 
 // Create Virtual Routes
 
@@ -30,25 +30,25 @@ const ArticleLazyRoute = ArticleLazyImport.update({
   id: '/article',
   path: '/article',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/article.lazy').then(d => d.Route))
+} as any).lazy(() => import('./app/routes/article.lazy').then(d => d.Route))
 
 const ArchiveLazyRoute = ArchiveLazyImport.update({
   id: '/archive',
   path: '/archive',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/archive.lazy').then(d => d.Route))
+} as any).lazy(() => import('./app/routes/archive.lazy').then(d => d.Route))
 
 const AboutLazyRoute = AboutLazyImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/about.lazy').then(d => d.Route))
+} as any).lazy(() => import('./app/routes/about.lazy').then(d => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/index.lazy').then(d => d.Route))
+} as any).lazy(() => import('./app/routes/index.lazy').then(d => d.Route))
 
 const ArticleCategoryRoute = ArticleCategoryImport.update({
   id: '/article_/$category',
