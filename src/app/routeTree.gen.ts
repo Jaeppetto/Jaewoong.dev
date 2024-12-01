@@ -12,10 +12,11 @@ import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from './app/routes/__root'
-import { Route as ArticleCategoryImport } from './app/routes/article_.$category'
-import { Route as ArchiveProjectTitleImport } from './app/routes/archive_.$projectTitle'
-import { Route as ArticleCategoryPostTitleImport } from './app/routes/article_.$category_.$postTitle'
+import { Route as rootRoute } from './routes/__root'
+import { Route as ArticleWritingImport } from './routes/article_.$writing'
+import { Route as ArticleCategoryImport } from './routes/article_.$category'
+import { Route as ArchiveProjectTitleImport } from './routes/archive_.$projectTitle'
+import { Route as ArticleCategoryPostTitleImport } from './routes/article_.$category_.$postTitle'
 
 // Create Virtual Routes
 
@@ -30,25 +31,31 @@ const ArticleLazyRoute = ArticleLazyImport.update({
   id: '/article',
   path: '/article',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./app/routes/article.lazy').then(d => d.Route))
+} as any).lazy(() => import('./routes/article.lazy').then(d => d.Route))
 
 const ArchiveLazyRoute = ArchiveLazyImport.update({
   id: '/archive',
   path: '/archive',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./app/routes/archive.lazy').then(d => d.Route))
+} as any).lazy(() => import('./routes/archive.lazy').then(d => d.Route))
 
 const AboutLazyRoute = AboutLazyImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./app/routes/about.lazy').then(d => d.Route))
+} as any).lazy(() => import('./routes/about.lazy').then(d => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute
-} as any).lazy(() => import('./app/routes/index.lazy').then(d => d.Route))
+} as any).lazy(() => import('./routes/index.lazy').then(d => d.Route))
+
+const ArticleWritingRoute = ArticleWritingImport.update({
+  id: '/article_/$writing',
+  path: '/article/$writing',
+  getParentRoute: () => rootRoute
+} as any)
 
 const ArticleCategoryRoute = ArticleCategoryImport.update({
   id: '/article_/$category',
@@ -114,6 +121,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleCategoryImport
       parentRoute: typeof rootRoute
     }
+    '/article_/$writing': {
+      id: '/article_/$writing'
+      path: '/article/$writing'
+      fullPath: '/article/$writing'
+      preLoaderRoute: typeof ArticleWritingImport
+      parentRoute: typeof rootRoute
+    }
     '/article_/$category_/$postTitle': {
       id: '/article_/$category_/$postTitle'
       path: '/article/$category/$postTitle'
@@ -133,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/article': typeof ArticleLazyRoute
   '/archive/$projectTitle': typeof ArchiveProjectTitleRoute
   '/article/$category': typeof ArticleCategoryRoute
+  '/article/$writing': typeof ArticleWritingRoute
   '/article/$category/$postTitle': typeof ArticleCategoryPostTitleRoute
 }
 
@@ -143,6 +158,7 @@ export interface FileRoutesByTo {
   '/article': typeof ArticleLazyRoute
   '/archive/$projectTitle': typeof ArchiveProjectTitleRoute
   '/article/$category': typeof ArticleCategoryRoute
+  '/article/$writing': typeof ArticleWritingRoute
   '/article/$category/$postTitle': typeof ArticleCategoryPostTitleRoute
 }
 
@@ -154,6 +170,7 @@ export interface FileRoutesById {
   '/article': typeof ArticleLazyRoute
   '/archive_/$projectTitle': typeof ArchiveProjectTitleRoute
   '/article_/$category': typeof ArticleCategoryRoute
+  '/article_/$writing': typeof ArticleWritingRoute
   '/article_/$category_/$postTitle': typeof ArticleCategoryPostTitleRoute
 }
 
@@ -166,6 +183,7 @@ export interface FileRouteTypes {
     | '/article'
     | '/archive/$projectTitle'
     | '/article/$category'
+    | '/article/$writing'
     | '/article/$category/$postTitle'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -175,6 +193,7 @@ export interface FileRouteTypes {
     | '/article'
     | '/archive/$projectTitle'
     | '/article/$category'
+    | '/article/$writing'
     | '/article/$category/$postTitle'
   id:
     | '__root__'
@@ -184,6 +203,7 @@ export interface FileRouteTypes {
     | '/article'
     | '/archive_/$projectTitle'
     | '/article_/$category'
+    | '/article_/$writing'
     | '/article_/$category_/$postTitle'
   fileRoutesById: FileRoutesById
 }
@@ -195,6 +215,7 @@ export interface RootRouteChildren {
   ArticleLazyRoute: typeof ArticleLazyRoute
   ArchiveProjectTitleRoute: typeof ArchiveProjectTitleRoute
   ArticleCategoryRoute: typeof ArticleCategoryRoute
+  ArticleWritingRoute: typeof ArticleWritingRoute
   ArticleCategoryPostTitleRoute: typeof ArticleCategoryPostTitleRoute
 }
 
@@ -205,6 +226,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticleLazyRoute: ArticleLazyRoute,
   ArchiveProjectTitleRoute: ArchiveProjectTitleRoute,
   ArticleCategoryRoute: ArticleCategoryRoute,
+  ArticleWritingRoute: ArticleWritingRoute,
   ArticleCategoryPostTitleRoute: ArticleCategoryPostTitleRoute
 }
 
@@ -226,6 +248,7 @@ export const routeTree = rootRoute
         "/article",
         "/archive_/$projectTitle",
         "/article_/$category",
+        "/article_/$writing",
         "/article_/$category_/$postTitle"
       ]
     },
@@ -246,6 +269,9 @@ export const routeTree = rootRoute
     },
     "/article_/$category": {
       "filePath": "article_.$category.tsx"
+    },
+    "/article_/$writing": {
+      "filePath": "article_.$writing.tsx"
     },
     "/article_/$category_/$postTitle": {
       "filePath": "article_.$category_.$postTitle.tsx"

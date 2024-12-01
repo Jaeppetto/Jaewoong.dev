@@ -6,7 +6,10 @@ import mdx from '@mdx-js/rollup'
 
 export default defineConfig({
   plugins: [
-    TanStackRouterVite(),
+    TanStackRouterVite({
+      routesDirectory: './src/app/routes',
+      generatedRouteTree: './src/app/routeTree.gen.ts'
+    }),
     viteReact(),
     {
       enforce: 'pre',
