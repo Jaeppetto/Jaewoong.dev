@@ -6,10 +6,9 @@ import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area'
 export const Route = createRootRoute({
   component: () => (
     <>
-      {/* <ScrollArea className="mt-[7.6rem] h-[calc(100dvh-7.6rem)] flex-1"> */}
-      <ScrollArea className="h-[100dvh] flex-1">
+      <ScrollArea className="flex h-[100dvh] w-full flex-1 justify-center bg-slate-50">
         <Header />
-        <main className="mt-[7.6rem] h-[calc(300dvh-7.6rem)] w-full flex-1 bg-slate-50">
+        <main className="mt-[7.6rem] flex h-[calc(100dvh-7.6rem)] w-full flex-1 justify-center">
           <Outlet />
         </main>
         <ScrollBar orientation="vertical" />
