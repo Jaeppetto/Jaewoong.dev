@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src:
+    local('Pretendard Variable'),
+    url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
 :root {
   font-size: 62.5%;
   font-family:
