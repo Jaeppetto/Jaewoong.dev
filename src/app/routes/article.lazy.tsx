@@ -1,3 +1,4 @@
+import { CategoryAccordion } from '@/features/category/ui/CategoryAccordion'
 import { createLazyFileRoute, Link, Outlet } from '@tanstack/react-router'
 
 const Article = () => {
@@ -9,6 +10,7 @@ const Article = () => {
         params={{ category: 'hello' }}>
         Go to category
       </Link>
+      <CategoryAccordion />
       <Outlet />
     </div>
   )

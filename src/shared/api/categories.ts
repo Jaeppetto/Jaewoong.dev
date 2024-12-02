@@ -12,6 +12,8 @@ export const categoryApi = {
       .select('*')
       .order('name', { ascending: true })
 
+    console.log(data)
+
     if (error) throw error
     return data
   },
