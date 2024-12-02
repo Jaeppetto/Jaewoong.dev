@@ -2,7 +2,7 @@ import { createLazyFileRoute, Link, Outlet } from '@tanstack/react-router'
 
 const Article = () => {
   return (
-    <div>
+    <div className="h-full w-full max-w-[108rem]">
       Hello /article!
       <Link
         to="/article/$category"
