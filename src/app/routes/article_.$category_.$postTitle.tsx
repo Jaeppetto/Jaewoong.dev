@@ -3,7 +3,12 @@ import { createFileRoute, useParams } from '@tanstack/react-router'
 import { MDXContent } from 'mdx/types'
 import { useState, useEffect, Suspense } from 'react'
 
-const Post = () => {
+/**
+ * * /article/$category/$postTitle
+ * 게시글 페이지
+ */
+
+const PostDetailPage = () => {
   const { postTitle, category } = useParams({
     from: '/article_/$category_/$postTitle'
   })
@@ -31,5 +36,5 @@ const Post = () => {
 }
 
 export const Route = createFileRoute('/article_/$category_/$postTitle')({
-  component: Post
+  component: PostDetailPage
 })
