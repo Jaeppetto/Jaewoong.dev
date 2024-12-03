@@ -5,7 +5,7 @@ import {
   AccordionTrigger
 } from '@/shared/ui/accordion'
 import { useCategoriesQuery } from '../api/queries'
-import { usePostsByCategoryQuery } from '@/features/article/api/queries'
+import CategoryAccordionItem from './CategoryAccordionItem'
 
 export const CategoryAccordion = () => {
   const { data: categories, isLoading: categoriesLoading } =
@@ -21,19 +21,10 @@ export const CategoryAccordion = () => {
           key={category.id}>
           <AccordionTrigger>{category.name}</AccordionTrigger>
           <AccordionContent>
-            <CategoryPosts categoryId={category.id} />
+            <CategoryAccordionItem category={category} />
           </AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>
   )
-}
-
-const CategoryPosts = ({ categoryId }: { categoryId: string }) => {
-  const { data: posts, isLoading: postsLoading } =
-    usePostsByCategoryQuery(categoryId)
-
-  if (postsLoading) return <div>Loading posts...</div>
-
-  return <ul>{posts?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
 }

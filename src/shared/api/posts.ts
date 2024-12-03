@@ -1,9 +1,9 @@
 import { supabase } from './supabase/client'
 import type { Database } from './supabase/types'
 
-// type Post = Database['public']['Tables']['posts']['Row']
-type PostInsert = Database['public']['Tables']['posts']['Insert']
-type PostUpdate = Database['public']['Tables']['posts']['Update']
+export type Post = Database['public']['Tables']['posts']['Row']
+export type PostInsert = Database['public']['Tables']['posts']['Insert']
+export type PostUpdate = Database['public']['Tables']['posts']['Update']
 
 export const postApi = {
   getAll: async () => {
