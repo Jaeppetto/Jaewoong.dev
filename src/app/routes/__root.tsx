@@ -1,7 +1,6 @@
-import { Header } from '@/widgets/Header'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area'
+import { ScrollArea, ScrollBar, Header } from '@/shared'
 
 export const Route = createRootRoute({
   component: () => (
