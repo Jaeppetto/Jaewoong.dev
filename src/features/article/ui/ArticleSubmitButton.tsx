@@ -1,4 +1,4 @@
-import Button from '@/shared/ui/button'
+import Button from '@/shared/shadcn-ui/ui/button'
 
 interface ArticleSubmitButtonProps {
   onClick: () => void

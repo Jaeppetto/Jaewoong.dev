@@ -1,6 +1,6 @@
 import { usePostsByCategoryQuery } from '@/features/article/api/queries'
 import { Category } from '@/shared/api/categories'
-import Button from '@/shared/ui/button'
+import Button from '@/shared/shadcn-ui/ui/button'
 
 import { useNavigate } from '@tanstack/react-router'
 

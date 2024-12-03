@@ -3,7 +3,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '@/shared/ui/accordion'
+} from '@/shared/shadcn-ui/ui/accordion'
 import { useCategoriesQuery } from '../api/queries'
 import CategoryAccordionItem from './CategoryAccordionItem'
 

@@ -1,4 +1,4 @@
-import { cn } from '@/shared/util'
+import { cn } from '@/shared/shadcn-ui/util'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Link } from '@tanstack/react-router'
 
@@ -15,7 +15,7 @@ const Header = () => {
         <div className="flex items-center gap-[3.2rem]">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="hidden p-0 transition-transform duration-300 ease-in-out bg-transparent hover:scale-105 sm:block">
+            className="hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
             <img
               src="/signature.png"
               alt="signature"
@@ -49,7 +49,7 @@ const Header = () => {
             <GitHubLogoIcon
               width={30}
               height={30}
-              className="transition-colors duration-300 ease-in-out text-slate-300 hover:text-slate-900"
+              className="text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900"
             />
           </a>
         </div>
