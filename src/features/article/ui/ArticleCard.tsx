@@ -1,4 +1,4 @@
-import { cn } from '@/shared/util'
+import { cn } from '@/shared/shadcn-ui/util'
 import { useRouter } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import { CalendarDays } from 'lucide-react'
@@ -52,7 +52,7 @@ const ArticleCard = ({
       </div>
 
       {icon && (
-        <div className="flex items-center justify-center w-1/3 h-full">
+        <div className="flex h-full w-1/3 items-center justify-center">
           <img
             src={icon}
             alt="icon"

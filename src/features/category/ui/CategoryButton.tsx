@@ -1,4 +1,4 @@
-import { cn } from '@/shared/util'
+import { cn } from '@/shared/shadcn-ui/util'
 import { useRouter } from '@tanstack/react-router'
 
 interface CategoryButtonProps {

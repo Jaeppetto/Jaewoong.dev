@@ -1,4 +1,4 @@
-import { cn } from '@/shared/util'
+import { cn } from '@/shared/shadcn-ui/util'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import dayjs from 'dayjs'
 import {
