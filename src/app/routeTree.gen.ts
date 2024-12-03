@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthCallbackImport } from './routes/auth.callback'
 import { Route as ArticleWritingImport } from './routes/article_.writing'
 import { Route as ArticleCategoryImport } from './routes/article_.$category'
 import { Route as ArchiveProjectTitleImport } from './routes/archive_.$projectTitle'
@@ -30,49 +31,55 @@ const IndexLazyImport = createFileRoute('/')()
 const ArticleLazyRoute = ArticleLazyImport.update({
   id: '/article',
   path: '/article',
-  getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/article.lazy').then(d => d.Route))
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/article.lazy').then((d) => d.Route))
 
 const ArchiveLazyRoute = ArchiveLazyImport.update({
   id: '/archive',
   path: '/archive',
-  getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/archive.lazy').then(d => d.Route))
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/archive.lazy').then((d) => d.Route))
 
 const AboutLazyRoute = AboutLazyImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/about.lazy').then(d => d.Route))
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute
-} as any).lazy(() => import('./routes/index.lazy').then(d => d.Route))
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const AuthCallbackRoute = AuthCallbackImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ArticleWritingRoute = ArticleWritingImport.update({
   id: '/article_/writing',
   path: '/article/writing',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ArticleCategoryRoute = ArticleCategoryImport.update({
   id: '/article_/$category',
   path: '/article/$category',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ArchiveProjectTitleRoute = ArchiveProjectTitleImport.update({
   id: '/archive_/$projectTitle',
   path: '/archive/$projectTitle',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ArticleCategoryPostTitleRoute = ArticleCategoryPostTitleImport.update({
   id: '/article_/$category_/$postTitle',
   path: '/article/$category/$postTitle',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -128,6 +135,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleWritingImport
       parentRoute: typeof rootRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/article_/$category_/$postTitle': {
       id: '/article_/$category_/$postTitle'
       path: '/article/$category/$postTitle'
@@ -148,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/archive/$projectTitle': typeof ArchiveProjectTitleRoute
   '/article/$category': typeof ArticleCategoryRoute
   '/article/writing': typeof ArticleWritingRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/article/$category/$postTitle': typeof ArticleCategoryPostTitleRoute
 }
 
@@ -159,6 +174,7 @@ export interface FileRoutesByTo {
   '/archive/$projectTitle': typeof ArchiveProjectTitleRoute
   '/article/$category': typeof ArticleCategoryRoute
   '/article/writing': typeof ArticleWritingRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/article/$category/$postTitle': typeof ArticleCategoryPostTitleRoute
 }
 
@@ -171,6 +187,7 @@ export interface FileRoutesById {
   '/archive_/$projectTitle': typeof ArchiveProjectTitleRoute
   '/article_/$category': typeof ArticleCategoryRoute
   '/article_/writing': typeof ArticleWritingRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/article_/$category_/$postTitle': typeof ArticleCategoryPostTitleRoute
 }
 
@@ -184,6 +201,7 @@ export interface FileRouteTypes {
     | '/archive/$projectTitle'
     | '/article/$category'
     | '/article/writing'
+    | '/auth/callback'
     | '/article/$category/$postTitle'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -194,6 +212,7 @@ export interface FileRouteTypes {
     | '/archive/$projectTitle'
     | '/article/$category'
     | '/article/writing'
+    | '/auth/callback'
     | '/article/$category/$postTitle'
   id:
     | '__root__'
@@ -204,6 +223,7 @@ export interface FileRouteTypes {
     | '/archive_/$projectTitle'
     | '/article_/$category'
     | '/article_/writing'
+    | '/auth/callback'
     | '/article_/$category_/$postTitle'
   fileRoutesById: FileRoutesById
 }
@@ -216,6 +236,7 @@ export interface RootRouteChildren {
   ArchiveProjectTitleRoute: typeof ArchiveProjectTitleRoute
   ArticleCategoryRoute: typeof ArticleCategoryRoute
   ArticleWritingRoute: typeof ArticleWritingRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   ArticleCategoryPostTitleRoute: typeof ArticleCategoryPostTitleRoute
 }
 
@@ -227,7 +248,8 @@ const rootRouteChildren: RootRouteChildren = {
   ArchiveProjectTitleRoute: ArchiveProjectTitleRoute,
   ArticleCategoryRoute: ArticleCategoryRoute,
   ArticleWritingRoute: ArticleWritingRoute,
-  ArticleCategoryPostTitleRoute: ArticleCategoryPostTitleRoute
+  AuthCallbackRoute: AuthCallbackRoute,
+  ArticleCategoryPostTitleRoute: ArticleCategoryPostTitleRoute,
 }
 
 export const routeTree = rootRoute
@@ -249,6 +271,7 @@ export const routeTree = rootRoute
         "/archive_/$projectTitle",
         "/article_/$category",
         "/article_/writing",
+        "/auth/callback",
         "/article_/$category_/$postTitle"
       ]
     },
@@ -272,6 +295,9 @@ export const routeTree = rootRoute
     },
     "/article_/writing": {
       "filePath": "article_.writing.tsx"
+    },
+    "/auth/callback": {
+      "filePath": "auth.callback.tsx"
     },
     "/article_/$category_/$postTitle": {
       "filePath": "article_.$category_.$postTitle.tsx"
