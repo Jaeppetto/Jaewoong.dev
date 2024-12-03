@@ -1,45 +1,74 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { adminGuard } from '@/shared/auth/guards/adminGuard'
+import { useAuth } from '@/shared/auth/hooks/useAuth'
 
+import { useArticleEditor } from '@/features/article/hooks/useArticleEditor'
+import { Button } from '@/shared/shadcn-ui/ui'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
-
-import { articleModel } from '@/features/article/model/articleModel'
-import ArticleSubmitButton from '@/features/article/ui/ArticleSubmitButton'
-import { useArticleEditor } from '@/features/article/hooks/useArticleEditor'
-
-/**
- * * /article/writing
- * 게시글 작성 페이지
- */
+import ArticleWritePanel from '@/features/article/ui/ArticleWritePanel'
+import { useCreatePost } from '@/features/article/api/queries'
+import generateSlug from '@/shared/util/generateSlug'
 
 const WritingPage = () => {
-  const { value, handleChange } = useArticleEditor()
+  const { user } = useAuth()
 
+  const {
+    content,
+    title,
+    description,
+    categoryId,
+    handleContentChange,
+    updateMeta
+  } = useArticleEditor()
+  const createPost = useCreatePost()
+
+  const handleSubmit = async () => {
+    try {
+      await createPost.mutateAsync({
+        title,
+        content,
+        description,
+        category_id: categoryId,
+        slug: generateSlug(title),
+        published: true,
+        author_id: user?.id
+      })
+    } catch (error) {
+      console.error('Failed to create post:', error)
+    }
+  }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto flex max-w-5xl flex-col gap-6 p-4">
+      <ArticleWritePanel
+        title={title}
+        description={description}
+        categoryId={categoryId}
+        onMetaChange={updateMeta}
+      />
       <MDEditor
-        value={value}
-        onChange={handleChange}
+        value={content}
+        onChange={handleContentChange}
         preview="edit"
         className="min-h-[40rem]"
         previewOptions={{
           rehypePlugins: [[rehypeSanitize]]
         }}
       />
-      <ArticleSubmitButton
-        onClick={() => articleModel.downloadMarkdown(value, 'post')}
-      />
+      <div className="flex justify-end gap-2">
+        <Button
+          onClick={handleSubmit}
+          disabled={createPost.isPending || !content.trim() || !title}>
+          {createPost.isPending ? 'Saving...' : 'Publish'}
+        </Button>
+      </div>
     </div>
   )
 }
+
 export const Route = createFileRoute('/article_/writing')({
   beforeLoad: async () => {
     return await adminGuard()
   },
   component: WritingPage
 })
-
-// TODO: 카테고리, 제목, 해시태그, 한줄요약(description) 입력
-// TODO: 게시글 자동 임시저장, 임시저장 시간 표시
-// TODO: 해당 카테고리의 서버 저장

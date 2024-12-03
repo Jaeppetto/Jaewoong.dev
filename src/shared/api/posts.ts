@@ -69,7 +69,16 @@ export const postApi = {
     const { data, error } = await supabase
       .from('posts')
       .insert(post)
-      .select()
+      .select(
+        `
+        *,
+        categories (
+          id,
+          name,
+          slug
+        )
+      `
+      )
       .single()
 
     if (error) throw error
