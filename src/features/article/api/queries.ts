@@ -12,6 +12,13 @@ export const postKeys = {
     [...postKeys.lists(), { categoryId }] as const
 }
 
+export const usePostBySlugQuery = (slug: string) => {
+  return useQuery({
+    queryKey: postKeys.detail(slug),
+    queryFn: () => postApi.getBySlug(slug),
+    enabled: !!slug
+  })
+}
 export const usePostsQuery = () => {
   return useQuery({
     queryKey: postKeys.lists(),
@@ -19,7 +26,7 @@ export const usePostsQuery = () => {
   })
 }
 
-export const usePostQuery = (id: string) => {
+export const usePostQueryById = (id: string) => {
   return useQuery({
     queryKey: postKeys.detail(id),
     queryFn: () => postApi.getById(id),
