@@ -45,6 +45,26 @@ export const postApi = {
     return data
   },
 
+  getBySlug: async (slug: string) => {
+    const { data, error } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        categories (
+          id,
+          name,
+          slug
+        )
+      `
+      )
+      .eq('slug', slug)
+      .single()
+
+    if (error) throw error
+    return data
+  },
+
   getByCategoryId: async (categoryId: string) => {
     const { data, error } = await supabase
       .from('posts')
@@ -69,7 +89,16 @@ export const postApi = {
     const { data, error } = await supabase
       .from('posts')
       .insert(post)
-      .select()
+      .select(
+        `
+        *,
+        categories (
+          id,
+          name,
+          slug
+        )
+      `
+      )
       .single()
 
     if (error) throw error

@@ -1,27 +1,52 @@
 import { useCallback, useState } from 'react'
 
+interface ArticleEditorState {
+  content: string
+  title: string
+  description: string
+  categoryId: string | null
+}
+
 interface UseArticleEditorProps {
-  initialValue?: string
-  onChange?: (value: string) => void
+  initialState?: Partial<ArticleEditorState>
 }
 
 export const useArticleEditor = ({
-  initialValue = '# 제목을 입력하세요',
-  onChange
+  initialState = {}
 }: UseArticleEditorProps = {}) => {
-  const [value, setValue] = useState(initialValue)
+  const [state, setState] = useState<ArticleEditorState>({
+    content: initialState.content ?? '# 제목을 입력하세요',
+    title: initialState.title ?? '',
+    description: initialState.description ?? '',
+    categoryId: initialState.categoryId ?? null
+  })
 
-  const handleChange = useCallback(
-    (newValue: string = '') => {
-      setValue(newValue)
-      onChange?.(newValue)
+  const handleContentChange = useCallback((newContent: string = '') => {
+    setState(prev => ({
+      ...prev,
+      content: newContent
+    }))
+  }, [])
+
+  const updateMeta = useCallback(
+    (
+      field: keyof Omit<ArticleEditorState, 'content'>,
+      value: string | null
+    ) => {
+      setState(prev => ({
+        ...prev,
+        [field]: value
+      }))
     },
-    [onChange]
+    []
   )
 
   return {
-    value,
-    setValue,
-    handleChange
+    content: state.content,
+    title: state.title,
+    description: state.description,
+    categoryId: state.categoryId,
+    handleContentChange,
+    updateMeta
   }
 }

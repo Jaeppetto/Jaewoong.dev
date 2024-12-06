@@ -1,6 +1,7 @@
 import { usePostsByCategoryQuery } from '@/features/article/api/queries'
 import { Category } from '@/shared/api/categories'
 import Button from '@/shared/shadcn-ui/ui/button'
+import generateSlug from '@/shared/util/generateSlug'
 
 import { useNavigate } from '@tanstack/react-router'
 
@@ -23,7 +24,7 @@ const CategoryAccordionItem = ({ category }: CategoryAccordionItemProps) => {
                 to: '/article/$category/$postTitle',
                 params: {
                   category: category.slug,
-                  postTitle: post.title
+                  postTitle: generateSlug(post.title)
                 }
               })
             }}>
