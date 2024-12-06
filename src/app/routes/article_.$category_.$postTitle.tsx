@@ -26,7 +26,7 @@ const PostDetailPage = () => {
   }
 
   return (
-    <article className="container mx-auto max-w-3xl px-4 py-8">
+    <article className="container max-w-3xl px-4 py-8 mx-auto">
       <header className="mb-8">
         <h1 className="mb-4 text-4xl font-bold">{post.title}</h1>
         {post.categories && (
