@@ -38,8 +38,9 @@ const WritingPage = () => {
       console.error('Failed to create post:', error)
     }
   }
+
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-6 p-4">
+    <div className="flex flex-col max-w-5xl gap-6 p-4 mx-auto">
       <ArticleWritePanel
         title={title}
         description={description}
