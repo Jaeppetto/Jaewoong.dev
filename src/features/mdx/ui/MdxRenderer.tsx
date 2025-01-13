@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import type { ComponentPropsWithoutRef } from 'react'
 import { MDXComponents } from 'mdx/types'
 import { Highlight, HighlightProps } from './Highlight'
+import FoldableCard, { FoldableCardProps } from './FoldableCard'
 
 interface MdxRendererProps {
   content: string
@@ -97,7 +98,8 @@ export const MdxRenderer = ({ content }: MdxRendererProps) => {
           {...props}
         />
       ),
-      Highlight: (props: HighlightProps) => <Highlight {...props} />
+      Highlight: (props: HighlightProps) => <Highlight {...props} />,
+      FoldableCard: (props: FoldableCardProps) => <FoldableCard {...props} />
     }),
     []
   )

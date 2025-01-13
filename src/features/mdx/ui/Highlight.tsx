@@ -1,3 +1,5 @@
+import { cn } from '@/shared/shadcn-ui/util'
+
 export interface HighlightProps {
   children: React.ReactNode
   color?:
@@ -27,7 +29,10 @@ export const Highlight = ({ children, color = 'yellow' }: HighlightProps) => {
 
   return (
     <span
-      className={`rounded-md border px-2 py-1 text-lg font-bold ${colorMap[color]}`}>
+      className={cn(
+        'rounded-md border px-2 py-1 text-lg font-bold',
+        colorMap[color]
+      )}>
       {children}
     </span>
   )
