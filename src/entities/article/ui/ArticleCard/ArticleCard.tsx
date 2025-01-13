@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { CalendarDays } from 'lucide-react'
 
 interface ArticleCardProps {
-  category: string // or CategoryCode
+  category: string
   title: string
   description: string
   date: Date

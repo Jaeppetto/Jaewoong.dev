@@ -11,7 +11,7 @@ interface UseArticleEditorProps {
   initialState?: Partial<ArticleEditorState>
 }
 
-export const useArticleEditor = ({
+const useArticleEditor = ({
   initialState = {}
 }: UseArticleEditorProps = {}) => {
   const [state, setState] = useState<ArticleEditorState>({
@@ -50,3 +50,5 @@ export const useArticleEditor = ({
     updateMeta
   }
 }
+
+export default useArticleEditor

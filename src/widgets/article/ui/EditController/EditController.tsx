@@ -11,7 +11,7 @@ import {
 } from '@/shared/shadcn-ui/ui'
 import { useCategoriesQuery } from '@/features/category/api/queries'
 
-interface ArticleWritePanelProps {
+interface EditControllerProps {
   title: string
   description: string
   categoryId: string | null
@@ -21,12 +21,12 @@ interface ArticleWritePanelProps {
   ) => void
 }
 
-const ArticleWritePanel = ({
+const EditController = ({
   title,
   description,
   categoryId,
   onMetaChange
-}: ArticleWritePanelProps) => {
+}: EditControllerProps) => {
   const { data: categories, isLoading } = useCategoriesQuery()
 
   const handleChange = useCallback(
@@ -79,4 +79,4 @@ const ArticleWritePanel = ({
   )
 }
 
-export default ArticleWritePanel
+export default EditController

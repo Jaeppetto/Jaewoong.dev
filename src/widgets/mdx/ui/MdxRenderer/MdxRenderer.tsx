@@ -5,8 +5,13 @@ import { MDXProvider } from '@mdx-js/react'
 import remarkGfm from 'remark-gfm'
 import type { ComponentPropsWithoutRef } from 'react'
 import { MDXComponents } from 'mdx/types'
-import { Highlight, HighlightProps } from './Highlight'
-import FoldableCard, { FoldableCardProps } from './FoldableCard'
+import {
+  Highlight,
+  HighlightProps
+} from '../../../../entities/mdx/ui/Highlight/Highlight'
+import FoldableCard, {
+  FoldableCardProps
+} from '../../../../entities/mdx/ui/FoldableCard/FoldableCard'
 
 interface MdxRendererProps {
   content: string
@@ -21,7 +26,7 @@ type ListProps = ComponentPropsWithoutRef<'ul' | 'ol'>
 type ListItemProps = ComponentPropsWithoutRef<'li'>
 type AnchorProps = ComponentPropsWithoutRef<'a'>
 
-export const MdxRenderer = ({ content }: MdxRendererProps) => {
+const MdxRenderer = ({ content }: MdxRendererProps) => {
   const [Content, setContent] = useState<React.ComponentType | null>(null)
 
   const components = useMemo<MDXComponents>(
@@ -70,19 +75,19 @@ export const MdxRenderer = ({ content }: MdxRendererProps) => {
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="pl-4 italic font-bold border-l-4 border-slate-900 text-slate-900"
+          className="border-l-4 border-slate-900 pl-4 font-bold italic text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 text-lg list-disc list-inside text-slate-900"
+          className="my-2 list-inside list-disc text-lg text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 text-lg list-decimal list-inside text-slate-900"
+          className="my-2 list-inside list-decimal text-lg text-slate-900"
           {...props}
         />
       ),
@@ -133,3 +138,5 @@ export const MdxRenderer = ({ content }: MdxRendererProps) => {
     </MDXProvider>
   )
 }
+
+export default MdxRenderer

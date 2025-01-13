@@ -2,13 +2,13 @@ import { createFileRoute } from '@tanstack/react-router'
 import { adminGuard } from '@/shared/auth/guards/adminGuard'
 import { useAuth } from '@/shared/auth/hooks/useAuth'
 
-import { useArticleEditor } from '@/features/article/hooks/useArticleEditor'
 import { Button } from '@/shared/shadcn-ui/ui'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
-import ArticleWritePanel from '@/features/article/ui/ArticleWritePanel'
-import { useCreatePost } from '@/features/article/api/queries'
+
 import generateSlug from '@/shared/util/generateSlug'
+import { useArticleEditor, useCreatePost } from '@/features'
+import { EditController } from '@/widgets'
 
 const WritingPage = () => {
   const { user } = useAuth()
@@ -40,8 +40,8 @@ const WritingPage = () => {
   }
 
   return (
-    <div className="flex flex-col max-w-5xl gap-6 p-4 mx-auto">
-      <ArticleWritePanel
+    <div className="mx-auto flex max-w-5xl flex-col gap-6 p-4">
+      <EditController
         title={title}
         description={description}
         categoryId={categoryId}

@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import '@/app/styles/index.css'
 
-import ProjectCard from './ProjectCard'
 import dayjs from 'dayjs'
+import ArchiveCard from './ArchiveCard'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Common/ProjectCard',
-  component: ProjectCard,
+  title: 'Common/ArchiveCard',
+  component: ArchiveCard,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered'
@@ -16,7 +16,7 @@ const meta = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {}
-} satisfies Meta<typeof ProjectCard>
+} satisfies Meta<typeof ArchiveCard>
 
 export default meta
 

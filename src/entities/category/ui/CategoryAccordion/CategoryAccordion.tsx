@@ -4,8 +4,9 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/shared/shadcn-ui/ui/accordion'
-import { useCategoriesQuery } from '../api/queries'
+
 import CategoryAccordionItem from './CategoryAccordionItem'
+import { useCategoriesQuery } from '@/features'
 
 export const CategoryAccordion = () => {
   const { data: categories, isLoading: categoriesLoading } =

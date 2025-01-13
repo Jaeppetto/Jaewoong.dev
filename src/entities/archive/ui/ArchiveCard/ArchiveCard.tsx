@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 
-interface ProjectCardProps {
+interface ArchiveCardProps {
   title: string
   description: string
   logoImage?: string
@@ -37,7 +37,7 @@ const StackBadge = ({ stack }: { stack: string }) => {
   )
 }
 
-const ProjectCard = ({
+const ArchiveCard = ({
   title,
   description,
   // logoImage,
@@ -47,7 +47,7 @@ const ProjectCard = ({
   links,
   themeColor,
   className
-}: ProjectCardProps) => {
+}: ArchiveCardProps) => {
   const [isHover, setIsHover] = useState(false)
 
   return (
@@ -116,4 +116,4 @@ const ProjectCard = ({
   )
 }
 
-export default ProjectCard
+export default ArchiveCard
