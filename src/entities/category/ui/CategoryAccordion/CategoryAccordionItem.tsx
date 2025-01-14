@@ -1,9 +1,9 @@
 import { usePostsByCategoryQuery } from '@/features/article/api/queries'
-import { Category } from '@/shared/api/categories'
 import Button from '@/shared/shadcn-ui/ui/button'
 import generateSlug from '@/shared/util/generateSlug'
 
 import { useNavigate } from '@tanstack/react-router'
+import { Category } from '../../constant'
 
 interface CategoryAccordionItemProps {
   category: Category

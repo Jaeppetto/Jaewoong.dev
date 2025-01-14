@@ -3,7 +3,7 @@ import { CategoryList } from '@/widgets/category'
 
 const ArticlePage = () => {
   return (
-    <div className="h-full w-full max-w-[108rem] bg-fuchsia-50">
+    <div className="flex h-full w-full max-w-[108rem] flex-col gap-[8rem] py-[6rem]">
       <ArticleList />
       <CategoryList />
     </div>

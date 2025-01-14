@@ -20,9 +20,18 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    category: '📚 회고',
-    title: '조코딩 해커톤 본선 진출 후기',
-    description: '인생 첫 해커톤을 다녀오다.',
-    date: dayjs('2024-01-01').toDate()
+    category: { id: '1', name: '', slug: '' },
+    post: {
+      author_id: null,
+      category_id: '1',
+      content: '',
+      created_at: dayjs().format('yyyy-mm-dd'),
+      description: '인생 첫 해커톤을 다녀오다',
+      id: '1',
+      published: null,
+      slug: 'sample-post-title',
+      title: '조코딩 해커톤 본선 진출 후기',
+      updated_at: null
+    }
   }
 }

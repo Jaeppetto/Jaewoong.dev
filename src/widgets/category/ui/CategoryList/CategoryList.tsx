@@ -1,5 +1,24 @@
+import { CategoryButton } from '@/entities'
+import { useCategoriesQuery } from '@/features'
+
 const CategoryList = () => {
-  return <div>CategoryList</div>
+  const { data: categories } = useCategoriesQuery()
+
+  return (
+    <div className="flex w-full flex-col gap-[2rem]">
+      <h1 className="select-none text-[2rem] font-extrabold text-slate-900">
+        카테고리로 모아보기
+      </h1>
+      <div className="flex flex-wrap gap-[1.2rem]">
+        {categories?.map(category => (
+          <CategoryButton
+            key={category.id}
+            category={category.name}
+          />
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default CategoryList

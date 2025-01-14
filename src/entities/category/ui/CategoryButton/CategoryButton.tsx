@@ -11,7 +11,7 @@ const CategoryButton = ({ category, className }: CategoryButtonProps) => {
 
   return (
     <button
-      onClick={() => router.navigate({ to: `/archive/${category}` })}
+      onClick={() => router.navigate({ to: `/article/${category}` })}
       className={cn(
         'ease-[cubic-bezier(0.34,1.56,0.64,1)] flex cursor-pointer items-center justify-center rounded-[10rem] border border-slate-200 bg-white p-[2.4rem] px-[4.2rem] py-[2rem] shadow-default transition-all duration-500 hover:scale-[1.03]',
         className
