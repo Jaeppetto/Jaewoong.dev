@@ -7,7 +7,7 @@ interface ArticleListHeaderProps {
 const ArticleListHeader = ({ type }: ArticleListHeaderProps) => {
   if (type === 'recent') {
     return (
-      <h1 className="select-none text-[3.2rem] font-extrabold leading-[3.2rem] text-slate-900">
+      <h1 className="select-none text-[2rem] font-normal leading-[2rem] text-slate-900">
         최근 아티클
       </h1>
     )
