@@ -6,9 +6,9 @@ const CategoryList = () => {
 
   return (
     <div className="flex w-full flex-col gap-[2rem]">
-      <h1 className="select-none text-[2rem] font-extrabold text-slate-900">
+      <h2 className="select-none text-[2rem] font-extrabold leading-[2rem] text-slate-900">
         카테고리로 모아보기
-      </h1>
+      </h2>
       <div className="flex flex-wrap gap-[1.2rem]">
         {categories?.map(category => (
           <CategoryButton
