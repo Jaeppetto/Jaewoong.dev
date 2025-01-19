@@ -8,7 +8,7 @@ export const Route = createRootRoute({
       <ScrollArea className="flex h-[100dvh] w-full flex-1 justify-center bg-white">
         <Header />
         {/* <main className="mt-[7.6rem] flex h-[calc(100dvh-7.6rem)] w-full flex-1 justify-cexnter"> */}
-        <main className="mt-[7.6rem] flex w-full flex-1 justify-center">
+        <main className="mt-[7.6rem] flex w-full flex-1 justify-center px-10">
           <Outlet />
         </main>
         <ScrollBar orientation="vertical" />

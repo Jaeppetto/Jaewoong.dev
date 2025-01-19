@@ -12,7 +12,7 @@ const ArticleList = () => {
       <h1 className="select-none text-[3.2rem] font-extrabold text-slate-900">
         최근 아티클
       </h1>
-      <div className="grid grid-cols-2 gap-[1.2rem]">
+      <div className="grid grid-cols-1 gap-[1.2rem] sm:grid-cols-2">
         {posts?.map(post => (
           <ArticleCard
             key={post.id}

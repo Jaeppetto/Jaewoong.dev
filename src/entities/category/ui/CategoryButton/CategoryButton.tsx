@@ -13,10 +13,10 @@ const CategoryButton = ({ category, className }: CategoryButtonProps) => {
     <button
       onClick={() => router.navigate({ to: `/article/${category}` })}
       className={cn(
-        'ease-[cubic-bezier(0.34,1.56,0.64,1)] flex cursor-pointer items-center justify-center rounded-[10rem] border border-slate-200 bg-white p-[2.4rem] px-[4.2rem] py-[2rem] shadow-default transition-all duration-500 hover:scale-[1.03]',
+        'ease-[cubic-bezier(0.34,1.56,0.64,1)] flex cursor-pointer items-center justify-center rounded-[10rem] border border-slate-200 bg-white p-[2.4rem] px-[2.8rem] py-[1.6rem] shadow-default transition-all duration-500 hover:scale-[1.03]',
         className
       )}>
-      <p className="text-[2.4rem] font-extrabold leading-[2.9rem] text-slate-900">
+      <p className="text-[2rem] font-extrabold leading-[2rem] text-slate-900">
         {category}
       </p>
     </button>
