@@ -8,15 +8,18 @@ import {
 } from '@/shared'
 import { Link, useLocation } from '@tanstack/react-router'
 import { Check, ChevronDown } from 'lucide-react'
+import CategoryDropdownSkeleton from './CategoryDropdownSkeleton'
 
 const CategoryDropdown = () => {
-  const { data: categories } = useCategoriesQuery()
+  const { data: categories, isLoading, isPending } = useCategoriesQuery()
   const location = useLocation()
   const [, , currentCategory] = location.pathname.split('/')
 
+  if (isLoading || isPending) return <CategoryDropdownSkeleton />
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex gap-1 items-center bg-transparent focus:outline-none">
+      <DropdownMenuTrigger className="flex items-center gap-1 bg-transparent focus:outline-none">
         <span className="text-[2rem] font-extrabold leading-[2rem] text-slate-900">
           {categories?.find(c => c.slug === currentCategory)?.name}
         </span>

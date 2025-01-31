@@ -1,5 +1,6 @@
 import { ArticleCard } from '@/entities'
 import { usePostsByCategorySlugQuery } from '@/features/article/api/queries'
+import ArticleListSkeleton from './ArticleListSkeleton'
 
 interface ArticleListProps {
   type: 'recent' | 'category' | 'recommend'
@@ -7,11 +8,17 @@ interface ArticleListProps {
 }
 
 const ArticleList = ({ type, categorySlug }: ArticleListProps) => {
-  const { data: posts } = usePostsByCategorySlugQuery(categorySlug)
+  const {
+    data: posts,
+    isLoading,
+    isPending
+  } = usePostsByCategorySlugQuery(categorySlug)
 
   // TODO: 로딩 중 스켈레톤 처리
   // TODO: 에러 또는 리스트가 없을 때 예외처리
   // TODO: 무한 스크롤 또는 페이지네이션
+
+  if (isLoading || isPending) return <ArticleListSkeleton />
 
   if (type === 'recommend')
     return (
