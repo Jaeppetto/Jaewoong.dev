@@ -81,6 +81,28 @@ export const postApi = {
     return data
   },
 
+  getByCategorySlug: async (
+    categorySlug: string
+  ): Promise<PostWithRelations[]> => {
+    const { data, error } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        categories (
+          id,
+          name,
+          slug
+        )
+      `
+      )
+      .eq('categories.slug', categorySlug)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return data
+  },
+
   create: async (post: PostInsert): Promise<PostWithRelations> => {
     const { data, error } = await supabase
       .from('posts')

@@ -10,7 +10,9 @@ export const postKeys = {
   details: () => [...postKeys.all, 'detail'] as const,
   detail: (id: string) => [...postKeys.details(), id] as const,
   byCategory: (categoryId: string) =>
-    [...postKeys.lists(), { categoryId }] as const
+    [...postKeys.lists(), { categoryId }] as const,
+  byCategorySlug: (categorySlug: string) =>
+    [...postKeys.lists(), { categorySlug }] as const
 }
 
 export const usePostBySlugQuery = (slug: string) => {
@@ -41,6 +43,19 @@ export const usePostsByCategoryQuery = (categoryId: string) => {
     queryKey: postKeys.byCategory(categoryId),
     queryFn: () => postApi.getByCategoryId(categoryId),
     enabled: !!categoryId
+  })
+}
+
+export const usePostsByCategorySlugQuery = (
+  categorySlug: string | undefined
+) => {
+  return useQuery<PostWithRelations[]>({
+    queryKey: categorySlug
+      ? postKeys.byCategorySlug(categorySlug)
+      : postKeys.lists(),
+    queryFn: () =>
+      categorySlug ? postApi.getByCategorySlug(categorySlug) : postApi.getAll(),
+    enabled: true
   })
 }
 

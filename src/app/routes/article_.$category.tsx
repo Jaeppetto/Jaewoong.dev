@@ -7,5 +7,8 @@ import { createFileRoute } from '@tanstack/react-router'
  */
 
 export const Route = createFileRoute('/article_/$category')({
-  component: ArticleCategoryPage
+  component: ArticleCategoryPage,
+  loader: ({ params }) => ({
+    categorySlug: params.category
+  })
 })
