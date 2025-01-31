@@ -1,8 +1,11 @@
 import { CategoryButton } from '@/entities'
 import { useCategoriesQuery } from '@/features'
+import CategoryListSkeleton from './CategoryListSkeleton'
 
 const CategoryList = () => {
-  const { data: categories } = useCategoriesQuery()
+  const { data: categories, isLoading, isPending } = useCategoriesQuery()
+
+  if (isLoading || isPending) return <CategoryListSkeleton />
 
   return (
     <div className="flex w-full flex-col gap-[2rem]">

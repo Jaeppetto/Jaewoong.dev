@@ -5,14 +5,16 @@ import { Post, PostInsert, PostUpdate, PostWithRelations } from '@/entities'
 
 export const postKeys = {
   all: ['posts'] as const,
+  paginatedAll: (page: number, pageSize: number) =>
+    ['posts', 'paginated', page, pageSize] as const,
   lists: () => [...postKeys.all, 'list'] as const,
   list: (filters: string) => [...postKeys.lists(), { filters }] as const,
   details: () => [...postKeys.all, 'detail'] as const,
   detail: (id: string) => [...postKeys.details(), id] as const,
   byCategory: (categoryId: string) =>
     [...postKeys.lists(), { categoryId }] as const,
-  byCategorySlug: (categorySlug: string) =>
-    [...postKeys.lists(), { categorySlug }] as const
+  byCategorySlug: (categorySlug: string, page: number, pageSize: number) =>
+    [...postKeys.lists(), { categorySlug, page, pageSize }] as const
 }
 
 export const usePostBySlugQuery = (slug: string) => {
@@ -47,14 +49,20 @@ export const usePostsByCategoryQuery = (categoryId: string) => {
 }
 
 export const usePostsByCategorySlugQuery = (
-  categorySlug: string | undefined
+  categorySlug: string | undefined,
+  page: number = 1,
+  pageSize: number = 4
 ) => {
-  return useQuery<PostWithRelations[]>({
+  return useQuery<{ posts: PostWithRelations[]; total: number }>({
     queryKey: categorySlug
-      ? postKeys.byCategorySlug(categorySlug)
-      : postKeys.lists(),
-    queryFn: () =>
-      categorySlug ? postApi.getByCategorySlug(categorySlug) : postApi.getAll(),
+      ? postKeys.byCategorySlug(categorySlug, page, pageSize)
+      : postKeys.paginatedAll(page, pageSize),
+    queryFn: async () => {
+      const data = await (categorySlug
+        ? postApi.getByCategorySlug(categorySlug, page, pageSize)
+        : postApi.getPaginatedAll(page, pageSize))
+      return { posts: data.data, total: data.total }
+    },
     enabled: true
   })
 }

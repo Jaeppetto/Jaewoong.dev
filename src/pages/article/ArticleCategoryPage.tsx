@@ -3,6 +3,7 @@ import { ArticleList, ArticleListHeader } from '@/widgets'
 
 const ArticleCategoryPage = () => {
   const { categorySlug } = Route.useLoaderData()
+  const { page } = Route.useSearch()
 
   return (
     <div className="flex h-full w-full max-w-[108rem] flex-col gap-[8rem] py-[6rem]">
@@ -11,6 +12,8 @@ const ArticleCategoryPage = () => {
         <ArticleList
           type="category"
           categorySlug={categorySlug}
+          page={page}
+          pageSize={6}
         />
       </section>
       <section className="flex flex-col gap-[2rem]">

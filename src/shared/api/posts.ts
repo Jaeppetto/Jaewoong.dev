@@ -21,6 +21,33 @@ export const postApi = {
     return data
   },
 
+  getPaginatedAll: async (
+    page: number,
+    pageSize: number
+  ): Promise<{ data: PostWithRelations[]; total: number }> => {
+    const { data, error, count } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        categories (
+          id,
+          name,
+          slug
+        )
+      `,
+        { count: 'exact' }
+      )
+      .order('created_at', { ascending: false })
+      .range((page - 1) * pageSize, page * pageSize - 1)
+
+    if (error) throw error
+    return {
+      data: data || [],
+      total: count || 0
+    }
+  },
+
   getById: async (id: string): Promise<PostWithRelations> => {
     const { data, error } = await supabase
       .from('posts')
@@ -82,25 +109,32 @@ export const postApi = {
   },
 
   getByCategorySlug: async (
-    categorySlug: string
-  ): Promise<PostWithRelations[]> => {
-    const { data, error } = await supabase
+    categorySlug: string,
+    page: number,
+    pageSize: number
+  ): Promise<{ data: PostWithRelations[]; total: number }> => {
+    const { data, error, count } = await supabase
       .from('posts')
       .select(
         `
         *,
-        categories (
+        categories!inner (
           id,
           name,
           slug
         )
-      `
+      `,
+        { count: 'exact' }
       )
       .eq('categories.slug', categorySlug)
       .order('created_at', { ascending: false })
+      .range((page - 1) * pageSize, page * pageSize - 1)
 
     if (error) throw error
-    return data
+    return {
+      data: data || [],
+      total: count || 0
+    }
   },
 
   create: async (post: PostInsert): Promise<PostWithRelations> => {

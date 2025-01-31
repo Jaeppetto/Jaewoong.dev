@@ -10,5 +10,8 @@ export const Route = createFileRoute('/article_/$category')({
   component: ArticleCategoryPage,
   loader: ({ params }) => ({
     categorySlug: params.category
-  })
+  }),
+  validateSearch: (search: Record<string, unknown>): { page: number } => {
+    return { page: Number(search?.page ?? 1) }
+  }
 })
