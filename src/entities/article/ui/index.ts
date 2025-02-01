@@ -1,3 +1,5 @@
 export { default as ArticleCard } from './ArticleCard/ArticleCard'
 export { default as ArticleSubmitButton } from './ArticleSubmitButton/ArticleSubmitButton'
 export { default as ArticleCardSkeleton } from './ArticleCard/ArticleCardSkeleton'
+export { default as ArticleDetailHeader } from './ArticleDetail/ArticleDetailHeader'
+export { default as ArticleDetailSkeleton } from './ArticleDetail/ArticleDetailSkeleton'

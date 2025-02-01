@@ -12,6 +12,7 @@ import {
 import FoldableCard, {
   FoldableCardProps
 } from '../../../../entities/mdx/ui/FoldableCard/FoldableCard'
+import { cn } from '@/shared/shadcn-ui/util'
 
 interface MdxRendererProps {
   content: string
@@ -75,19 +76,19 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="border-l-4 border-slate-900 pl-4 font-bold italic text-slate-900"
+          className="pl-4 italic font-bold border-l-4 border-slate-900 text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 list-inside list-disc text-lg text-slate-900"
+          className="my-2 text-lg list-disc list-inside text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 list-inside list-decimal text-lg text-slate-900"
+          className="my-2 text-lg list-decimal list-inside text-slate-900"
           {...props}
         />
       ),
@@ -132,7 +133,7 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
 
   return (
     <MDXProvider components={components}>
-      <div className="prose prose-slate max-w-none dark:prose-invert">
+      <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
         <Content />
       </div>
     </MDXProvider>
