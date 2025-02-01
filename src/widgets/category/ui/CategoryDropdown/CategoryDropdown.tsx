@@ -35,6 +35,7 @@ const CategoryDropdown = () => {
             <Link
               to={ArticleCategoryRoute.to}
               params={{ category: category.slug }}
+              search={{ page: 1 }}
               className="flex w-full items-center justify-between gap-[1.2rem] px-[0.8rem] py-[0.4rem] text-[1.4rem] font-normal leading-[1.6rem] text-slate-900 hover:text-slate-900">
               {category.name}
               {currentCategory === category.slug && (

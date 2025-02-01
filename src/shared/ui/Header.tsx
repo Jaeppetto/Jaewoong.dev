@@ -50,6 +50,7 @@ const Header = () => {
             </Link>
             <Link
               to="/article"
+              search={{ page: 1 }}
               className="text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900 [&.active]:font-extrabold [&.active]:text-slate-900">
               Article
             </Link>

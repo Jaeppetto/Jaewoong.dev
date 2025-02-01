@@ -18,6 +18,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    category: '📚 회고'
+    slug: '회고',
+    name: '📚 회고'
   }
 }

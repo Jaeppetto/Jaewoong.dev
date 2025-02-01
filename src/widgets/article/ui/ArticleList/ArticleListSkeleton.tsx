@@ -7,6 +7,8 @@ const ArticleListSkeleton = () => {
       <ArticleCardSkeleton />
       <ArticleCardSkeleton />
       <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
     </div>
   )
 }
