@@ -1,26 +1,18 @@
+import { Category, CategoryInsert, CategoryUpdate } from '@/entities'
 import { supabase } from './supabase/client'
-import type { Database } from './supabase/types'
-
-export type Category = Database['public']['Tables']['categories']['Row']
-export type CategoryInsert =
-  Database['public']['Tables']['categories']['Insert']
-export type CategoryUpdate =
-  Database['public']['Tables']['categories']['Update']
 
 export const categoryApi = {
-  getAll: async () => {
+  getAll: async (): Promise<Category[]> => {
     const { data, error } = await supabase
       .from('categories')
       .select('*')
       .order('name', { ascending: true })
 
-    console.log(data)
-
     if (error) throw error
     return data
   },
 
-  getById: async (id: string) => {
+  getById: async (id: string): Promise<Category> => {
     const { data, error } = await supabase
       .from('categories')
       .select('*')
@@ -31,7 +23,7 @@ export const categoryApi = {
     return data
   },
 
-  create: async (category: CategoryInsert) => {
+  create: async (category: CategoryInsert): Promise<Category> => {
     const { data, error } = await supabase
       .from('categories')
       .insert(category)
@@ -42,7 +34,10 @@ export const categoryApi = {
     return data
   },
 
-  update: async ({ id, ...category }: CategoryUpdate & { id: string }) => {
+  update: async ({
+    id,
+    ...category
+  }: CategoryUpdate & { id: string }): Promise<Category> => {
     const { data, error } = await supabase
       .from('categories')
       .update(category)
@@ -54,7 +49,7 @@ export const categoryApi = {
     return data
   },
 
-  delete: async (id: string) => {
+  delete: async (id: string): Promise<void> => {
     const { error } = await supabase.from('categories').delete().eq('id', id)
 
     if (error) throw error

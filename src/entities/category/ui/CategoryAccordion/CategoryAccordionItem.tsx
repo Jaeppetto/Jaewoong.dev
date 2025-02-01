@@ -1,0 +1,39 @@
+import { usePostsByCategoryQuery } from '@/features/article/api/queries'
+import Button from '@/shared/shadcn-ui/ui/button'
+import generateSlug from '@/shared/util/generateSlug'
+
+import { useNavigate } from '@tanstack/react-router'
+import { Category } from '../../constant'
+
+interface CategoryAccordionItemProps {
+  category: Category
+}
+
+const CategoryAccordionItem = ({ category }: CategoryAccordionItemProps) => {
+  const navigate = useNavigate()
+  const { data: posts } = usePostsByCategoryQuery(category.id)
+
+  return (
+    <ul>
+      {posts?.map(post => (
+        <li key={post.id}>
+          <Button
+            variant="link"
+            onClick={() => {
+              navigate({
+                to: '/article/$category/$postTitle',
+                params: {
+                  category: category.slug,
+                  postTitle: generateSlug(post.title)
+                }
+              })
+            }}>
+            {post.title}
+          </Button>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export default CategoryAccordionItem

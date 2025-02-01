@@ -1,12 +1,8 @@
+import { Post, PostInsert, PostUpdate, PostWithRelations } from '@/entities'
 import { supabase } from './supabase/client'
-import type { Database } from './supabase/types'
-
-export type Post = Database['public']['Tables']['posts']['Row']
-export type PostInsert = Database['public']['Tables']['posts']['Insert']
-export type PostUpdate = Database['public']['Tables']['posts']['Update']
 
 export const postApi = {
-  getAll: async () => {
+  getAll: async (): Promise<PostWithRelations[]> => {
     const { data, error } = await supabase
       .from('posts')
       .select(
@@ -25,7 +21,34 @@ export const postApi = {
     return data
   },
 
-  getById: async (id: string) => {
+  getPaginatedAll: async (
+    page: number,
+    pageSize: number
+  ): Promise<{ data: PostWithRelations[]; total: number }> => {
+    const { data, error, count } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        categories (
+          id,
+          name,
+          slug
+        )
+      `,
+        { count: 'exact' }
+      )
+      .order('created_at', { ascending: false })
+      .range((page - 1) * pageSize, page * pageSize - 1)
+
+    if (error) throw error
+    return {
+      data: data || [],
+      total: count || 0
+    }
+  },
+
+  getById: async (id: string): Promise<PostWithRelations> => {
     const { data, error } = await supabase
       .from('posts')
       .select(
@@ -45,7 +68,7 @@ export const postApi = {
     return data
   },
 
-  getBySlug: async (slug: string) => {
+  getBySlug: async (slug: string): Promise<PostWithRelations> => {
     const { data, error } = await supabase
       .from('posts')
       .select(
@@ -65,7 +88,7 @@ export const postApi = {
     return data
   },
 
-  getByCategoryId: async (categoryId: string) => {
+  getByCategoryId: async (categoryId: string): Promise<PostWithRelations[]> => {
     const { data, error } = await supabase
       .from('posts')
       .select(
@@ -85,7 +108,36 @@ export const postApi = {
     return data
   },
 
-  create: async (post: PostInsert) => {
+  getByCategorySlug: async (
+    categorySlug: string,
+    page: number,
+    pageSize: number
+  ): Promise<{ data: PostWithRelations[]; total: number }> => {
+    const { data, error, count } = await supabase
+      .from('posts')
+      .select(
+        `
+        *,
+        categories!inner (
+          id,
+          name,
+          slug
+        )
+      `,
+        { count: 'exact' }
+      )
+      .eq('categories.slug', categorySlug)
+      .order('created_at', { ascending: false })
+      .range((page - 1) * pageSize, page * pageSize - 1)
+
+    if (error) throw error
+    return {
+      data: data || [],
+      total: count || 0
+    }
+  },
+
+  create: async (post: PostInsert): Promise<PostWithRelations> => {
     const { data, error } = await supabase
       .from('posts')
       .insert(post)
@@ -105,7 +157,10 @@ export const postApi = {
     return data
   },
 
-  update: async ({ id, ...post }: PostUpdate & { id: string }) => {
+  update: async ({
+    id,
+    ...post
+  }: PostUpdate & { id: string }): Promise<Post> => {
     const { data, error } = await supabase
       .from('posts')
       .update(post)
@@ -117,7 +172,7 @@ export const postApi = {
     return data
   },
 
-  delete: async (id: string) => {
+  delete: async (id: string): Promise<void> => {
     const { error } = await supabase.from('posts').delete().eq('id', id)
 
     if (error) throw error

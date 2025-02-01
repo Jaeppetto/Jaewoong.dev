@@ -1,7 +1,7 @@
-import { usePostBySlugQuery } from '@/features/article/api/queries'
+import { usePostBySlugQuery } from '@/features'
+import { MdxRenderer } from '@/widgets'
 import { createFileRoute } from '@tanstack/react-router'
 import { Suspense } from 'react'
-import { MdxRenderer } from '@/features/mdx/ui/MdxRenderer'
 
 const PostDetailPage = () => {
   const { postTitle } = Route.useLoaderData()
@@ -26,7 +26,7 @@ const PostDetailPage = () => {
   }
 
   return (
-    <article className="container max-w-3xl px-4 py-8 mx-auto">
+    <article className="container px-4 py-8 mx-auto max-w-3xl">
       <header className="mb-8">
         <h1 className="mb-4 text-4xl font-bold">{post.title}</h1>
         {post.categories && (

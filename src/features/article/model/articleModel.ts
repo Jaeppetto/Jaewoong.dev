@@ -1,4 +1,4 @@
-export const articleModel = {
+const articleModel = {
   downloadMarkdown: (content: string, fileName: string) => {
     const blob = new Blob([content], { type: 'text/markdown' })
     const url = URL.createObjectURL(blob)
@@ -10,3 +10,5 @@ export const articleModel = {
     URL.revokeObjectURL(url)
   }
 }
+
+export default articleModel
