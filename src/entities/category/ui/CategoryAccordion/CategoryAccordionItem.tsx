@@ -4,12 +4,21 @@ import generateSlug from '@/shared/util/generateSlug'
 
 import { useNavigate } from '@tanstack/react-router'
 import { Category } from '../../constant'
+import { NewArticleBadge } from '@/entities/article'
+import dayjs from 'dayjs'
+import { cn } from '@/shared/shadcn-ui/util'
 
 interface CategoryAccordionItemProps {
   category: Category
+  currentPost: string
+  currentCategory: string
 }
 
-const CategoryAccordionItem = ({ category }: CategoryAccordionItemProps) => {
+const CategoryAccordionItem = ({
+  category,
+  currentPost,
+  currentCategory
+}: CategoryAccordionItemProps) => {
   const navigate = useNavigate()
   const { data: posts } = usePostsByCategoryQuery(category.id)
 
@@ -19,6 +28,7 @@ const CategoryAccordionItem = ({ category }: CategoryAccordionItemProps) => {
         <li key={post.id}>
           <Button
             variant="link"
+            className="flex w-full items-center justify-start gap-1 bg-transparent px-[1rem] text-[1.2rem] font-normal leading-[1.6rem] transition-all hover:font-bold hover:no-underline"
             onClick={() => {
               navigate({
                 to: '/article/$category/$postTitle',
@@ -28,7 +38,20 @@ const CategoryAccordionItem = ({ category }: CategoryAccordionItemProps) => {
                 }
               })
             }}>
-            {post.title}
+            <span
+              className={cn(
+                'truncate',
+                currentCategory === category.slug &&
+                  currentPost === generateSlug(post.title) &&
+                  'font-bold'
+              )}>
+              {post.title}
+            </span>
+
+            {dayjs(post.created_at).isValid() &&
+              dayjs(post.created_at).isAfter(dayjs().subtract(2, 'week')) && (
+                <NewArticleBadge />
+              )}
           </Button>
         </li>
       ))}

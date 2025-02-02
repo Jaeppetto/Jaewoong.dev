@@ -1,12 +1,17 @@
-import { ArticleDetailHeader, ArticleDetailSkeleton } from '@/entities'
+import {
+  ArticleDetailHeader,
+  ArticleDetailSkeleton,
+  CategoryAccordion
+} from '@/entities'
 import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
 import { MdxRenderer } from '@/widgets'
 import { Navigate, useParams } from '@tanstack/react-router'
-import { Suspense } from 'react'
 
 const ArticleDetailPage = () => {
-  const { postTitle } = useParams({ from: '/article_/$category_/$postTitle' })
+  const { postTitle, category } = useParams({
+    from: '/article_/$category_/$postTitle'
+  })
   const { data: post, isLoading, isError } = usePostBySlugQuery(postTitle)
 
   if (isError) {
@@ -23,19 +28,26 @@ const ArticleDetailPage = () => {
   }
 
   return (
-    <article className="flex h-full w-full max-w-[88rem] flex-col gap-[4rem] py-[2rem]">
-      <ArticleDetailHeader post={post} />
+    <div className="flex justify-center w-full">
+      <aside className="sticky top-[7.6rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
+        <CategoryAccordion
+          currentCategory={category}
+          currentPost={postTitle}
+        />
+      </aside>
 
-      <main
-        className={cn(
-          'prose prose-slate dark:prose-invert',
-          'max-w-none px-[1rem]'
-        )}>
-        <Suspense fallback={<div className="animate-pulse">로딩 중...</div>}>
+      <main className="flex h-full w-full max-w-[88rem] flex-col gap-[4rem] py-[2rem] pb-[4rem]">
+        <ArticleDetailHeader post={post} />
+
+        <article
+          className={cn(
+            'prose prose-slate dark:prose-invert',
+            'max-w-none px-[1rem]'
+          )}>
           <MdxRenderer content={post.content} />
-        </Suspense>
+        </article>
       </main>
-    </article>
+    </div>
   )
 }
 

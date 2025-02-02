@@ -1,5 +1,6 @@
 export interface Category {
   created_at: string | null
+  emoji?: string | null
   id: string
   name: string
   slug: string
@@ -7,6 +8,7 @@ export interface Category {
 
 export interface CategoryInsert {
   created_at?: string | null
+  emoji?: string | null
   id?: string
   name: string
   slug: string
@@ -14,6 +16,7 @@ export interface CategoryInsert {
 
 export interface CategoryUpdate {
   created_at?: string | null
+  emoji?: string | null
   id?: string
   name?: string
   slug?: string
