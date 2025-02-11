@@ -1,7 +1,8 @@
 import {
   ArticleDetailHeader,
   ArticleDetailSkeleton,
-  CategoryAccordion
+  CategoryAccordion,
+  CategoryAccordionSkeleton
 } from '@/entities'
 import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
@@ -24,11 +25,16 @@ const ArticleDetailPage = () => {
   }
 
   if (isLoading || !post) {
-    return <ArticleDetailSkeleton />
+    return (
+      <div className="flex w-full justify-center gap-[2rem]">
+        <CategoryAccordionSkeleton />
+        <ArticleDetailSkeleton />
+      </div>
+    )
   }
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex w-full justify-center">
       <aside className="sticky top-[7.6rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
