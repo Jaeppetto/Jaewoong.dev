@@ -10,6 +10,8 @@ import {
   SelectValue
 } from '@/shared/shadcn-ui/ui'
 import { useCategoriesQuery } from '@/features/category/api/queries'
+import { ImageUploader } from '@/features'
+import { generateTempId } from '@/shared'
 
 interface EditControllerProps {
   title: string
@@ -46,6 +48,13 @@ const EditController = ({
           placeholder="Enter article title"
         />
       </div>
+      <ImageUploader
+        tempId={generateTempId()}
+        type="thumbnail"
+        onUploadComplete={imageUrl => {
+          console.log(imageUrl)
+        }}
+      />
       <div className="space-y-2">
         <label className="text-sm font-medium">한줄요약</label>
         <Textarea
