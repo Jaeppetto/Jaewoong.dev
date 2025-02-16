@@ -7,16 +7,16 @@ assignees: Jaeppetto
 
 ---
 
-## 🎫 (ticketname)
+## 🎫 [](ticketname)
 
-## 📝 Description
+### 📝 Description
 - 
 
-## ✅ Instructions
+### ✅ Instructions
 
 - [x] 
 - [ ] 
 
-## 🔗 References
+### 🔗 References
 - 
 -
