@@ -10,8 +10,8 @@ import {
   SelectValue
 } from '@/shared/shadcn-ui/ui'
 import { useCategoriesQuery } from '@/features/category/api/queries'
-import { ImageUploader } from '@/features'
-import { generateTempId } from '@/shared'
+
+import { cn } from '@/shared/shadcn-ui/util'
 
 interface EditControllerProps {
   title: string
@@ -39,43 +39,60 @@ const EditController = ({
   )
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">제목</label>
+    <div className="w-full space-y-4">
+      <div className="flex items-center gap-4">
+        <h3
+          className={cn(
+            'flex-shrink-0 select-none text-[2rem] font-bold leading-[2.4rem] text-slate-300 ',
+            title && 'text-slate-900'
+          )}>
+          제목
+        </h3>
         <Input
           value={title}
           onChange={e => handleChange('title', e.target.value)}
           placeholder="Enter article title"
+          className="h-[3.6rem] rounded-2xl font-bold leading-[2.4rem] text-slate-900 placeholder:text-slate-300 md:text-[1.6rem]"
         />
       </div>
-      <ImageUploader
-        tempId={generateTempId()}
-        type="thumbnail"
-        onUploadComplete={imageUrl => {
-          console.log(imageUrl)
-        }}
-      />
-      <div className="space-y-2">
-        <label className="text-sm font-medium">한줄요약</label>
+      <div className="flex items-center gap-4">
+        <h3
+          className={cn(
+            'flex-shrink-0 text-[2rem] font-bold leading-[2.4rem] text-slate-300 ',
+            description && 'text-slate-900'
+          )}>
+          한줄요약
+        </h3>
         <Textarea
           value={description}
           onChange={e => handleChange('description', e.target.value)}
           placeholder="Enter article description"
-          rows={3}
+          className="h-[3.6rem] min-h-0 resize-none rounded-2xl font-bold leading-[2.4rem] text-slate-900 placeholder:text-slate-300 md:text-[1.6rem]"
+          rows={1}
         />
       </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">카테고리</label>
+      <div className="flex items-center gap-4">
+        <h3
+          className={cn(
+            'flex-shrink-0 text-[2rem] font-bold leading-[2.4rem] text-slate-300 ',
+            categoryId && 'text-slate-900'
+          )}>
+          카테고리
+        </h3>
         <Select
           value={categoryId ?? ''}
           onValueChange={value => handleChange('categoryId', value)}
           disabled={isLoading}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select category" />
+          <SelectTrigger className="h-[3.6rem] rounded-2xl font-bold leading-[2.4rem] text-slate-900 placeholder:text-slate-300 md:text-[1.6rem]">
+            <SelectValue
+              placeholder="Select category"
+              className="text-slate-300 placeholder:text-slate-300"
+            />
           </SelectTrigger>
           <SelectContent>
             {categories?.map(category => (
               <SelectItem
+                className="text-[1.6rem] font-bold leading-[2.4rem] text-slate-900"
                 key={category.id}
                 value={category.id}>
                 {category.name}

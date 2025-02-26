@@ -12,6 +12,7 @@ export interface Post {
   slug: string
   title: string
   updated_at: string | null
+  thumbnail: string | null
 }
 
 export interface PostInsert {
@@ -25,6 +26,7 @@ export interface PostInsert {
   slug: string
   title: string
   updated_at?: string | null
+  thumbnail?: string | null
 }
 
 export interface PostUpdate {
@@ -38,6 +40,7 @@ export interface PostUpdate {
   slug?: string
   title?: string
   updated_at?: string | null
+  thumbnail?: string | null
 }
 
 export interface PostWithRelations extends Post {

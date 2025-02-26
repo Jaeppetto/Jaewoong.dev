@@ -35,7 +35,7 @@ const Header = () => {
         <div className="flex items-center gap-[3.2rem]">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="hidden p-0 bg-transparent transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
+            className="hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
             <img
               src="/signature.png"
               alt="signature"
@@ -44,7 +44,7 @@ const Header = () => {
               className="translate-y-[0.4rem] rotate-[20deg] select-none"
             />
           </button>
-          <div className="flex w-[20rem] flex-shrink-0 justify-between">
+          <div className="flex w-[20rem] flex-shrink-0 select-none justify-between">
             <Link
               to="/about"
               className={cn(
@@ -66,21 +66,21 @@ const Header = () => {
               disabled
               to="/archive"
               className={cn(
-                'text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900',
+                'text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-300',
                 subPath === 'archive' && 'font-extrabold text-slate-900'
               )}>
               Archive
             </Link>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
           <a
             href="https://github.com/Jaeppetto"
             target="_blank">
             <GitHubLogoIcon
               width={30}
               height={30}
-              className="transition-colors duration-300 ease-in-out text-slate-300 hover:text-slate-900"
+              className="text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900"
             />
           </a>
           {isAuthenticated ? (
@@ -88,8 +88,8 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative w-8 h-8 rounded-full">
-                  <Avatar className="w-8 h-8">
+                  className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
                     <AvatarImage
                       src={user?.user_metadata.avatar_url}
                       alt={user?.email}

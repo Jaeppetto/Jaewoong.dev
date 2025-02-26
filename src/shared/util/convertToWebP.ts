@@ -24,7 +24,7 @@ const convertToWebP = async (file: File): Promise<Blob> => {
             resolve(blob)
           },
           'image/webp',
-          0.9
+          1.0
         )
       }
       img.onerror = () => reject(new Error('이미지 로드에 실패하였습니다.'))

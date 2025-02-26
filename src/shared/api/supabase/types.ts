@@ -73,6 +73,7 @@ export type Database = {
           id: string
           published: boolean | null
           slug: string
+          thumbnail: string | null
           title: string
           updated_at: string | null
         }
@@ -85,6 +86,7 @@ export type Database = {
           id?: string
           published?: boolean | null
           slug: string
+          thumbnail?: string | null
           title: string
           updated_at?: string | null
         }
@@ -97,6 +99,7 @@ export type Database = {
           id?: string
           published?: boolean | null
           slug?: string
+          thumbnail?: string | null
           title?: string
           updated_at?: string | null
         }
