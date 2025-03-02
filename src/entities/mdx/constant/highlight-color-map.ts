@@ -1,4 +1,8 @@
-const colorMap = {
+type HighlightColorMap = {
+  [key: string]: string
+}
+
+const colorMap: HighlightColorMap = {
   code: 'bg-slate-200 border-none text-slate-900',
   gray: 'bg-[#F1F1EF] border-[#E3E2E0] text-[#8C8B89]',
   brown: 'bg-[#F4EEEE] border-[#F1E4E0] text-[#A5745D]',

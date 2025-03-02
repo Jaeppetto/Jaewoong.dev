@@ -3,4 +3,5 @@ export { default as ArticleListSkeleton } from './ArticleList/ArticleListSkeleto
 export { default as ArticleListHeader } from './ArticleList/ArticleListHeader'
 export { default as EditController } from './EditController/EditController'
 export { default as EditPanel } from './EditPanel/EditPanel'
-export { default as HighlighterSubPanel } from './SubEditPanel/HighlightSubPanel'
+export { default as HighlighterSubPanel } from './SubPanel/HighlightSubPanel'
+export { default as FoldableCardSubPanel } from './SubPanel/FoldableCardSubPanel'

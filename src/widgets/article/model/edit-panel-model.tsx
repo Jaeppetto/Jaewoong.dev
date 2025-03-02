@@ -7,7 +7,7 @@ import {
   ImagePlusIcon,
   ImagesIcon
 } from 'lucide-react'
-import { HighlighterSubPanel } from '@/widgets'
+import { FoldableCardSubPanel, HighlighterSubPanel } from '@/widgets'
 
 interface EditPanelModel {
   icon: React.ReactNode
@@ -75,7 +75,7 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
       />
     ),
     tooltip: '폴더 카드',
-    // subPanel: <CardStackSubPanel />,
+    subPanel: <FoldableCardSubPanel onClick={() => {}} />,
     showDividerAfter: true
   },
   {

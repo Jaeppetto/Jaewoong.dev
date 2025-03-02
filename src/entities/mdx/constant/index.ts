@@ -1,1 +1,2 @@
-export { default as colorMap } from './color-map'
+export { default as highlightColorMap } from './highlight-color-map'
+export { default as foldableCardColorMap } from './foldable-card-color-map'

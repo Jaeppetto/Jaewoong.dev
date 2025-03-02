@@ -5,6 +5,7 @@ import './styles/index.css'
 import { routeTree } from './routeTree.gen'
 import { QueryProvider } from './providers/QueryProvider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from '@/shared/shadcn-ui/ui/sonner'
 
 const router = createRouter({ routeTree })
 
@@ -23,6 +24,7 @@ if (!rootElement.innerHTML) {
       <QueryProvider>
         <RouterProvider router={router} />
         <ReactQueryDevtools initialIsOpen={false} />
+        <Toaster />
       </QueryProvider>
     </StrictMode>
   )
