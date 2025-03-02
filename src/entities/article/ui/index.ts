@@ -4,3 +4,4 @@ export { default as ArticleCardSkeleton } from './ArticleCard/ArticleCardSkeleto
 export { default as ArticleDetailHeader } from './ArticleDetail/ArticleDetailHeader'
 export { default as ArticleDetailSkeleton } from './ArticleDetail/ArticleDetailSkeleton'
 export { default as NewArticleBadge } from './NewArticleBadge/NewArticleBadge'
+export { default as EditPanelButton } from './EditPanelButton/EditPanelButton'
