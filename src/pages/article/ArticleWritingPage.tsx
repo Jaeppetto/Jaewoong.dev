@@ -65,8 +65,10 @@ const ArticleWritingPageContent = () => {
           <div className="flex justify-end gap-2">
             <Button
               onClick={handleSubmit}
-              disabled={createPost.isPending || !content.trim() || !title}
-              className="w-full rounded-2xl bg-black px-6 py-8 font-bold text-white transition-none hover:bg-black/80">
+              disabled={
+                createPost.isPending || !content.trim() || !title || !categoryId
+              }
+              className="w-full rounded-2xl bg-black px-6 py-8 font-bold text-white transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
               {createPost.isPending ? '저장 중...' : '작성하기'}
             </Button>
           </div>
@@ -84,13 +86,8 @@ const ArticleWritingPageContent = () => {
 }
 
 const ArticleWritingPage = () => {
-  const initialState = {
-    title: '제목을 입력하세요',
-    description: '설명을 입력하세요'
-  }
-
   return (
-    <EditorProvider initialState={initialState}>
+    <EditorProvider>
       <ArticleWritingPageContent />
     </EditorProvider>
   )

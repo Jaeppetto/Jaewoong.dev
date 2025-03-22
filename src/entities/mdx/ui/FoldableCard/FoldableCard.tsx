@@ -22,44 +22,53 @@ const FoldableCard = ({
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <section
+    <Button
+      variant="secondary"
+      onClick={() => isFoldable && setIsOpen(!isOpen)}
       className={cn(
-        'flex flex-col gap-2 rounded-md border p-4',
-        `bg-[${foldableCardColorMap[color].bg}]`,
-        `border-[${foldableCardColorMap[color].border}]`
-      )}>
-      <div className="flex flex-col">
-        {label && (
-          <span className={`text-[${foldableCardColorMap[color].title}]`}>
-            {label}
-          </span>
-        )}
-        {title && <span className="text-slate-950">{title}</span>}
+        'my-2 flex h-auto w-full flex-col gap-2 rounded-xl border p-4'
+      )}
+      style={{
+        backgroundColor: foldableCardColorMap[color].bg,
+        borderColor: foldableCardColorMap[color].border
+      }}>
+      <div className="flex w-full flex-col gap-2">
+        <div className="flex w-full items-start justify-between">
+          <div className="flex w-full flex-col items-start gap-2">
+            {label && (
+              <span
+                className="text-2xl font-extrabold"
+                style={{
+                  color: foldableCardColorMap[color].title
+                }}>
+                {label}
+              </span>
+            )}
+            {title && <span className="text-xl font-bold">{title}</span>}
+          </div>
+          {isFoldable && (
+            <div
+              className={cn(
+                'flex h-auto items-center gap-1 rounded-full px-4 py-1 text-white'
+              )}
+              style={{
+                backgroundColor: foldableCardColorMap[color].title
+              }}>
+              <ChevronDownIcon
+                className={cn(
+                  'h-5 w-5 origin-center transition-transform duration-300',
+                  isOpen && 'rotate-180'
+                )}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
-      {isFoldable && (
-        <Button
-          variant="secondary"
-          size="icon"
-          className={cn(
-            'flex h-auto w-[6rem] items-center gap-2 rounded-full bg-[#D44C47] p-0 py-2 text-white',
-            'hover:bg-[#D44C47]/80'
-            //   `bg-[${colorMap[color].title}]`
-          )}
-          onClick={() => setIsOpen(!isOpen)}>
-          <ChevronDownIcon
-            className={cn(
-              'h-4 w-4 transition-transform duration-300',
-              isOpen && 'rotate-180'
-            )}
-          />
-
-          <span>{isOpen ? '접기' : '펼치기'}</span>
-        </Button>
+      {isFoldable && isOpen && content && (
+        <span className="w-full text-left text-lg">{content}</span>
       )}
-
-      {isFoldable && isOpen && content && <div>{content}</div>}
-    </section>
+    </Button>
   )
 }
 

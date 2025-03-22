@@ -6,10 +6,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea
+  Separator
 } from '@/shared'
 import { EditorState, useCategoriesQuery } from '@/features'
 import { ImageIcon } from 'lucide-react'
+import { cn } from '@/shared/shadcn-ui/util'
 
 interface EditControllerProps {
   title: string
@@ -32,17 +33,53 @@ const EditController = ({
   onMetaChange
 }: EditControllerProps) => {
   const [titleLength, setTitleLength] = useState(title.length)
-  const [descriptionLength, setDescriptionLength] = useState(description.length)
 
   const { data: categories } = useCategoriesQuery()
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-col">
+    <div className="flex flex-col gap-6">
+      <div className="flex w-full items-center justify-between">
+        <Select
+          value={categoryId || ''}
+          onValueChange={value => onMetaChange('categoryId', value || null)}>
+          <SelectTrigger className="w-48 max-w-xs text-lg outline-none">
+            <SelectValue placeholder="카테고리 선택" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories?.map(category => (
+              <SelectItem
+                className={cn(
+                  'text-lg',
+                  category.id === categoryId && 'bg-slate-100 font-bold'
+                )}
+                key={category.id}
+                value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {thumbnail ? (
+          <img
+            src={thumbnail}
+            alt="thumbnail"
+            className="h-20 w-20 rounded-md border border-slate-200 object-cover"
+          />
+        ) : (
+          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-slate-200 bg-slate-50">
+            <ImageIcon className="h-10 w-10 text-slate-300" />
+          </div>
+        )}
+      </div>
+
+      <Separator />
+
+      <div className="flex items-center gap-2">
         <Input
           type="text"
-          placeholder="제목을 입력하세요"
-          className="h-14 border-none p-0 text-3xl font-bold outline-none focus-visible:ring-0"
+          placeholder="제목"
+          className="border-none p-0 text-4xl font-bold outline-none focus-visible:ring-0 md:text-4xl"
           maxLength={100}
           value={title}
           onChange={e => {
@@ -50,53 +87,20 @@ const EditController = ({
             setTitleLength(e.target.value.length)
           }}
         />
-        <div className="text-xs text-gray-500">{titleLength}/100</div>
+        <div className="text-xl text-gray-500">{titleLength}/100</div>
       </div>
 
-      <Select
-        value={categoryId || ''}
-        onValueChange={value => onMetaChange('categoryId', value || null)}>
-        <SelectTrigger className="w-48 max-w-xs">
-          <SelectValue placeholder="카테고리 선택" />
-        </SelectTrigger>
-        <SelectContent>
-          {categories?.map(category => (
-            <SelectItem
-              key={category.id}
-              value={category.id}>
-              {category.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <div className="relative h-12 w-full">
-        {thumbnail ? (
-          <img
-            src={thumbnail}
-            alt="thumbnail"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center rounded-md border border-slate-200 bg-slate-50">
-            <ImageIcon className="h-4 w-4 text-slate-400" />
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-col">
-        <Textarea
-          placeholder="설명을 입력하세요"
-          className="resize-none border-none p-0 text-gray-600 outline-none focus-visible:ring-0"
+      <div className="flex items-center gap-2">
+        <Input
+          placeholder="한줄 요약.."
+          className="border-none p-0 text-3xl font-bold outline-none focus-visible:ring-0 md:text-3xl"
           maxLength={200}
           value={description}
-          onChange={e => {
-            onMetaChange('description', e.target.value)
-            setDescriptionLength(e.target.value.length)
-          }}
+          onChange={e => onMetaChange('description', e.target.value)}
         />
-        <div className="text-xs text-gray-500">{descriptionLength}/200</div>
       </div>
+
+      <Separator />
     </div>
   )
 }
