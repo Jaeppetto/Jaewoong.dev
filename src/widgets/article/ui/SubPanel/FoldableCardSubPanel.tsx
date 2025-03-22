@@ -16,7 +16,7 @@ const FoldableCardSubPanel = ({ onClick }: FoldableCardSubPanelProps) => {
           className="h-8 w-8 bg-white p-0"
           onClick={() => onClick(key as keyof typeof foldableCardColorMap)}>
           <div
-            className={cn('h-6 w-6 rounded-sm border-[#E3E2E0]')}
+            className={cn('h-6 w-6 rounded-sm border border-[#E3E2E0]')}
             style={{
               backgroundColor: value.bg,
               borderColor: value.border

@@ -98,7 +98,6 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
           {...props}
         />
       ),
-      // TODO: 코드블록 대체
       code: (props: ComponentPropsWithoutRef<'code'>) => (
         <code
           className="rounded px-1 py-0.5 font-mono text-xl"

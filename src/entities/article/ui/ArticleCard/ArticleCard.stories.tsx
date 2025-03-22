@@ -31,7 +31,8 @@ export const Default: Story = {
       published: null,
       slug: 'sample-post-title',
       title: '조코딩 해커톤 본선 진출 후기',
-      updated_at: null
+      updated_at: null,
+      thumbnail: 'https://placehold.co/200x200'
     }
   }
 }

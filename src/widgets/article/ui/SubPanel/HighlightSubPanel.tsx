@@ -15,7 +15,9 @@ const HighlighterSubPanel = ({ onClick }: HighlighterSubPanelProps) => {
           variant="ghost"
           className="h-8 w-8 bg-white p-0"
           onClick={() => onClick(key as keyof typeof highlightColorMap)}>
-          <div className={cn('h-6 w-6 rounded-sm border-[#E3E2E0]', value)} />
+          <div
+            className={cn('h-6 w-6 rounded-sm border border-[#E3E2E0]', value)}
+          />
         </Button>
       ))}
     </>

@@ -7,9 +7,8 @@ import {
   ImagePlusIcon,
   ImagesIcon
 } from 'lucide-react'
-import { FoldableCardSubPanel, HighlighterSubPanel } from '@/widgets'
 
-enum EditPanelButtonType {
+export enum EditPanelButtonType {
   THUMBNAIL = 'thumbnail',
   IMAGE = 'image',
   HIGHLIGHTER = 'highlighter',
@@ -22,7 +21,7 @@ enum EditPanelButtonType {
 interface EditPanelItem {
   type: EditPanelButtonType
   icon: React.ReactNode
-  subPanel?: React.ReactNode
+  isSubPanel?: boolean
   showDividerAfter?: boolean
 }
 
@@ -36,6 +35,7 @@ export const EDIT_PANEL_MODEL: EditPanelItem[] = [
         className="text-gray-500"
       />
     ),
+    isSubPanel: true,
     showDividerAfter: false
   },
   {
@@ -47,6 +47,7 @@ export const EDIT_PANEL_MODEL: EditPanelItem[] = [
         className="text-gray-500"
       />
     ),
+    isSubPanel: true,
     showDividerAfter: false
   },
   {
@@ -58,7 +59,7 @@ export const EDIT_PANEL_MODEL: EditPanelItem[] = [
         className="text-gray-500"
       />
     ),
-    subPanel: <HighlighterSubPanel onClick={() => {}} />,
+    isSubPanel: true,
     showDividerAfter: false
   },
   {
@@ -70,7 +71,7 @@ export const EDIT_PANEL_MODEL: EditPanelItem[] = [
         className="text-gray-500"
       />
     ),
-    subPanel: <FoldableCardSubPanel onClick={() => {}} />,
+    isSubPanel: true,
     showDividerAfter: true
   },
   {
@@ -104,6 +105,6 @@ export const EDIT_PANEL_MODEL: EditPanelItem[] = [
         className="text-gray-500"
       />
     ),
-    showDividerAfter: true
+    showDividerAfter: false
   }
 ]

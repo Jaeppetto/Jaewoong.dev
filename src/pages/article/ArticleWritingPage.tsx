@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import { useArticleEditor, useCreatePost } from '@/features'
-import { Button, generateSlug } from '@/shared'
-import { useAuth } from '@/shared/auth/hooks/useAuth'
+import { EditorProvider, useCreatePost, useEditorContext } from '@/features'
+import { Button, generateSlug, useAuth } from '@/shared'
+
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 
 import MDEditor from '@uiw/react-md-editor'
@@ -9,12 +8,12 @@ import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 import { cn } from '@/shared/shadcn-ui/util'
 
-const ArticleWritingPage = () => {
-  const [isPreview, setIsPreview] = useState(false)
-
+const ArticleWritingPageContent = () => {
   const { user } = useAuth()
+  const createPost = useCreatePost()
 
   const {
+    isPreview,
     content,
     title,
     description,
@@ -22,8 +21,7 @@ const ArticleWritingPage = () => {
     thumbnail,
     handleContentChange,
     updateMeta
-  } = useArticleEditor()
-  const createPost = useCreatePost()
+  } = useEditorContext()
 
   const handleSubmit = async () => {
     try {
@@ -51,7 +49,8 @@ const ArticleWritingPage = () => {
             title={title}
             description={description}
             categoryId={categoryId}
-            onMetaChange={updateMeta}
+            thumbnail={thumbnail}
+            onMetaChange={(field, value) => updateMeta(field, value)}
           />
           <MDEditor
             value={content}
@@ -81,6 +80,19 @@ const ArticleWritingPage = () => {
 
       <EditPanel />
     </>
+  )
+}
+
+const ArticleWritingPage = () => {
+  const initialState = {
+    title: '제목을 입력하세요',
+    description: '설명을 입력하세요'
+  }
+
+  return (
+    <EditorProvider initialState={initialState}>
+      <ArticleWritingPageContent />
+    </EditorProvider>
   )
 }
 
