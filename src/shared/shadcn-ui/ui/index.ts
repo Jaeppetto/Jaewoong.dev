@@ -42,3 +42,12 @@ export { Avatar, AvatarImage, AvatarFallback } from './avatar'
 export { Input } from './input'
 export { Textarea } from './textarea'
 export { Separator } from './separator'
+
+export {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent
+} from './tooltip'
+
+export { Popover, PopoverTrigger, PopoverContent } from './popover'

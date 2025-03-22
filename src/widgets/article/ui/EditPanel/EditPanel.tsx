@@ -12,21 +12,21 @@ export const EditPanel: React.FC<EditPanelProps> = ({ className = '' }) => {
   return (
     <div
       className={cn(
-        'flex fixed left-10 top-1/2 flex-col gap-2 justify-center items-center p-3 bg-white rounded-2xl border border-gray-200 -translate-y-1/2 shadow-default',
+        'fixed left-10 top-1/2 flex -translate-y-1/2 flex-col items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white p-3 shadow-default',
         className
       )}>
-      {EDIT_PANEL_MODEL.map((item, index) => (
-        <React.Fragment key={index}>
-          <EditPanelButton
-            icon={item.icon}
-            onClick={item.onClick}
-            subPanel={item.subPanel}
-          />
-          {item.showDividerAfter && index < EDIT_PANEL_MODEL.length - 1 && (
-            <Separator orientation="horizontal" />
-          )}
-        </React.Fragment>
-      ))}
+      {EDIT_PANEL_MODEL.map(item => {
+        return (
+          <React.Fragment key={item.type}>
+            <EditPanelButton
+              icon={item.icon}
+              onClick={() => {}}
+              subPanel={item.subPanel}
+            />
+            {item.showDividerAfter && <Separator orientation="horizontal" />}
+          </React.Fragment>
+        )
+      })}
     </div>
   )
 }

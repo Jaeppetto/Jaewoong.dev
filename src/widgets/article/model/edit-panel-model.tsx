@@ -9,16 +9,26 @@ import {
 } from 'lucide-react'
 import { FoldableCardSubPanel, HighlighterSubPanel } from '@/widgets'
 
-interface EditPanelModel {
+enum EditPanelButtonType {
+  THUMBNAIL = 'thumbnail',
+  IMAGE = 'image',
+  HIGHLIGHTER = 'highlighter',
+  FOLDABLE_CARD = 'foldable-card',
+  INLINE_CODE = 'inline-code',
+  CODE_BLOCK = 'code-block',
+  PREVIEW = 'preview'
+}
+
+interface EditPanelItem {
+  type: EditPanelButtonType
   icon: React.ReactNode
-  tooltip: string
-  onClick?: () => void
   subPanel?: React.ReactNode
   showDividerAfter?: boolean
 }
 
-export const EDIT_PANEL_MODEL: EditPanelModel[] = [
+export const EDIT_PANEL_MODEL: EditPanelItem[] = [
   {
+    type: EditPanelButtonType.THUMBNAIL,
     icon: (
       <ImagesIcon
         width={20}
@@ -26,11 +36,10 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
         className="text-gray-500"
       />
     ),
-    tooltip: '썸네일 설정',
-    onClick: () => {},
     showDividerAfter: false
   },
   {
+    type: EditPanelButtonType.IMAGE,
     icon: (
       <ImagePlusIcon
         width={20}
@@ -38,23 +47,10 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
         className="text-gray-500"
       />
     ),
-    tooltip: '이미지 추가',
-    onClick: () => {},
     showDividerAfter: false
   },
   {
-    icon: (
-      <EyeIcon
-        width={20}
-        height={20}
-        className="text-gray-500"
-      />
-    ),
-    tooltip: 'MDX 미리보기',
-    onClick: () => {},
-    showDividerAfter: true
-  },
-  {
+    type: EditPanelButtonType.HIGHLIGHTER,
     icon: (
       <Highlighter
         width={20}
@@ -62,11 +58,11 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
         className="text-gray-500"
       />
     ),
-    tooltip: '텍스트 하이라이트',
     subPanel: <HighlighterSubPanel onClick={() => {}} />,
     showDividerAfter: false
   },
   {
+    type: EditPanelButtonType.FOLDABLE_CARD,
     icon: (
       <CardStackIcon
         width={20}
@@ -74,11 +70,11 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
         className="text-gray-500"
       />
     ),
-    tooltip: '폴더 카드',
     subPanel: <FoldableCardSubPanel onClick={() => {}} />,
     showDividerAfter: true
   },
   {
+    type: EditPanelButtonType.INLINE_CODE,
     icon: (
       <Code
         width={20}
@@ -86,11 +82,10 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
         className="text-gray-500"
       />
     ),
-    tooltip: '인라인 코드',
-    onClick: () => {},
     showDividerAfter: false
   },
   {
+    type: EditPanelButtonType.CODE_BLOCK,
     icon: (
       <Code2
         width={20}
@@ -98,8 +93,17 @@ export const EDIT_PANEL_MODEL: EditPanelModel[] = [
         className="text-gray-500"
       />
     ),
-    tooltip: '코드 블록',
-    onClick: () => {},
-    showDividerAfter: false
+    showDividerAfter: true
+  },
+  {
+    type: EditPanelButtonType.PREVIEW,
+    icon: (
+      <EyeIcon
+        width={20}
+        height={20}
+        className="text-gray-500"
+      />
+    ),
+    showDividerAfter: true
   }
 ]

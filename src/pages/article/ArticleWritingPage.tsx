@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useArticleEditor, useCreatePost } from '@/features'
 import { Button, generateSlug } from '@/shared'
 import { useAuth } from '@/shared/auth/hooks/useAuth'
@@ -6,8 +7,11 @@ import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 import MDEditor from '@uiw/react-md-editor'
 
 import rehypeSanitize from 'rehype-sanitize'
+import { cn } from '@/shared/shadcn-ui/util'
 
 const ArticleWritingPage = () => {
+  const [isPreview, setIsPreview] = useState(false)
+
   const { user } = useAuth()
 
   const {
@@ -41,7 +45,8 @@ const ArticleWritingPage = () => {
   return (
     <>
       <main className="mx-auto flex w-full max-w-[80dvw] gap-6 p-4">
-        <section className="flex flex-col gap-6 w-1/2">
+        <section
+          className={cn('flex w-full flex-col gap-6', isPreview && 'w-1/2')}>
           <EditController
             title={title}
             description={description}
@@ -58,18 +63,20 @@ const ArticleWritingPage = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex gap-2 justify-end">
+          <div className="flex justify-end gap-2">
             <Button
               onClick={handleSubmit}
               disabled={createPost.isPending || !content.trim() || !title}
-              className="px-6 py-8 w-full font-bold text-white bg-black rounded-2xl transition-none hover:bg-black">
+              className="w-full rounded-2xl bg-black px-6 py-8 font-bold text-white transition-none hover:bg-black/80">
               {createPost.isPending ? '저장 중...' : '작성하기'}
             </Button>
           </div>
         </section>
-        <section className="w-1/2">
-          <MdxRenderer content={content} />
-        </section>
+        {isPreview && (
+          <section className="w-1/2">
+            <MdxRenderer content={content} />
+          </section>
+        )}
       </main>
 
       <EditPanel />

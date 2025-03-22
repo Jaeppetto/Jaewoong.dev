@@ -1,28 +1,18 @@
 import React from 'react'
-import { Button } from '@/shared'
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@/shared'
 import { cn } from '@/shared/shadcn-ui/util'
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/shared/shadcn-ui/ui/popover'
 
 interface EditPanelButtonProps {
   icon: React.ReactNode
-  onClick?: (value?: string) => void
   subPanel?: React.ReactNode
+  onClick?: (value?: string) => void
 }
 
-const EditPanelButton: React.FC<EditPanelButtonProps> = ({
-  icon,
-  onClick,
-  subPanel
-}) => {
+const EditPanelButton = ({ icon, onClick, subPanel }: EditPanelButtonProps) => {
   const ButtonComponent = (
     <Button
       variant="ghost"
-      className={cn('p-0 w-12 h-12')}
+      className={cn('h-12 w-12 p-0')}
       onClick={() => onClick && onClick()}>
       {icon}
     </Button>
@@ -36,7 +26,7 @@ const EditPanelButton: React.FC<EditPanelButtonProps> = ({
     <Popover>
       <PopoverTrigger asChild>{ButtonComponent}</PopoverTrigger>
       <PopoverContent
-        className="p-2 w-auto"
+        className="w-auto p-2"
         side="right"
         align="center">
         <div className="flex flex-wrap gap-2">{subPanel}</div>
