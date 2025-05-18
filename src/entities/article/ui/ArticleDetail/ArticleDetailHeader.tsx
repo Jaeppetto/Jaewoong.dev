@@ -3,7 +3,7 @@ import { PostWithRelations } from '../../constant'
 import dayjs from 'dayjs'
 import { Button, useAuth } from '@/shared'
 import { useTogglePostPublished } from '@/features'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, PencilIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -63,23 +63,34 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
             {post.title}
           </h1>
           {isAdmin && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-fit p-1 px-2"
-              onClick={handleTogglePublished}>
-              {isPublished ? (
-                <EyeOff
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-fit rounded-lg bg-transparent p-1 px-2 transition-colors duration-300 hover:bg-slate-100"
+                onClick={handleTogglePublished}>
+                {isPublished ? (
+                  <EyeOff
+                    className="text-slate-500"
+                    size={16}
+                  />
+                ) : (
+                  <Eye
+                    className="text-slate-500"
+                    size={16}
+                  />
+                )}
+              </Button>
+              <Link
+                to="/article/edit/$postId"
+                params={{ postId: post.id }}
+                className="h-fit rounded-lg p-1 px-2 transition-colors duration-300 hover:bg-slate-100">
+                <PencilIcon
                   className="text-slate-500"
                   size={16}
                 />
-              ) : (
-                <Eye
-                  className="text-slate-500"
-                  size={16}
-                />
-              )}
-            </Button>
+              </Link>
+            </>
           )}
         </div>
 

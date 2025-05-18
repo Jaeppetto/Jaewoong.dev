@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useCallback } from 'react'
+import { createContext, useState, ReactNode, useCallback } from 'react'
 
 export interface EditorState {
   isPreview: boolean
@@ -47,12 +47,12 @@ interface EditorProviderProps {
   initialState?: Partial<EditorState>
 }
 
-export const EditorProvider: React.FC<EditorProviderProps> = ({
+export const EditorProvider = ({
   children,
   initialState = {}
-}) => {
+}: EditorProviderProps) => {
   const [state, setState] = useState<EditorState>({
-    isPreview: false,
+    isPreview: initialState.isPreview ?? false,
     content: initialState.content ?? '# 제목을 입력하세요',
     title: initialState.title ?? '',
     description: initialState.description ?? '',
