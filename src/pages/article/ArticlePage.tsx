@@ -6,7 +6,7 @@ const ArticlePage = () => {
   const { page } = Route.useSearch()
 
   return (
-    <div className="flex h-full w-full max-w-[108rem] flex-col gap-[8rem] py-[6rem]">
+    <div className="flex h-full w-full max-w-[108rem] flex-col gap-[8rem] py-[2rem] pb-[4rem]">
       <section className="flex flex-col gap-[2rem]">
         <ArticleListHeader type="recent" />
         <ArticleList

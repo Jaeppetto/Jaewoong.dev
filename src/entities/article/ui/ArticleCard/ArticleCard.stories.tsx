@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    category: { id: '1', name: '', slug: '' },
+    category: { id: '1', name: '회고', slug: '회고' },
     post: {
       author_id: null,
       category_id: '1',
@@ -31,7 +31,8 @@ export const Default: Story = {
       published: null,
       slug: 'sample-post-title',
       title: '조코딩 해커톤 본선 진출 후기',
-      updated_at: null
+      updated_at: null,
+      thumbnail: 'https://placehold.co/200x200'
     }
   }
 }

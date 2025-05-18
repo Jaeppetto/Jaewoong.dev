@@ -1,23 +1,27 @@
-import { useCallback } from 'react'
-
+import { useState } from 'react'
 import {
   Input,
-  Textarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@/shared/shadcn-ui/ui'
-import { useCategoriesQuery } from '@/features/category/api/queries'
+  SelectValue,
+  Separator
+} from '@/shared'
+import { EditorState, useCategoriesQuery } from '@/features'
+import { ImageIcon } from 'lucide-react'
+import { cn } from '@/shared/shadcn-ui/util'
 
 interface EditControllerProps {
   title: string
   description: string
   categoryId: string | null
+  thumbnail: string | null
   onMetaChange: (
-    field: 'title' | 'description' | 'categoryId',
-    value: string | null
+    fieldOrObject:
+      | keyof Omit<EditorState, 'content' | 'isPreview'>
+      | Partial<Omit<EditorState, 'content' | 'isPreview'>>,
+    value?: string | null
   ) => void
 }
 
@@ -25,48 +29,29 @@ const EditController = ({
   title,
   description,
   categoryId,
+  thumbnail,
   onMetaChange
 }: EditControllerProps) => {
-  const { data: categories, isLoading } = useCategoriesQuery()
+  const [titleLength, setTitleLength] = useState(title.length)
 
-  const handleChange = useCallback(
-    (field: 'title' | 'description' | 'categoryId', value: string | null) => {
-      onMetaChange(field, value)
-    },
-    [onMetaChange]
-  )
+  const { data: categories } = useCategoriesQuery()
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">제목</label>
-        <Input
-          value={title}
-          onChange={e => handleChange('title', e.target.value)}
-          placeholder="Enter article title"
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">한줄요약</label>
-        <Textarea
-          value={description}
-          onChange={e => handleChange('description', e.target.value)}
-          placeholder="Enter article description"
-          rows={3}
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">카테고리</label>
+    <div className="flex flex-col gap-6">
+      <div className="flex w-full items-center justify-between">
         <Select
-          value={categoryId ?? ''}
-          onValueChange={value => handleChange('categoryId', value)}
-          disabled={isLoading}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select category" />
+          value={categoryId || ''}
+          onValueChange={value => onMetaChange('categoryId', value || null)}>
+          <SelectTrigger className="w-48 max-w-xs text-lg outline-none">
+            <SelectValue placeholder="카테고리 선택" />
           </SelectTrigger>
           <SelectContent>
             {categories?.map(category => (
               <SelectItem
+                className={cn(
+                  'text-lg',
+                  category.id === categoryId && 'bg-slate-100 font-bold'
+                )}
                 key={category.id}
                 value={category.id}>
                 {category.name}
@@ -74,7 +59,48 @@ const EditController = ({
             ))}
           </SelectContent>
         </Select>
+
+        {thumbnail ? (
+          <img
+            src={thumbnail}
+            alt="thumbnail"
+            className="h-20 w-20 rounded-md border border-slate-200 object-cover"
+          />
+        ) : (
+          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-slate-200 bg-slate-50">
+            <ImageIcon className="h-10 w-10 text-slate-300" />
+          </div>
+        )}
       </div>
+
+      <Separator />
+
+      <div className="flex items-center gap-2">
+        <Input
+          type="text"
+          placeholder="제목"
+          className="border-none p-0 text-4xl font-bold outline-none focus-visible:ring-0 md:text-4xl"
+          maxLength={100}
+          value={title}
+          onChange={e => {
+            onMetaChange('title', e.target.value)
+            setTitleLength(e.target.value.length)
+          }}
+        />
+        <div className="text-xl text-gray-500">{titleLength}/100</div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Input
+          placeholder="한줄 요약.."
+          className="border-none p-0 text-3xl font-bold outline-none focus-visible:ring-0 md:text-3xl"
+          maxLength={200}
+          value={description}
+          onChange={e => onMetaChange('description', e.target.value)}
+        />
+      </div>
+
+      <Separator />
     </div>
   )
 }

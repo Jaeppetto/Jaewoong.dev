@@ -5,6 +5,7 @@ interface ArticleEditorState {
   title: string
   description: string
   categoryId: string | null
+  thumbnail: string | null
 }
 
 interface UseArticleEditorProps {
@@ -18,7 +19,8 @@ const useArticleEditor = ({
     content: initialState.content ?? '# 제목을 입력하세요',
     title: initialState.title ?? '',
     description: initialState.description ?? '',
-    categoryId: initialState.categoryId ?? null
+    categoryId: initialState.categoryId ?? null,
+    thumbnail: initialState.thumbnail ?? null
   })
 
   const handleContentChange = useCallback((newContent: string = '') => {
@@ -46,6 +48,7 @@ const useArticleEditor = ({
     title: state.title,
     description: state.description,
     categoryId: state.categoryId,
+    thumbnail: state.thumbnail,
     handleContentChange,
     updateMeta
   }

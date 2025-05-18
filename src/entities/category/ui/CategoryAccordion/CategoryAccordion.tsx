@@ -8,21 +8,36 @@ import {
 import CategoryAccordionItem from './CategoryAccordionItem'
 import { useCategoriesQuery } from '@/features'
 
-export const CategoryAccordion = () => {
-  const { data: categories, isLoading: categoriesLoading } =
-    useCategoriesQuery()
+interface CategoryAccordionProps {
+  currentCategory: string
+  currentPost: string
+}
 
-  if (categoriesLoading) return <div>Loading categories...</div>
+export const CategoryAccordion = ({
+  currentCategory,
+  currentPost
+}: CategoryAccordionProps) => {
+  const { data: categories } = useCategoriesQuery()
 
   return (
-    <Accordion type="multiple">
+    <Accordion
+      type="multiple"
+      className="w-[16.5rem]"
+      defaultValue={currentCategory ? [currentCategory] : []}>
       {categories?.map(category => (
         <AccordionItem
-          value={category.id}
-          key={category.id}>
-          <AccordionTrigger>{category.name}</AccordionTrigger>
-          <AccordionContent>
-            <CategoryAccordionItem category={category} />
+          value={category.slug}
+          key={category.id}
+          className="border-slate-200">
+          <AccordionTrigger className="bg-transparent py-[1.6rem] text-[1.4rem] font-normal leading-[2rem] text-slate-900  hover:no-underline">
+            {category.name}
+          </AccordionTrigger>
+          <AccordionContent className="w-full bg-transparent">
+            <CategoryAccordionItem
+              category={category}
+              currentPost={currentPost}
+              currentCategory={currentCategory}
+            />
           </AccordionContent>
         </AccordionItem>
       ))}

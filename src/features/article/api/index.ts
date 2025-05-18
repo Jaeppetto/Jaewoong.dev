@@ -6,5 +6,6 @@ export {
   usePostsByCategoryQuery,
   useCreatePost,
   useUpdatePost,
-  useDeletePost
+  useDeletePost,
+  useTogglePostPublished
 } from './queries'

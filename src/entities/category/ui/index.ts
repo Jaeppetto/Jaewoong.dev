@@ -1,3 +1,5 @@
 export { CategoryAccordion } from './CategoryAccordion/CategoryAccordion'
 export { default as CategoryButton } from './CategoryButton/CategoryButton'
 export { default as CategoryButtonSkeleton } from './CategoryButton/CategoryButtonSkeleton'
+export { default as CategoryAccordionItem } from './CategoryAccordion/CategoryAccordionItem'
+export { default as CategoryAccordionSkeleton } from './CategoryAccordion/CategoryAccordionSkeleton'

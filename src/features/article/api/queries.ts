@@ -69,10 +69,12 @@ export const usePostsByCategorySlugQuery = (
 
 export const useCreatePost = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   return useMutation<PostWithRelations, Error, PostInsert>({
     mutationFn: (post: PostInsert) => postApi.create(post),
     onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() })
       navigate({
         to: '/article/$category/$postTitle',
         params: {
@@ -108,6 +110,24 @@ export const useDeletePost = () => {
     mutationFn: postApi.delete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: postKeys.lists() })
+    }
+  })
+}
+
+export const useTogglePostPublished = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation<Post, Error, { id: string; currentState: boolean }>({
+    mutationFn: ({ id, currentState }) =>
+      postApi.togglePublished(id, currentState),
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: postKeys.detail(data.id) })
+      queryClient.invalidateQueries({ queryKey: postKeys.lists() })
+      if (data.category_id) {
+        queryClient.invalidateQueries({
+          queryKey: postKeys.byCategory(data.category_id)
+        })
+      }
     }
   })
 }

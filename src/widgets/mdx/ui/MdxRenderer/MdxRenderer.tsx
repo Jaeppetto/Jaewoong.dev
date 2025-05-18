@@ -12,6 +12,7 @@ import {
 import FoldableCard, {
   FoldableCardProps
 } from '../../../../entities/mdx/ui/FoldableCard/FoldableCard'
+import { cn } from '@/shared/shadcn-ui/util'
 
 interface MdxRendererProps {
   content: string
@@ -33,25 +34,25 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
     () => ({
       h1: (props: HeadingProps) => (
         <h1
-          className="my-4 text-3xl font-bold text-slate-900"
+          className="my-4 text-4xl font-bold text-slate-900"
           {...props}
         />
       ),
       h2: (props: HeadingProps) => (
         <h2
-          className="my-3 text-2xl font-semibold text-slate-900"
+          className="my-3 text-3xl font-semibold text-slate-900"
           {...props}
         />
       ),
       h3: (props: HeadingProps) => (
         <h3
-          className="my-2 text-xl font-semibold text-slate-900"
+          className="my-2 text-2xl font-semibold text-slate-900"
           {...props}
         />
       ),
       p: (props: ParagraphProps) => (
         <p
-          className="my-3 text-lg text-slate-900"
+          className="my-3 text-2xl text-slate-900"
           {...props}
         />
       ),
@@ -99,12 +100,14 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
       ),
       code: (props: ComponentPropsWithoutRef<'code'>) => (
         <code
-          className="rounded bg-slate-200 px-1 py-0.5 font-mono text-xl"
+          className="rounded px-1 py-0.5 font-mono text-xl"
           {...props}
         />
       ),
       Highlight: (props: HighlightProps) => <Highlight {...props} />,
       FoldableCard: (props: FoldableCardProps) => <FoldableCard {...props} />
+      // CodeLine
+      // CodeBlock
     }),
     []
   )
@@ -132,7 +135,7 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
 
   return (
     <MDXProvider components={components}>
-      <div className="prose prose-slate max-w-none dark:prose-invert">
+      <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
         <Content />
       </div>
     </MDXProvider>

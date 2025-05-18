@@ -12,18 +12,21 @@ export type Database = {
       categories: {
         Row: {
           created_at: string | null
+          emoji: string | null
           id: string
           name: string
           slug: string
         }
         Insert: {
           created_at?: string | null
+          emoji?: string | null
           id?: string
           name: string
           slug: string
         }
         Update: {
           created_at?: string | null
+          emoji?: string | null
           id?: string
           name?: string
           slug?: string
@@ -70,6 +73,7 @@ export type Database = {
           id: string
           published: boolean | null
           slug: string
+          thumbnail: string | null
           title: string
           updated_at: string | null
         }
@@ -82,6 +86,7 @@ export type Database = {
           id?: string
           published?: boolean | null
           slug: string
+          thumbnail?: string | null
           title: string
           updated_at?: string | null
         }
@@ -94,6 +99,7 @@ export type Database = {
           id?: string
           published?: boolean | null
           slug?: string
+          thumbnail?: string | null
           title?: string
           updated_at?: string | null
         }
