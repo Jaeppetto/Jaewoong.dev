@@ -7,7 +7,7 @@ import { QueryProvider } from './providers/QueryProvider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from '@/shared/shadcn-ui/ui/sonner'
 
-const router = createRouter({ routeTree })
+const router = createRouter({ routeTree, notFoundMode: 'root' })
 
 declare module '@tanstack/react-router' {
   interface Register {

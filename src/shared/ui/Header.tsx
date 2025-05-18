@@ -34,7 +34,10 @@ const Header = () => {
       <div className="flex h-full w-full max-w-[108rem] items-center justify-between px-10">
         <div className="flex items-center gap-[3.2rem]">
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            // onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() =>
+              router.navigate({ to: '/article', search: { page: 1 } })
+            }
             className="hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
             <img
               src="/signature.png"
@@ -45,14 +48,14 @@ const Header = () => {
             />
           </button>
           <div className="flex w-[20rem] flex-shrink-0 select-none justify-between">
-            <Link
+            {/* <Link
               to="/about"
               className={cn(
                 'text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900',
                 subPath === 'about' && 'font-extrabold text-slate-900'
               )}>
               About
-            </Link>
+            </Link> */}
             <Link
               to="/article"
               search={{ page: 1 }}
@@ -62,7 +65,7 @@ const Header = () => {
               )}>
               Article
             </Link>
-            <Link
+            {/* <Link
               disabled
               to="/archive"
               className={cn(
@@ -70,7 +73,7 @@ const Header = () => {
                 subPath === 'archive' && 'font-extrabold text-slate-900'
               )}>
               Archive
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className="flex items-center gap-4">

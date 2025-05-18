@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ArticleImport } from './routes/article'
+import { Route as IndexImport } from './routes/index'
 import { Route as AuthCallbackImport } from './routes/auth.callback'
 import { Route as ArticleWritingImport } from './routes/article_.writing'
 import { Route as ArticleCategoryImport } from './routes/article_.$category'
@@ -24,7 +25,6 @@ import { Route as ArticleCategoryPostTitleImport } from './routes/article_.$cate
 
 const ArchiveLazyImport = createFileRoute('/archive')()
 const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
@@ -46,11 +46,11 @@ const ArticleRoute = ArticleImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
 const AuthCallbackRoute = AuthCallbackImport.update({
   id: '/auth/callback',
@@ -90,7 +90,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/article': {
@@ -155,7 +155,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/article': typeof ArticleRoute
   '/about': typeof AboutLazyRoute
   '/archive': typeof ArchiveLazyRoute
@@ -167,7 +167,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/article': typeof ArticleRoute
   '/about': typeof AboutLazyRoute
   '/archive': typeof ArchiveLazyRoute
@@ -180,7 +180,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
   '/article': typeof ArticleRoute
   '/about': typeof AboutLazyRoute
   '/archive': typeof ArchiveLazyRoute
@@ -229,7 +229,7 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
+  IndexRoute: typeof IndexRoute
   ArticleRoute: typeof ArticleRoute
   AboutLazyRoute: typeof AboutLazyRoute
   ArchiveLazyRoute: typeof ArchiveLazyRoute
@@ -241,7 +241,7 @@ export interface RootRouteChildren {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
+  IndexRoute: IndexRoute,
   ArticleRoute: ArticleRoute,
   AboutLazyRoute: AboutLazyRoute,
   ArchiveLazyRoute: ArchiveLazyRoute,
@@ -276,7 +276,7 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
     },
     "/article": {
       "filePath": "article.tsx"
