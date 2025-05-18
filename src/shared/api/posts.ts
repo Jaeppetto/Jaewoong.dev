@@ -33,7 +33,8 @@ export const postApi = {
         categories (
           id,
           name,
-          slug
+          slug,
+          emoji
         )
       `,
         { count: 'exact' }
@@ -57,7 +58,8 @@ export const postApi = {
         categories (
           id,
           name,
-          slug
+          slug,
+          emoji
         )
       `
       )
@@ -77,7 +79,8 @@ export const postApi = {
         categories (
           id,
           name,
-          slug
+          slug,
+          emoji
         )
       `
       )
@@ -97,7 +100,8 @@ export const postApi = {
         categories (
           id,
           name,
-          slug
+          slug,
+          emoji
         )
       `
       )
@@ -121,7 +125,8 @@ export const postApi = {
         categories!inner (
           id,
           name,
-          slug
+          slug,
+          emoji
         )
       `,
         { count: 'exact' }
@@ -147,7 +152,8 @@ export const postApi = {
         categories (
           id,
           name,
-          slug
+          slug,
+          emoji
         )
       `
       )

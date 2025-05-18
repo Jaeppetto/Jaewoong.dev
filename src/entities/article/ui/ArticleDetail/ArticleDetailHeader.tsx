@@ -10,13 +10,13 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
   if (!post) return null
 
   return (
-    <header className="flex flex-col gap-[0.6rem]">
+    <header className="flex flex-col gap-3">
       {post.categories && (
         <div className="inline">
           <Link
             to={`/article/${post.categories.slug}`}
             className="rounded-[0.8rem] px-4 py-2 text-[1.6rem] font-normal leading-[2rem] text-slate-900 hover:bg-slate-50 hover:text-slate-900">
-            {post.categories.name}
+            {post.categories.emoji} {post.categories.name}
           </Link>
         </div>
       )}

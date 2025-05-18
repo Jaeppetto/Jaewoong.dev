@@ -44,6 +44,6 @@ export interface PostUpdate {
 }
 
 export interface PostWithRelations extends Post {
-  categories?: Pick<Category, 'id' | 'name' | 'slug'> | null
+  categories?: Pick<Category, 'id' | 'name' | 'slug' | 'emoji'> | null
   tags?: Pick<Tag, 'id' | 'name' | 'slug'>[]
 }
