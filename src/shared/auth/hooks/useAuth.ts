@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { User, AuthError } from '@supabase/supabase-js'
 import { supabase } from '@/shared/api/supabase/client'
+
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<AuthError | null>(null)
+
+  const isAdmin = useMemo(() => {
+    return user?.email === ADMIN_EMAIL
+  }, [user?.email])
 
   useEffect(() => {
     checkUser()
@@ -49,6 +55,7 @@ export const useAuth = () => {
 
   return {
     user,
+    isAdmin,
     loading,
     error,
     isAuthenticated: !!user,

@@ -182,5 +182,17 @@ export const postApi = {
     const { error } = await supabase.from('posts').delete().eq('id', id)
 
     if (error) throw error
+  },
+
+  togglePublished: async (id: string, currentState: boolean): Promise<Post> => {
+    const { data, error } = await supabase
+      .from('posts')
+      .update({ published: !currentState })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
   }
 }
