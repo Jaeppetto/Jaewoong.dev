@@ -3,7 +3,8 @@ import { useCategoriesQuery } from '@/features'
 import CategoryListSkeleton from './CategoryListSkeleton'
 
 const CategoryList = () => {
-  const { data: categories, isLoading, isPending } = useCategoriesQuery()
+  const { data: categories, isPending: isPendingCategories } =
+    useCategoriesQuery()
 
   return (
     <div className="flex w-full flex-col gap-[2rem]">
@@ -11,7 +12,7 @@ const CategoryList = () => {
         카테고리로 모아보기
       </h2>
       <div className="flex flex-wrap gap-[1.2rem]">
-        {isLoading || isPending ? (
+        {isPendingCategories ? (
           <CategoryListSkeleton />
         ) : (
           categories?.map(category => (

@@ -1,7 +1,7 @@
 import { ArticleList } from '@/widgets/article'
 import { useTagBySlugQuery } from '@/features/tag/api'
 import { Tag as TagIcon } from 'lucide-react'
-import { TagList } from '@/entities/tag/ui'
+import { TagItemSkeleton, TagList } from '@/entities/tag/ui'
 import { useParams, useSearch } from '@tanstack/react-router'
 
 const ArticleTagPage = () => {
@@ -15,7 +15,7 @@ const ArticleTagPage = () => {
         <h1 className="flex select-none items-center gap-2 text-[2rem] font-normal leading-[2rem] text-slate-900">
           <TagIcon className="h-5 w-5" />
           <span className="font-bold">
-            {isLoading ? '로딩 중...' : `#${tag?.name}`}
+            {isLoading ? <TagItemSkeleton /> : `${tag?.name}`}
           </span>
           <span>태그가 있는 게시글</span>
         </h1>
