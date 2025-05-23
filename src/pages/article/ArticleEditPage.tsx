@@ -12,13 +12,17 @@ import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 import { cn } from '@/shared/shadcn-ui/util'
 import { useEffect, useState } from 'react'
+import { usePostTagsQuery, useUpdatePostTags } from '@/features/tag'
 
 const ArticleEditContent = () => {
   const { postId } = useParams({ from: '/article_/edit_/$postId' })
   const navigate = useNavigate()
 
   const { data: post, isLoading, isError } = usePostQueryById(postId)
+  const { data: postTags, isLoading: isTagsLoading } = usePostTagsQuery(postId)
+
   const updatePost = useUpdatePost()
+  const updatePostTags = useUpdatePostTags()
 
   const [isInitialized, setIsInitialized] = useState(false)
 
@@ -29,6 +33,7 @@ const ArticleEditContent = () => {
     description,
     categoryId,
     thumbnail,
+    tagIds,
     handleContentChange,
     updateMeta
   } = useEditorContext()
@@ -37,7 +42,7 @@ const ArticleEditContent = () => {
     try {
       if (!post) return
 
-      await updatePost.mutateAsync({
+      const updatedPost = await updatePost.mutateAsync({
         id: post.id,
         title,
         content,
@@ -47,6 +52,13 @@ const ArticleEditContent = () => {
         updated_at: new Date().toISOString(),
         thumbnail
       })
+
+      if (tagIds.length > 0) {
+        await updatePostTags.mutateAsync({
+          postId: updatedPost.id,
+          tagIds: tagIds
+        })
+      }
 
       toast.success('게시글이 성공적으로 수정되었습니다.')
       navigate({
@@ -63,19 +75,20 @@ const ArticleEditContent = () => {
   }
 
   useEffect(() => {
-    if (post && !isInitialized) {
+    if (post && postTags && !isInitialized) {
       handleContentChange(post.content)
       updateMeta({
         title: post.title,
         description: post.description || '',
         categoryId: post.category_id || null,
-        thumbnail: post.thumbnail || null
+        thumbnail: post.thumbnail || null,
+        tagIds: postTags.map(tag => tag.id)
       })
       setIsInitialized(true)
     }
-  }, [post, handleContentChange, updateMeta, isInitialized])
+  }, [post, postTags, handleContentChange, updateMeta, isInitialized])
 
-  if (isLoading) {
+  if (isLoading || isTagsLoading) {
     return <div className="py-10 text-center">게시글을 불러오는 중...</div>
   }
 
@@ -93,6 +106,7 @@ const ArticleEditContent = () => {
             description={description}
             categoryId={categoryId}
             thumbnail={thumbnail}
+            tagIds={tagIds}
             onMetaChange={(field, value) => updateMeta(field, value)}
           />
           <MDEditor

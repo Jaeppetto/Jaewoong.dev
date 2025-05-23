@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useCallback } from 'react'
+import React, { createContext, useState, ReactNode, useCallback } from 'react'
 
 export interface EditorState {
   isPreview: boolean
@@ -7,6 +7,7 @@ export interface EditorState {
   description: string
   categoryId: string | null
   thumbnail: string | null
+  tagIds: string[] // 태그 ID 목록 추가
 }
 
 export interface EditorContextType extends EditorState {
@@ -20,7 +21,7 @@ export interface EditorContextType extends EditorState {
     fieldOrObject:
       | keyof Omit<EditorState, 'content' | 'isPreview'>
       | Partial<Omit<EditorState, 'content' | 'isPreview'>>,
-    value?: string | null
+    value?: string | null | string[] // any 대신 구체적인 타입 사용
   ) => void
 }
 
@@ -31,6 +32,7 @@ const defaultContext: EditorContextType = {
   description: '',
   categoryId: null,
   thumbnail: null,
+  tagIds: [], // 기본값은 빈 배열
   tempId: `temp-${Date.now()}`,
 
   setIsPreview: () => {},
@@ -47,17 +49,18 @@ interface EditorProviderProps {
   initialState?: Partial<EditorState>
 }
 
-export const EditorProvider = ({
+export const EditorProvider: React.FC<EditorProviderProps> = ({
   children,
   initialState = {}
-}: EditorProviderProps) => {
+}) => {
   const [state, setState] = useState<EditorState>({
     isPreview: initialState.isPreview ?? false,
     content: initialState.content ?? '# 제목을 입력하세요',
     title: initialState.title ?? '',
     description: initialState.description ?? '',
     categoryId: initialState.categoryId ?? null,
-    thumbnail: initialState.thumbnail ?? null
+    thumbnail: initialState.thumbnail ?? null,
+    tagIds: initialState.tagIds ?? [] // 초기 태그 ID 배열
   })
 
   const tempId = `temp-${Date.now()}`
@@ -97,7 +100,7 @@ export const EditorProvider = ({
       fieldOrObject:
         | keyof Omit<EditorState, 'content' | 'isPreview'>
         | Partial<Omit<EditorState, 'content' | 'isPreview'>>,
-      value?: string | null
+      value?: string | null | string[] // any 대신 구체적인 타입 사용
     ) => {
       if (typeof fieldOrObject === 'string' && value !== undefined) {
         setState(prev => ({

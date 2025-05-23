@@ -9,6 +9,7 @@ import {
   Separator
 } from '@/shared'
 import { EditorState, useCategoriesQuery } from '@/features'
+import { TagSelector } from '@/entities/tag/ui'
 import { ImageIcon } from 'lucide-react'
 import { cn } from '@/shared/shadcn-ui/util'
 
@@ -17,11 +18,12 @@ interface EditControllerProps {
   description: string
   categoryId: string | null
   thumbnail: string | null
+  tagIds: string[] // 태그 ID 목록 추가
   onMetaChange: (
     fieldOrObject:
       | keyof Omit<EditorState, 'content' | 'isPreview'>
       | Partial<Omit<EditorState, 'content' | 'isPreview'>>,
-    value?: string | null
+    value?: string | null | string[] // any 대신 구체적인 타입 사용
   ) => void
 }
 
@@ -30,11 +32,16 @@ const EditController = ({
   description,
   categoryId,
   thumbnail,
+  tagIds,
   onMetaChange
 }: EditControllerProps) => {
   const [titleLength, setTitleLength] = useState(title.length)
 
   const { data: categories } = useCategoriesQuery()
+
+  const handleTagsChange = (selectedTagIds: string[]) => {
+    onMetaChange('tagIds', selectedTagIds)
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -97,6 +104,16 @@ const EditController = ({
           maxLength={200}
           value={description}
           onChange={e => onMetaChange('description', e.target.value)}
+        />
+      </div>
+
+      <Separator />
+
+      <div className="flex flex-col gap-2">
+        <label className="text-lg font-medium text-slate-800">태그</label>
+        <TagSelector
+          selectedTags={tagIds}
+          onChange={handleTagsChange}
         />
       </div>
 

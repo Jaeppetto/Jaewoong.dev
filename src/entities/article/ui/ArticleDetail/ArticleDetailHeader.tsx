@@ -6,6 +6,7 @@ import { useTogglePostPublished } from '@/features'
 import { Eye, EyeOff, PencilIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { PostTags } from '@/entities/tag/ui'
 
 interface ArticleDetailHeaderProps {
   post?: PostWithRelations
@@ -19,7 +20,6 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
 
   if (!post) return null
 
-  // TODO: 어느 시점에서 필터링해주어야 하는지?
   const handleTogglePublished = async () => {
     try {
       await togglePublished.mutateAsync({
@@ -50,14 +50,6 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
       )}
 
       <div className="flex flex-col gap-[0.6rem] px-[1rem]">
-        {/* {post.tags && (
-            <div className="flex items-center gap-[0.4rem]">
-              {post.tags.map(tag => (
-                <Link to={`/article/${tag.slug}`}>{tag.name}</Link>
-              ))}
-            </div>
-          )} */}
-
         <div className="flex items-center gap-2">
           <h1 className="break-all text-[3.2rem] font-extrabold leading-[3.8rem] text-slate-900">
             {post.title}
@@ -67,7 +59,7 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-fit rounded-lg bg-transparent p-1 px-2 transition-colors duration-300 hover:bg-slate-100"
+                className="h-fit p-1 px-2"
                 onClick={handleTogglePublished}>
                 {isPublished ? (
                   <EyeOff
@@ -84,7 +76,7 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
               <Link
                 to="/article/edit/$postId"
                 params={{ postId: post.id }}
-                className="h-fit rounded-lg p-1 px-2 transition-colors duration-300 hover:bg-slate-100">
+                className="h-fit p-1 px-2">
                 <PencilIcon
                   className="text-slate-500"
                   size={16}
@@ -100,8 +92,13 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
           </span>
         )}
 
+        <PostTags
+          postId={post.id}
+          className="mt-2"
+        />
+
         {post.created_at && (
-          <time className="text-[1.2rem] font-normal leading-[1.4rem] text-slate-500">
+          <time className="mt-2 text-[1.2rem] font-normal leading-[1.4rem] text-slate-500">
             {dayjs(post.created_at).format('YYYY.MM.DD')}
           </time>
         )}
