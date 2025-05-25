@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Input,
   Select,
@@ -9,6 +8,7 @@ import {
   Separator
 } from '@/shared'
 import { EditorState, useCategoriesQuery } from '@/features'
+import { TagSelector } from '@/entities/tag/ui'
 import { ImageIcon } from 'lucide-react'
 import { cn } from '@/shared/shadcn-ui/util'
 
@@ -17,11 +17,12 @@ interface EditControllerProps {
   description: string
   categoryId: string | null
   thumbnail: string | null
+  tagIds: string[]
   onMetaChange: (
     fieldOrObject:
       | keyof Omit<EditorState, 'content' | 'isPreview'>
       | Partial<Omit<EditorState, 'content' | 'isPreview'>>,
-    value?: string | null
+    value?: string | null | string[]
   ) => void
 }
 
@@ -30,15 +31,18 @@ const EditController = ({
   description,
   categoryId,
   thumbnail,
+  tagIds,
   onMetaChange
 }: EditControllerProps) => {
-  const [titleLength, setTitleLength] = useState(title.length)
-
   const { data: categories } = useCategoriesQuery()
+
+  const handleTagsChange = (selectedTagIds: string[]) => {
+    onMetaChange('tagIds', selectedTagIds)
+  }
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex w-full items-center justify-between">
+      <div className="flex justify-between items-end w-full">
         <Select
           value={categoryId || ''}
           onValueChange={value => onMetaChange('categoryId', value || null)}>
@@ -64,36 +68,27 @@ const EditController = ({
           <img
             src={thumbnail}
             alt="thumbnail"
-            className="h-20 w-20 rounded-md border border-slate-200 object-cover"
+            className="object-cover w-20 h-20 rounded-md border border-slate-200"
           />
         ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-slate-200 bg-slate-50">
-            <ImageIcon className="h-10 w-10 text-slate-300" />
+          <div className="flex justify-center items-center w-20 h-20 rounded-md border border-slate-200 bg-slate-50">
+            <ImageIcon className="w-10 h-10 text-slate-300" />
           </div>
         )}
       </div>
 
-      <Separator />
-
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-4 items-center">
         <Input
           type="text"
           placeholder="제목"
-          className="border-none p-0 text-4xl font-bold outline-none focus-visible:ring-0 md:text-4xl"
+          className="p-0 text-4xl font-bold border-none outline-none focus-visible:ring-0 md:text-4xl"
           maxLength={100}
           value={title}
-          onChange={e => {
-            onMetaChange('title', e.target.value)
-            setTitleLength(e.target.value.length)
-          }}
+          onChange={e => onMetaChange('title', e.target.value)}
         />
-        <div className="text-xl text-gray-500">{titleLength}/100</div>
-      </div>
-
-      <div className="flex items-center gap-2">
         <Input
           placeholder="한줄 요약.."
-          className="border-none p-0 text-3xl font-bold outline-none focus-visible:ring-0 md:text-3xl"
+          className="break-all border-none p-0 text-3xl font-normal leading-[1.8rem] text-slate-900 outline-none focus-visible:ring-0 md:text-3xl"
           maxLength={200}
           value={description}
           onChange={e => onMetaChange('description', e.target.value)}
@@ -101,6 +96,11 @@ const EditController = ({
       </div>
 
       <Separator />
+
+      <TagSelector
+        selectedTags={tagIds}
+        onChange={handleTagsChange}
+      />
     </div>
   )
 }

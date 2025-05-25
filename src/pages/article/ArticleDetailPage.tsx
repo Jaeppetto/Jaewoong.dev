@@ -2,11 +2,13 @@ import {
   ArticleDetailHeader,
   ArticleDetailSkeleton,
   CategoryAccordion,
-  CategoryAccordionSkeleton
+  CategoryAccordionSkeleton,
+  PostTags
 } from '@/entities'
 import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
 import { MdxRenderer } from '@/widgets'
+import { Separator } from '@radix-ui/react-separator'
 import { Navigate, useParams } from '@tanstack/react-router'
 
 const ArticleDetailPage = () => {
@@ -34,7 +36,7 @@ const ArticleDetailPage = () => {
   }
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex justify-center w-full">
       <aside className="sticky top-[7.6rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
@@ -42,7 +44,7 @@ const ArticleDetailPage = () => {
         />
       </aside>
 
-      <main className="flex h-full w-full max-w-[88rem] flex-col gap-[4rem] py-[2rem] pb-[4rem]">
+      <main className="flex h-full w-full max-w-[88rem] flex-col gap-[2rem] py-[2rem] pb-[4rem]">
         <ArticleDetailHeader post={post} />
 
         <article
@@ -52,6 +54,10 @@ const ArticleDetailPage = () => {
           )}>
           <MdxRenderer content={post.content} />
         </article>
+
+        <Separator className="h-[0.1rem] bg-slate-200" />
+
+        <PostTags postId={post.id} />
       </main>
     </div>
   )

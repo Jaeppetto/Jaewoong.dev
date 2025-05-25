@@ -1,11 +1,14 @@
 import { ArticleCard } from '@/entities'
-import { usePostsByCategorySlugQuery } from '@/features/article/api/queries'
+
 import ArticleListSkeleton from './ArticleListSkeleton'
 import { Pagination } from '@/shared/ui'
+import { usePostsByCategorySlugQuery } from '@/features/article/api/queries'
+import { usePostsByTagPaginatedQuery } from '@/features/tag'
 
 interface ArticleListProps {
-  type: 'recent' | 'category' | 'recommend'
+  type: 'recent' | 'category' | 'recommend' | 'tag'
   categorySlug?: string
+  tagSlug?: string
   page?: number
   pageSize?: number
 }
@@ -13,23 +16,43 @@ interface ArticleListProps {
 const ArticleList = ({
   type,
   categorySlug,
-  page,
-  pageSize
+  tagSlug,
+  page = 1,
+  pageSize = 4
 }: ArticleListProps) => {
-  const { data, isLoading, isPending } = usePostsByCategorySlugQuery(
-    categorySlug,
-    page,
-    pageSize
-  )
+  const isTagType = type === 'tag' && tagSlug
 
-  // TODO: 에러 또는 리스트가 없을 때 예외처리
+  const {
+    data: categoryData,
+    isLoading: isCategoryLoading,
+    isPending: isCategoryPending
+  } = usePostsByCategorySlugQuery(categorySlug, page, pageSize)
 
-  if (isLoading || isPending) return <ArticleListSkeleton />
+  const {
+    data: tagData,
+    isLoading: isTagLoading,
+    isPending: isTagPending
+  } = usePostsByTagPaginatedQuery(tagSlug || '', page, pageSize)
+
+  const isLoading = isTagType
+    ? isTagLoading || isTagPending
+    : isCategoryLoading || isCategoryPending
+  const data = isTagType ? tagData?.data : categoryData?.data
+
+  if (isLoading)
+    return <ArticleListSkeleton length={type === 'recommend' ? 2 : undefined} />
+
+  if (data?.length === 0)
+    return (
+      <div className="mt-12 flex h-full w-full items-center justify-center">
+        <p className="text-lg text-slate-500">게시글이 존재하지 않습니다</p>
+      </div>
+    )
 
   if (type === 'recommend')
     return (
       <div className="grid w-full grid-cols-1 gap-[1.2rem] sm:grid-cols-2">
-        {data?.posts
+        {data
           ?.sort(() => Math.random() - 0.5)
           .slice(0, 2)
           .map(post => (
@@ -45,7 +68,7 @@ const ArticleList = ({
   return (
     <>
       <div className="grid w-full grid-cols-1 gap-[1.2rem] sm:grid-cols-2">
-        {data?.posts.map(post => (
+        {data?.map(post => (
           <ArticleCard
             key={post.id}
             post={post}
@@ -54,9 +77,9 @@ const ArticleList = ({
         ))}
       </div>
       <Pagination
-        page={page ?? 1}
-        pageSize={pageSize ?? 4}
-        totalItems={data?.total ?? 0}
+        page={page}
+        pageSize={pageSize}
+        totalItems={data?.length ?? 0}
         className="flex w-full justify-center"
       />
     </>

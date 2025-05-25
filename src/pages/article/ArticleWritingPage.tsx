@@ -2,15 +2,18 @@ import { EditorProvider, useCreatePost, useEditorContext } from '@/features'
 import { Button, generateSlug, useAuth } from '@/shared'
 
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
-
+import { useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 import MDEditor from '@uiw/react-md-editor'
-
 import rehypeSanitize from 'rehype-sanitize'
 import { cn } from '@/shared/shadcn-ui/util'
+import { useUpdatePostTags } from '@/features/tag'
 
 const ArticleWritingPageContent = () => {
   const { user } = useAuth()
   const createPost = useCreatePost()
+  const updatePostTags = useUpdatePostTags()
+  const navigate = useNavigate()
 
   const {
     isPreview,
@@ -19,13 +22,14 @@ const ArticleWritingPageContent = () => {
     description,
     categoryId,
     thumbnail,
+    tagIds,
     handleContentChange,
     updateMeta
   } = useEditorContext()
 
   const handleSubmit = async () => {
     try {
-      await createPost.mutateAsync({
+      const newPost = await createPost.mutateAsync({
         title,
         content,
         description,
@@ -35,8 +39,26 @@ const ArticleWritingPageContent = () => {
         author_id: user?.id,
         thumbnail: thumbnail
       })
+
+      if (tagIds.length > 0) {
+        await updatePostTags.mutateAsync({
+          postId: newPost.id,
+          tagIds: tagIds
+        })
+      }
+
+      toast.success('게시글이 성공적으로 작성되었습니다.')
+
+      navigate({
+        to: '/article/$category/$postTitle',
+        params: {
+          category: newPost.categories?.slug || '',
+          postTitle: newPost.slug
+        }
+      })
     } catch (error) {
       console.error('Failed to create post:', error)
+      toast.error('게시글 작성에 실패했습니다.')
     }
   }
 
@@ -50,6 +72,7 @@ const ArticleWritingPageContent = () => {
             description={description}
             categoryId={categoryId}
             thumbnail={thumbnail}
+            tagIds={tagIds} // 태그 ID 목록 전달
             onMetaChange={(field, value) => updateMeta(field, value)}
           />
           <MDEditor

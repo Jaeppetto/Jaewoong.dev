@@ -19,6 +19,8 @@ import { Route as AuthCallbackImport } from './routes/auth.callback'
 import { Route as ArticleWritingImport } from './routes/article_.writing'
 import { Route as ArticleCategoryImport } from './routes/article_.$category'
 import { Route as ArchiveProjectTitleImport } from './routes/archive_.$projectTitle'
+import { Route as ArticleTagTagSlugImport } from './routes/article_.tag_.$tagSlug'
+import { Route as ArticleEditPostIdImport } from './routes/article_.edit_.$postId'
 import { Route as ArticleCategoryPostTitleImport } from './routes/article_.$category_.$postTitle'
 
 // Create Virtual Routes
@@ -73,6 +75,18 @@ const ArticleCategoryRoute = ArticleCategoryImport.update({
 const ArchiveProjectTitleRoute = ArchiveProjectTitleImport.update({
   id: '/archive_/$projectTitle',
   path: '/archive/$projectTitle',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArticleTagTagSlugRoute = ArticleTagTagSlugImport.update({
+  id: '/article_/tag_/$tagSlug',
+  path: '/article/tag/$tagSlug',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArticleEditPostIdRoute = ArticleEditPostIdImport.update({
+  id: '/article_/edit_/$postId',
+  path: '/article/edit/$postId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -149,6 +163,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleCategoryPostTitleImport
       parentRoute: typeof rootRoute
     }
+    '/article_/edit_/$postId': {
+      id: '/article_/edit_/$postId'
+      path: '/article/edit/$postId'
+      fullPath: '/article/edit/$postId'
+      preLoaderRoute: typeof ArticleEditPostIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/article_/tag_/$tagSlug': {
+      id: '/article_/tag_/$tagSlug'
+      path: '/article/tag/$tagSlug'
+      fullPath: '/article/tag/$tagSlug'
+      preLoaderRoute: typeof ArticleTagTagSlugImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -164,6 +192,8 @@ export interface FileRoutesByFullPath {
   '/article/writing': typeof ArticleWritingRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/article/$category/$postTitle': typeof ArticleCategoryPostTitleRoute
+  '/article/edit/$postId': typeof ArticleEditPostIdRoute
+  '/article/tag/$tagSlug': typeof ArticleTagTagSlugRoute
 }
 
 export interface FileRoutesByTo {
@@ -176,6 +206,8 @@ export interface FileRoutesByTo {
   '/article/writing': typeof ArticleWritingRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/article/$category/$postTitle': typeof ArticleCategoryPostTitleRoute
+  '/article/edit/$postId': typeof ArticleEditPostIdRoute
+  '/article/tag/$tagSlug': typeof ArticleTagTagSlugRoute
 }
 
 export interface FileRoutesById {
@@ -189,6 +221,8 @@ export interface FileRoutesById {
   '/article_/writing': typeof ArticleWritingRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/article_/$category_/$postTitle': typeof ArticleCategoryPostTitleRoute
+  '/article_/edit_/$postId': typeof ArticleEditPostIdRoute
+  '/article_/tag_/$tagSlug': typeof ArticleTagTagSlugRoute
 }
 
 export interface FileRouteTypes {
@@ -203,6 +237,8 @@ export interface FileRouteTypes {
     | '/article/writing'
     | '/auth/callback'
     | '/article/$category/$postTitle'
+    | '/article/edit/$postId'
+    | '/article/tag/$tagSlug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -214,6 +250,8 @@ export interface FileRouteTypes {
     | '/article/writing'
     | '/auth/callback'
     | '/article/$category/$postTitle'
+    | '/article/edit/$postId'
+    | '/article/tag/$tagSlug'
   id:
     | '__root__'
     | '/'
@@ -225,6 +263,8 @@ export interface FileRouteTypes {
     | '/article_/writing'
     | '/auth/callback'
     | '/article_/$category_/$postTitle'
+    | '/article_/edit_/$postId'
+    | '/article_/tag_/$tagSlug'
   fileRoutesById: FileRoutesById
 }
 
@@ -238,6 +278,8 @@ export interface RootRouteChildren {
   ArticleWritingRoute: typeof ArticleWritingRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   ArticleCategoryPostTitleRoute: typeof ArticleCategoryPostTitleRoute
+  ArticleEditPostIdRoute: typeof ArticleEditPostIdRoute
+  ArticleTagTagSlugRoute: typeof ArticleTagTagSlugRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -250,6 +292,8 @@ const rootRouteChildren: RootRouteChildren = {
   ArticleWritingRoute: ArticleWritingRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   ArticleCategoryPostTitleRoute: ArticleCategoryPostTitleRoute,
+  ArticleEditPostIdRoute: ArticleEditPostIdRoute,
+  ArticleTagTagSlugRoute: ArticleTagTagSlugRoute,
 }
 
 export const routeTree = rootRoute
@@ -272,7 +316,9 @@ export const routeTree = rootRoute
         "/article_/$category",
         "/article_/writing",
         "/auth/callback",
-        "/article_/$category_/$postTitle"
+        "/article_/$category_/$postTitle",
+        "/article_/edit_/$postId",
+        "/article_/tag_/$tagSlug"
       ]
     },
     "/": {
@@ -301,6 +347,12 @@ export const routeTree = rootRoute
     },
     "/article_/$category_/$postTitle": {
       "filePath": "article_.$category_.$postTitle.tsx"
+    },
+    "/article_/edit_/$postId": {
+      "filePath": "article_.edit_.$postId.tsx"
+    },
+    "/article_/tag_/$tagSlug": {
+      "filePath": "article_.tag_.$tagSlug.tsx"
     }
   }
 }

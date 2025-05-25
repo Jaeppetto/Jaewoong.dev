@@ -1,6 +1,7 @@
 import { Route } from '@/app/routes/article'
 import { ArticleList, ArticleListHeader } from '@/widgets/article'
 import { CategoryList } from '@/widgets/category'
+import { TagList } from '@/entities/tag/ui'
 
 const ArticlePage = () => {
   const { page } = Route.useSearch()
@@ -16,6 +17,7 @@ const ArticlePage = () => {
         />
       </section>
       <CategoryList />
+      <TagList />
     </div>
   )
 }

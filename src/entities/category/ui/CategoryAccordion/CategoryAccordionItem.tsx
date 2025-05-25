@@ -28,7 +28,7 @@ const CategoryAccordionItem = ({
         <li key={post.id}>
           <Button
             variant="link"
-            className="flex w-full items-center justify-start gap-2 bg-transparent px-[1rem] text-[1.2rem] font-normal leading-[1.6rem] transition-all hover:font-bold hover:no-underline"
+            className="flex w-full items-center justify-start gap-2 bg-transparent px-0 text-[1.2rem] font-normal leading-[1.6rem] transition-all hover:font-bold hover:no-underline"
             onClick={() => {
               navigate({
                 to: '/article/$category/$postTitle',

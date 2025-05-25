@@ -53,7 +53,7 @@ export const usePostsByCategorySlugQuery = (
   page: number = 1,
   pageSize: number = 4
 ) => {
-  return useQuery<{ posts: PostWithRelations[]; total: number }>({
+  return useQuery<{ data: PostWithRelations[]; total: number }>({
     queryKey: categorySlug
       ? postKeys.byCategorySlug(categorySlug, page, pageSize)
       : postKeys.paginatedAll(page, pageSize),
@@ -61,9 +61,11 @@ export const usePostsByCategorySlugQuery = (
       const data = await (categorySlug
         ? postApi.getByCategorySlug(categorySlug, page, pageSize)
         : postApi.getPaginatedAll(page, pageSize))
-      return { posts: data.data, total: data.total }
-    },
-    enabled: true
+      return {
+        data: data.data,
+        total: data.total
+      }
+    }
   })
 }
 
