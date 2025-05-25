@@ -1,6 +1,5 @@
 import { ArticleList } from '@/widgets/article'
 import { useTagBySlugQuery } from '@/features/tag/api'
-import { Tag as TagIcon } from 'lucide-react'
 import { TagItemSkeleton, TagList } from '@/entities/tag/ui'
 import { useParams, useSearch } from '@tanstack/react-router'
 
@@ -13,11 +12,10 @@ const ArticleTagPage = () => {
     <div className="flex h-full w-full max-w-[108rem] flex-col gap-[8rem] py-[2rem] pb-[4rem]">
       <section className="flex flex-col gap-[2rem]">
         <h1 className="flex select-none items-center gap-2 text-[2rem] font-normal leading-[2rem] text-slate-900">
-          <TagIcon className="h-5 w-5" />
           <span className="font-bold">
-            {isLoading ? <TagItemSkeleton /> : `${tag?.name}`}
+            {isLoading ? <TagItemSkeleton /> : `#${tag?.name}`}
           </span>
-          <span>태그가 있는 게시글</span>
+          <span>태그를 갖고 있는 아티클</span>
         </h1>
 
         <ArticleList

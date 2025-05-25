@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { TagIcon } from 'lucide-react'
 import { Tag } from '../../constant'
 
 interface TagItemProps {
@@ -13,8 +12,8 @@ const TagItem = ({ tag }: TagItemProps) => {
       to="/article/tag/$tagSlug"
       params={{ tagSlug: tag.slug }}
       search={{ page: 1 }}
-      className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-950 px-5 py-1 text-[1.2rem] hover:bg-slate-800">
-      <TagIcon className="h-5 w-5 text-white" />
+      className="flex cursor-pointer items-center gap-2 rounded-full bg-slate-950 px-5 py-1 text-[1.2rem] hover:bg-slate-800">
+      <span className="font-bold text-white">#</span>
       <span className="text-white">{tag.name}</span>
     </Link>
   )

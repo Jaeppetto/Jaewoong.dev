@@ -3,10 +3,9 @@ import { PostWithRelations } from '../../constant'
 import dayjs from 'dayjs'
 import { Button, useAuth } from '@/shared'
 import { useTogglePostPublished } from '@/features'
-import { Eye, EyeOff, PencilIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { PostTags } from '@/entities/tag/ui'
+import { Separator } from '@radix-ui/react-separator'
 
 interface ArticleDetailHeaderProps {
   post?: PostWithRelations
@@ -50,58 +49,42 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
       )}
 
       <div className="flex flex-col gap-[0.6rem] px-[1rem]">
-        <div className="flex items-center gap-2">
-          <h1 className="break-all text-[3.2rem] font-extrabold leading-[3.8rem] text-slate-900">
-            {post.title}
-          </h1>
-          {isAdmin && (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-fit p-1 px-2"
-                onClick={handleTogglePublished}>
-                {isPublished ? (
-                  <EyeOff
-                    className="text-slate-500"
-                    size={16}
-                  />
-                ) : (
-                  <Eye
-                    className="text-slate-500"
-                    size={16}
-                  />
-                )}
-              </Button>
-              <Link
-                to="/article/edit/$postId"
-                params={{ postId: post.id }}
-                className="h-fit p-1 px-2">
-                <PencilIcon
-                  className="text-slate-500"
-                  size={16}
-                />
-              </Link>
-            </>
-          )}
-        </div>
+        <h1 className="break-all text-[3.2rem] font-extrabold leading-[3.8rem] text-slate-900">
+          {post.title}
+        </h1>
 
         {post.description && (
-          <span className="break-all text-[1.4rem] font-normal leading-[2rem] text-slate-900">
+          <span className="break-all text-[1.6rem] font-normal leading-[1.8rem] text-slate-900">
             {post.description}
           </span>
         )}
 
-        <PostTags
-          postId={post.id}
-          className="mt-2"
-        />
+        <div className="flex gap-2 justify-between items-center">
+          {post.created_at && (
+            <time className="text-[1.4rem] font-normal leading-[1.6rem] text-slate-400">
+              {dayjs(post.created_at).format('YYYY.MM.DD')}
+            </time>
+          )}
+          {isAdmin && (
+            <div className="flex gap-4 items-center">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-transparent p-0 text-[1.4rem] font-normal leading-[1.6rem] text-slate-400 transition-none hover:bg-transparent"
+                onClick={handleTogglePublished}>
+                {isPublished ? <span>전체공개</span> : <span>비공개</span>}
+              </Button>
+              <Link
+                to="/article/edit/$postId"
+                params={{ postId: post.id }}
+                className="bg-transparent p-0 text-[1.4rem] font-normal leading-[1.6rem] text-slate-400 transition-none hover:bg-transparent hover:text-slate-900">
+                <span>수정하기</span>
+              </Link>
+            </div>
+          )}
+        </div>
 
-        {post.created_at && (
-          <time className="mt-2 text-[1.2rem] font-normal leading-[1.4rem] text-slate-500">
-            {dayjs(post.created_at).format('YYYY.MM.DD')}
-          </time>
-        )}
+        <Separator className="mt-[1.4rem] h-[0.1rem] bg-slate-200" />
       </div>
     </header>
   )

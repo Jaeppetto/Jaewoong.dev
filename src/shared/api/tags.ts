@@ -8,8 +8,6 @@ export const tagApi = {
       .select('*')
       .order('name', { ascending: true })
 
-    console.log(data)
-
     if (error) throw error
     return data
   },
