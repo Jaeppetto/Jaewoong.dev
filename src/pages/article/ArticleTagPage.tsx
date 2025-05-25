@@ -13,7 +13,7 @@ const ArticleTagPage = () => {
       <section className="flex flex-col gap-[2rem]">
         <h1 className="flex select-none items-center gap-2 text-[2rem] font-normal leading-[2rem] text-slate-900">
           <span className="font-bold">
-            {isLoading ? <TagItemSkeleton /> : `#${tag?.name}`}
+            {isLoading ? <TagItemSkeleton /> : `${tag?.name}`}
           </span>
           <span>태그를 갖고 있는 아티클</span>
         </h1>

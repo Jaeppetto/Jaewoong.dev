@@ -53,12 +53,12 @@ const ArticleEditContent = () => {
         thumbnail
       })
 
-      if (tagIds.length > 0) {
-        await updatePostTags.mutateAsync({
-          postId: updatedPost.id,
-          tagIds: tagIds
-        })
-      }
+      console.log(tagIds)
+
+      await updatePostTags.mutateAsync({
+        postId: updatedPost.id,
+        tagIds: tagIds
+      })
 
       toast.success('게시글이 성공적으로 수정되었습니다.')
       navigate({
@@ -119,9 +119,8 @@ const ArticleEditContent = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex gap-2 justify-end">
             <Button
-              variant="ghost"
               onClick={() => {
                 navigate({
                   to: '/article/$category/$postTitle',
@@ -131,7 +130,7 @@ const ArticleEditContent = () => {
                   }
                 })
               }}
-              className="rounded-2xl px-6 py-8 font-bold transition-all duration-300">
+              className="px-6 py-8 font-bold rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-50">
               취소
             </Button>
             <Button
@@ -139,7 +138,7 @@ const ArticleEditContent = () => {
               disabled={
                 updatePost.isPending || !content.trim() || !title || !categoryId
               }
-              className="rounded-2xl bg-black px-6 py-8 font-bold text-white transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
+              className="px-6 py-8 font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
               {updatePost.isPending ? '저장 중...' : '수정 완료'}
             </Button>
           </div>
