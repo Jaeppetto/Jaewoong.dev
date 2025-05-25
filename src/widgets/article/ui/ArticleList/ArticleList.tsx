@@ -42,6 +42,13 @@ const ArticleList = ({
   if (isLoading)
     return <ArticleListSkeleton length={type === 'recommend' ? 2 : undefined} />
 
+  if (data?.length === 0)
+    return (
+      <div className="mt-12 flex h-full w-full items-center justify-center">
+        <p className="text-lg text-slate-500">게시글이 존재하지 않습니다</p>
+      </div>
+    )
+
   if (type === 'recommend')
     return (
       <div className="grid w-full grid-cols-1 gap-[1.2rem] sm:grid-cols-2">

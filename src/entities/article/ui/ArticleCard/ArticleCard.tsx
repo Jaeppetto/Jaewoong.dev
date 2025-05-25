@@ -68,7 +68,7 @@ const ArticleCard = ({ category, post, className }: ArticleCardProps) => {
         <img
           src={post?.thumbnail ?? ''}
           alt={post?.title ?? ''}
-          className="object-fit rounded-lg object-cover"
+          className="object-fit hidden rounded-lg object-cover sm:block"
         />
       )}
     </div>
