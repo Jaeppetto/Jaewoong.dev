@@ -1,5 +1,8 @@
 import { cn } from '@/shared/shadcn-ui/util'
 import { Link, useLocation, useRouter } from '@tanstack/react-router'
+import { Menu } from 'lucide-react'
+import { useState } from 'react'
+import { MobileSidebar } from '@/widgets/navigation'
 
 /**
  * TODO: /article 페이지에서 스크롤 시 게시글 제목으로 전환 애니메이션
@@ -7,7 +10,8 @@ import { Link, useLocation, useRouter } from '@tanstack/react-router'
 const Header = () => {
   const router = useRouter()
   const { pathname } = useLocation()
-  const [, subPath, ,] = pathname.split('/')
+  const [, subPath, category, postTitle] = pathname.split('/')
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   return (
     <div
@@ -21,7 +25,7 @@ const Header = () => {
             onClick={() =>
               router.navigate({ to: '/article', search: { page: 1 } })
             }
-            className="hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
+            className="hidden p-0 bg-transparent transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
             <img
               src="/signature.png"
               alt="signature"
@@ -59,7 +63,24 @@ const Header = () => {
             </Link> */}
           </div>
         </div>
+
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="block p-2 sm:hidden"
+          aria-label="메뉴 열기">
+          <Menu
+            size={24}
+            className="text-slate-700"
+          />
+        </button>
       </div>
+
+      <MobileSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        currentCategory={category || ''}
+        currentPost={postTitle || ''}
+      />
     </div>
   )
 }
