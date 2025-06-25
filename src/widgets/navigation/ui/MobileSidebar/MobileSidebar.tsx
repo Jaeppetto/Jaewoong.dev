@@ -10,11 +10,11 @@ interface MobileSidebarProps {
   currentPost: string
 }
 
-export const MobileSidebar = ({ 
-  isOpen, 
-  onClose, 
-  currentCategory, 
-  currentPost 
+export const MobileSidebar = ({
+  isOpen,
+  onClose,
+  currentCategory,
+  currentPost
 }: MobileSidebarProps) => {
   return createPortal(
     <>
@@ -49,9 +49,7 @@ export const MobileSidebar = ({
             <div
               onClick={e => {
                 if (
-                  (e.target as HTMLElement).closest(
-                    'button[data-post-link]'
-                  )
+                  (e.target as HTMLElement).closest('button[data-post-link]')
                 ) {
                   onClose()
                 }

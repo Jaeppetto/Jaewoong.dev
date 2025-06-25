@@ -1,11 +1,11 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { ScrollArea, ScrollBar, Header, Footer } from '@/shared'
+import { ScrollArea, ScrollBar, Header, Footer, HeaderProvider } from '@/shared'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 
 export const Route = createRootRoute({
   component: () => (
-    <>
+    <HeaderProvider>
       <ScrollArea className="flex h-[100dvh] w-full flex-1  justify-between bg-white">
         <Header />
         <main className="mt-[7.6rem] flex min-h-[calc(100dvh-15rem)] w-full flex-1 justify-center px-10">
@@ -15,7 +15,7 @@ export const Route = createRootRoute({
         <ScrollBar orientation="vertical" />
       </ScrollArea>
       <TanStackRouterDevtools />
-    </>
+    </HeaderProvider>
   ),
   notFoundComponent: () => (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8">
