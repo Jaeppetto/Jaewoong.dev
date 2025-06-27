@@ -33,10 +33,14 @@ const Header = () => {
                 : 'translate-y-0 opacity-100'
             )}>
             <button
-              onClick={() =>
-                router.navigate({ to: '/article', search: { page: 1 } })
-              }
-              className="hidden p-0 bg-transparent transition-transform duration-300 ease-in-out hover:scale-105 sm:block">
+              onClick={() => {
+                if (isScrolled) return
+                return router.navigate({ to: '/article', search: { page: 1 } })
+              }}
+              className={cn(
+                'hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block',
+                isScrolled && 'cursor-default'
+              )}>
               <img
                 src="/signature.png"
                 alt="signature"
