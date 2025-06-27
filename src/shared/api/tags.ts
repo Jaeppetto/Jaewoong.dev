@@ -93,24 +93,47 @@ export const tagApi = {
   },
 
   updatePostTags: async (postId: string, tagIds: string[]): Promise<void> => {
-    const { error: deleteError } = await supabase
-      .from('post_tags')
-      .delete()
-      .eq('post_id', postId)
+    const uniqueTagIds = [...new Set(tagIds.filter(Boolean))]
 
-    if (deleteError) throw deleteError
-
-    if (tagIds.length > 0) {
-      const postTags = tagIds.map(tagId => ({
+    if (uniqueTagIds.length > 0) {
+      const postTags = uniqueTagIds.map(tagId => ({
         post_id: postId,
         tag_id: tagId
       }))
 
+      const { error: deleteError } = await supabase
+        .from('post_tags')
+        .delete()
+        .eq('post_id', postId)
+
+      if (deleteError) {
+        console.error('Delete error:', deleteError)
+        throw deleteError
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 100))
+
       const { error: insertError } = await supabase
         .from('post_tags')
-        .insert(postTags)
+        .upsert(postTags, {
+          onConflict: 'post_id,tag_id',
+          ignoreDuplicates: true
+        })
 
-      if (insertError) throw insertError
+      if (insertError) {
+        console.error('Insert error:', insertError)
+        throw insertError
+      }
+    } else {
+      const { error: deleteError } = await supabase
+        .from('post_tags')
+        .delete()
+        .eq('post_id', postId)
+
+      if (deleteError) {
+        console.error('Delete error:', deleteError)
+        throw deleteError
+      }
     }
   },
 
