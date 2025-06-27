@@ -12,6 +12,7 @@ import {
 import FoldableCard, {
   FoldableCardProps
 } from '../../../../entities/mdx/ui/FoldableCard/FoldableCard'
+import { OptimizedImage } from '../../../../entities/mdx/ui/OptimizedImage'
 import { cn } from '@/shared/shadcn-ui/util'
 
 interface MdxRendererProps {
@@ -26,6 +27,7 @@ type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>
 type ListProps = ComponentPropsWithoutRef<'ul' | 'ol'>
 type ListItemProps = ComponentPropsWithoutRef<'li'>
 type AnchorProps = ComponentPropsWithoutRef<'a'>
+type ImageProps = ComponentPropsWithoutRef<'img'>
 
 const MdxRenderer = ({ content }: MdxRendererProps) => {
   const [Content, setContent] = useState<React.ComponentType | null>(null)
@@ -101,6 +103,14 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
       code: (props: ComponentPropsWithoutRef<'code'>) => (
         <code
           className="rounded px-1 py-0.5 font-mono text-xl"
+          {...props}
+        />
+      ),
+      img: (props: ImageProps) => (
+        <OptimizedImage
+          src={props.src || ''}
+          alt={props.alt || ''}
+          className="my-6"
           {...props}
         />
       ),
