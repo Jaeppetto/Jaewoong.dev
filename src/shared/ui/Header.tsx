@@ -2,7 +2,7 @@ import { cn } from '@/shared/shadcn-ui/util'
 import { useScrollPosition } from '@/shared/hooks'
 import { useHeaderContext } from '@/shared/context'
 import { Link, useLocation, useRouter } from '@tanstack/react-router'
-import { Menu } from 'lucide-react'
+import { ArrowUp, Menu } from 'lucide-react'
 import { useState } from 'react'
 import { MobileSidebar } from '@/widgets/navigation'
 
@@ -11,7 +11,7 @@ const Header = () => {
   const { pathname } = useLocation()
   const [, subPath, category, postTitle] = pathname.split('/')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const { isScrolled } = useScrollPosition({ threshold: 200 })
+  const { isScrolled, scrollToTop } = useScrollPosition({ threshold: 200 })
   const { articleTitle } = useHeaderContext()
 
   const isArticleDetailPage = subPath === 'article' && category && postTitle
@@ -33,10 +33,10 @@ const Header = () => {
                 : 'translate-y-0 opacity-100'
             )}>
             <button
-              onClick={() => {
-                if (isScrolled) return
-                return router.navigate({ to: '/article', search: { page: 1 } })
-              }}
+              onClick={() =>
+                router.navigate({ to: '/article', search: { page: 1 } })
+              }
+              disabled={isScrolled}
               className={cn(
                 'hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block',
                 isScrolled && 'cursor-default'
@@ -52,10 +52,12 @@ const Header = () => {
             <div className="flex w-[20rem] flex-shrink-0 select-none justify-between">
               <Link
                 to="/article"
+                disabled={isScrolled}
                 search={{ page: 1 }}
                 className={cn(
                   'text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900',
-                  subPath === 'article' && 'font-extrabold text-slate-900'
+                  subPath === 'article' && 'font-extrabold text-slate-900',
+                  isScrolled && 'cursor-default'
                 )}>
                 Article
               </Link>
@@ -66,18 +68,25 @@ const Header = () => {
             className={cn(
               'flex absolute inset-0 justify-center items-center transition-all duration-500 ease-in-out',
               shouldShowArticleTitle
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-full'
+                ? 'opacity-100 translate-y-0 pointer-events-auto'
+                : 'opacity-0 translate-y-full pointer-events-none'
             )}>
-            <h1 className="max-w-[60rem] truncate px-4 text-center text-[1.8rem] font-bold text-slate-900">
+            <button
+              onClick={scrollToTop}
+              className="group flex max-w-[60rem] cursor-pointer items-center justify-center gap-2 truncate border-none bg-transparent px-4 text-center text-[1.8rem] font-bold text-slate-900 transition-colors hover:text-slate-700">
               {articleTitle}
-            </h1>
+              <ArrowUp
+                size={14}
+                strokeWidth={3}
+                className="opacity-50 transition-opacity text-slate-400 group-hover:opacity-100"
+              />
+            </button>
           </div>
         </div>
 
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="block p-2 sm:hidden"
+          className="block p-2 bg-transparent hover:bg-slate-50 sm:hidden"
           aria-label="메뉴 열기">
           <Menu
             size={24}

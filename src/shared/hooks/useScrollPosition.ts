@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 interface UseScrollPositionOptions {
   threshold?: number
@@ -8,6 +8,18 @@ export const useScrollPosition = (options: UseScrollPositionOptions = {}) => {
   const { threshold = 100 } = options
   const [scrollY, setScrollY] = useState(0)
   const [isScrolled, setIsScrolled] = useState(false)
+
+  const scrollToTop = useCallback(() => {
+    const scrollArea = document.querySelector(
+      '[data-radix-scroll-area-viewport]'
+    ) as HTMLElement | null
+
+    if (scrollArea) {
+      scrollArea.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +57,7 @@ export const useScrollPosition = (options: UseScrollPositionOptions = {}) => {
 
   return {
     scrollY,
-    isScrolled
+    isScrolled,
+    scrollToTop
   }
 }
