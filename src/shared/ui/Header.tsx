@@ -3,7 +3,7 @@ import { useScrollPosition } from '@/shared/hooks'
 import { useHeaderContext } from '@/shared/context'
 import { Link, useLocation, useRouter } from '@tanstack/react-router'
 import { ArrowUp, Menu } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MobileSidebar } from '@/widgets/navigation'
 
 const Header = () => {
@@ -11,6 +11,7 @@ const Header = () => {
   const { pathname } = useLocation()
   const [, subPath, category, postTitle] = pathname.split('/')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
   const { isScrolled, scrollToTop } = useScrollPosition({ threshold: 200 })
   const { articleTitle } = useHeaderContext()
 
@@ -18,6 +19,12 @@ const Header = () => {
     subPath === 'article' && Boolean(category) && Boolean(postTitle)
   const shouldShowArticleTitle =
     isArticleDetailPage && isScrolled && articleTitle
+
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => setImageLoaded(true)
+    img.src = '/signature.png'
+  }, [])
 
   return (
     <div
@@ -51,7 +58,10 @@ const Header = () => {
                 alt="signature"
                 width={120}
                 height={100}
-                className="translate-y-[0.4rem] rotate-[20deg] select-none"
+                className={cn(
+                  'translate-y-[0.4rem] rotate-[20deg] select-none transition-all duration-500 ease-in-out',
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                )}
               />
             </button>
             <div className="flex w-[20rem] flex-shrink-0 select-none justify-between">
