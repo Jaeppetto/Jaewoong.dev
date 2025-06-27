@@ -14,7 +14,8 @@ const Header = () => {
   const { isScrolled, scrollToTop } = useScrollPosition({ threshold: 200 })
   const { articleTitle } = useHeaderContext()
 
-  const isArticleDetailPage = subPath === 'article' && category && postTitle
+  const isArticleDetailPage =
+    subPath === 'article' && Boolean(category) && Boolean(postTitle)
   const shouldShowArticleTitle =
     isArticleDetailPage && isScrolled && articleTitle
 
@@ -33,13 +34,17 @@ const Header = () => {
                 : 'translate-y-0 opacity-100'
             )}>
             <button
-              onClick={() =>
-                router.navigate({ to: '/article', search: { page: 1 } })
-              }
-              disabled={isScrolled}
+              onClick={() => {
+                if (pathname === '/article') {
+                  scrollToTop()
+                } else {
+                  router.navigate({ to: '/article', search: { page: 1 } })
+                }
+              }}
+              disabled={isArticleDetailPage && isScrolled}
               className={cn(
                 'hidden bg-transparent p-0 transition-transform duration-300 ease-in-out hover:scale-105 sm:block',
-                isScrolled && 'cursor-default'
+                isScrolled && isArticleDetailPage && 'cursor-default'
               )}>
               <img
                 src="/signature.png"
@@ -52,12 +57,12 @@ const Header = () => {
             <div className="flex w-[20rem] flex-shrink-0 select-none justify-between">
               <Link
                 to="/article"
-                disabled={isScrolled}
+                disabled={isArticleDetailPage && isScrolled}
                 search={{ page: 1 }}
                 className={cn(
                   'text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900',
                   subPath === 'article' && 'font-extrabold text-slate-900',
-                  isScrolled && 'cursor-default'
+                  isScrolled && isArticleDetailPage && 'cursor-default'
                 )}>
                 Article
               </Link>
