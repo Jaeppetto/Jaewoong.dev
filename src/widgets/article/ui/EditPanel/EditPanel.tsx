@@ -39,8 +39,16 @@ export const EditPanel: React.FC<EditPanelProps> = ({ className = '' }) => {
           break
 
         case EditPanelButtonType.CODE_BLOCK:
+          appendContent(`
+\`\`\`typescript
+// 여기에 코드를 입력하세요
+console.log('Hello, World!');
+\`\`\`
+`)
+          break
+
         case EditPanelButtonType.INLINE_CODE:
-          // TODO: 코드라인, 코드블럭 구현
+          appendContent(`\`코드\``)
           break
 
         case EditPanelButtonType.PREVIEW:
@@ -71,7 +79,7 @@ export const EditPanel: React.FC<EditPanelProps> = ({ className = '' }) => {
   return (
     <div
       className={cn(
-        'fixed left-10 top-1/2 flex -translate-y-1/2 flex-col items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white p-3 shadow-default',
+        'flex fixed left-10 top-1/2 flex-col gap-2 justify-center items-center p-3 bg-white rounded-2xl border border-gray-200 -translate-y-1/2 shadow-default',
         className
       )}>
       {EDIT_PANEL_MODEL.map(item => {

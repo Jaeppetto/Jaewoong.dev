@@ -72,7 +72,7 @@ const ArticleWritingPageContent = () => {
             description={description}
             categoryId={categoryId}
             thumbnail={thumbnail}
-            tagIds={tagIds} // 태그 ID 목록 전달
+            tagIds={tagIds}
             onMetaChange={(field, value) => updateMeta(field, value)}
           />
           <MDEditor
@@ -85,13 +85,13 @@ const ArticleWritingPageContent = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex gap-2 justify-end">
             <Button
               onClick={handleSubmit}
               disabled={
                 createPost.isPending || !content.trim() || !title || !categoryId
               }
-              className="w-full rounded-2xl bg-black px-6 py-8 font-bold text-white transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
+              className="px-6 py-8 w-full font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
               {createPost.isPending ? '저장 중...' : '작성하기'}
             </Button>
           </div>

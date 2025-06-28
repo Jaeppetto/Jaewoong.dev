@@ -13,6 +13,8 @@ import FoldableCard, {
   FoldableCardProps
 } from '../../../../entities/mdx/ui/FoldableCard/FoldableCard'
 import { OptimizedImage } from '../../../../entities/mdx/ui/OptimizedImage'
+import { InlineCode } from '../../../../entities/mdx/ui/InlineCode/InlineCode'
+import { CodeBlock } from '../../../../entities/mdx/ui/CodeBlock/CodeBlock'
 import { cn } from '@/shared/shadcn-ui/util'
 
 interface MdxRendererProps {
@@ -78,19 +80,19 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="border-l-4 border-slate-900 pl-4 font-bold italic text-slate-900"
+          className="pl-4 italic font-bold border-l-4 border-slate-900 text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 list-inside list-disc text-lg text-slate-900"
+          className="my-2 text-lg list-disc list-inside text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 list-inside list-decimal text-lg text-slate-900"
+          className="my-2 text-lg list-decimal list-inside text-slate-900"
           {...props}
         />
       ),
@@ -100,12 +102,28 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
           {...props}
         />
       ),
-      code: (props: ComponentPropsWithoutRef<'code'>) => (
-        <code
-          className="rounded px-1 py-0.5 font-mono text-xl"
-          {...props}
-        />
-      ),
+      code: (props: ComponentPropsWithoutRef<'code'>) => {
+        const isInline = !props.className?.includes('language-')
+
+        if (isInline) {
+          return <InlineCode {...props} />
+        }
+
+        return <code {...props} />
+      },
+      pre: (props: ComponentPropsWithoutRef<'pre'>) => {
+        const codeElement = props.children as {
+          props?: { className?: string; children?: string }
+        }
+        const className = codeElement?.props?.className || ''
+        const language = className.replace('language-', '') || 'text'
+
+        return (
+          <CodeBlock language={language}>
+            {codeElement?.props?.children}
+          </CodeBlock>
+        )
+      },
       img: (props: ImageProps) => (
         <OptimizedImage
           src={props.src || ''}
@@ -115,9 +133,13 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
         />
       ),
       Highlight: (props: HighlightProps) => <Highlight {...props} />,
-      FoldableCard: (props: FoldableCardProps) => <FoldableCard {...props} />
-      // CodeLine
-      // CodeBlock
+      FoldableCard: (props: FoldableCardProps) => <FoldableCard {...props} />,
+      InlineCode: (props: ComponentPropsWithoutRef<'code'>) => (
+        <InlineCode {...props} />
+      ),
+      CodeBlock: (props: { language?: string; children: React.ReactNode }) => (
+        <CodeBlock {...props} />
+      )
     }),
     []
   )

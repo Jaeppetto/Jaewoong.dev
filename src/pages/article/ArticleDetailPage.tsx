@@ -24,7 +24,7 @@ const ArticleDetailPage = () => {
     if (post?.title) {
       setArticleTitle(post.title)
     }
-    
+
     return () => {
       setArticleTitle(null)
     }
