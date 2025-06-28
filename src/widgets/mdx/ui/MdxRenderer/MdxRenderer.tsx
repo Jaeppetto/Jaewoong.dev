@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react'
 import * as runtime from 'react/jsx-runtime'
 import { evaluate } from '@mdx-js/mdx'
 import { MDXProvider } from '@mdx-js/react'
@@ -19,6 +19,21 @@ import { cn } from '@/shared/shadcn-ui/util'
 
 interface MdxRendererProps {
   content: string
+  debounceMs?: number
+}
+
+const mdxCache = new Map<string, React.ComponentType>()
+const MAX_CACHE_SIZE = 50
+
+const cleanupCache = () => {
+  if (mdxCache.size > MAX_CACHE_SIZE) {
+    const entriesToDelete = mdxCache.size - MAX_CACHE_SIZE
+    const keys = Array.from(mdxCache.keys())
+
+    for (let i = 0; i < entriesToDelete; i++) {
+      mdxCache.delete(keys[i])
+    }
+  }
 }
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>
@@ -31,8 +46,11 @@ type ListItemProps = ComponentPropsWithoutRef<'li'>
 type AnchorProps = ComponentPropsWithoutRef<'a'>
 type ImageProps = ComponentPropsWithoutRef<'img'>
 
-const MdxRenderer = ({ content }: MdxRendererProps) => {
+const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
   const [Content, setContent] = useState<React.ComponentType | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [debouncedContent, setDebouncedContent] = useState(content)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
   const components = useMemo<MDXComponents>(
     () => ({
@@ -144,34 +162,105 @@ const MdxRenderer = ({ content }: MdxRendererProps) => {
     []
   )
 
+  // Debounce content changes
   useEffect(() => {
-    const loadContent = async () => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+
+    debounceRef.current = setTimeout(() => {
+      setDebouncedContent(content)
+    }, debounceMs)
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+    }
+  }, [content, debounceMs])
+
+  const compileMDX = useCallback(
+    async (mdxContent: string) => {
+      if (mdxCache.has(mdxContent)) {
+        const cachedContent = mdxCache.get(mdxContent)!
+        mdxCache.delete(mdxContent)
+        mdxCache.set(mdxContent, cachedContent)
+        return cachedContent
+      }
+
       try {
-        const { default: MDXContent } = await evaluate(content, {
+        const { default: MDXContent } = await evaluate(mdxContent, {
           ...runtime,
           remarkPlugins: [remarkGfm],
           useMDXComponents: () => components
         })
-        setContent(() => MDXContent)
+
+        mdxCache.set(mdxContent, MDXContent)
+        cleanupCache()
+        return MDXContent
       } catch (error) {
-        console.error(error)
-        setContent(() => () => <div>콘텐츠 렌더링 중 오류가 발생했습니다.</div>)
+        console.error('MDX compilation error:', error)
+        const ErrorComponent = () => (
+          <div>콘텐츠 렌더링 중 오류가 발생했습니다.</div>
+        )
+        mdxCache.set(mdxContent, ErrorComponent)
+        cleanupCache()
+        return ErrorComponent
+      }
+    },
+    [components]
+  )
+
+  useEffect(() => {
+    let isCancelled = false
+
+    const loadContent = async () => {
+      setIsLoading(true)
+
+      try {
+        const MDXContent = await compileMDX(debouncedContent)
+
+        if (!isCancelled) {
+          setContent(() => MDXContent)
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false)
+        }
       }
     }
+
     loadContent()
-  }, [components, content])
+
+    return () => {
+      isCancelled = true
+    }
+  }, [debouncedContent, compileMDX])
 
   if (!Content) {
-    return <div>로딩 중...</div>
+    return (
+      <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
+        <div className="flex justify-center items-center py-8 text-gray-500">
+          로딩 중...
+        </div>
+      </div>
+    )
   }
 
   return (
     <MDXProvider components={components}>
       <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
+        {isLoading && (
+          <div className="absolute top-2 right-2 px-2 py-1 text-xs text-gray-500 bg-white rounded shadow dark:bg-gray-800">
+            업데이트 중...
+          </div>
+        )}
         <Content />
       </div>
     </MDXProvider>
   )
-}
+})
+
+MdxRenderer.displayName = 'MdxRenderer'
 
 export default MdxRenderer
