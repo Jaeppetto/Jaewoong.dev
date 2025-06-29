@@ -2,6 +2,12 @@ import { useAuth } from '@/shared/auth/hooks/useAuth'
 import { useGetAllDrafts, useDeleteDraft } from '../api/draftQueries'
 import { Button } from '@/shared'
 import { Trash2, FileText, Clock } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/shared/shadcn-ui/ui/dialog'
 
 type DraftWithCategory = {
   id: string
@@ -26,9 +32,10 @@ type DraftWithCategory = {
 interface DraftsListProps {
   onLoadDraft: (draft: DraftWithCategory) => void
   onClose: () => void
+  open: boolean
 }
 
-export const DraftsList = ({ onLoadDraft, onClose }: DraftsListProps) => {
+export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
   const { user } = useAuth()
   const { data: drafts, isLoading } = useGetAllDrafts(user?.id || '')
   const deleteDraft = useDeleteDraft()
@@ -55,88 +62,94 @@ export const DraftsList = ({ onLoadDraft, onClose }: DraftsListProps) => {
     return type === 'auto' ? '자동저장' : '수동저장'
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <div className="text-gray-500">임시저장 목록을 불러오는 중...</div>
-      </div>
-    )
-  }
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center py-12">
+          <div className="text-xl text-slate-500">임시저장 목록을 불러오는 중...</div>
+        </div>
+      )
+    }
 
-  if (!draftsWithCategory || draftsWithCategory.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-        <FileText className="w-12 h-12 mb-2 opacity-50" />
-        <p>저장된 임시글이 없습니다</p>
-      </div>
-    )
-  }
+    if (!draftsWithCategory || draftsWithCategory.length === 0) {
+      return (
+        <div className="flex flex-col justify-center items-center py-12 text-slate-500">
+          <FileText className="mb-4 w-16 h-16 opacity-50" />
+          <p className="text-xl">저장된 임시글이 없습니다</p>
+        </div>
+      )
+    }
 
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">임시저장 목록</h3>
-        <Button variant="outline" onClick={onClose}>
-          닫기
-        </Button>
-      </div>
-      
-      <div className="space-y-3 max-h-96 overflow-y-auto">
+    return (
+      <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
         {draftsWithCategory.map((draft) => (
           <div
             key={draft.id}
-            className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+            className="p-6 rounded-xl border shadow-sm transition-colors border-slate-200 hover:bg-slate-50"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <h4 className="font-medium text-gray-900 truncate">
+                <div className="flex gap-3 items-center mb-3">
+                  <h4 className="text-2xl font-bold truncate text-slate-900">
                     {draft.title || '제목 없음'}
                   </h4>
-                  <span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">
+                  <span className="px-2 font-medium rounded-md text-md bg-slate-100 text-slate-700">
                     {getDraftTypeLabel(draft.draft_type)}
                   </span>
                 </div>
-                
-                <p className="text-sm text-gray-600 mb-2">
+
+                <p className="mb-3 text-xl leading-relaxed text-slate-600">
                   {getDraftPreview(draft.content)}
                 </p>
-                
-                <div className="flex items-center gap-4 text-xs text-gray-500">
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    {draft.updated_at ? new Date(draft.updated_at).toLocaleString('ko-KR') : '시간 정보 없음'}
+
+                <div className="flex gap-6 items-center text-sm text-slate-500">
+                  <div className="flex gap-2 items-center">
+                    <Clock className="w-5 h-5" />
+                    <span className="text-xl">{draft.updated_at ? new Date(draft.updated_at).toLocaleString('ko-KR') : '시간 정보 없음'}</span>
                   </div>
                   {draft.categories && (
-                    <span className="flex items-center gap-1">
-                      {draft.categories.emoji} {draft.categories.name}
-                    </span>
+                    <div className="flex gap-2 items-center">
+                      <span className="text-xl">{draft.categories.emoji}</span>
+                      <span className="text-xl font-medium">{draft.categories.name}</span>
+                    </div>
                   )}
                 </div>
               </div>
-              
-              <div className="flex items-center gap-2 ml-4">
+
+              <div className="flex gap-3 items-center ml-6">
                 <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onLoadDraft(draft)}
-                >
-                  불러오기
-                </Button>
-                <Button
-                  size="sm"
+                  size="default"
                   variant="outline"
                   onClick={() => handleDeleteDraft(draft.id)}
                   disabled={deleteDraft.isPending}
-                  className="text-red-600 hover:text-red-700"
+                  className="px-2 text-black bg-transparent border-none shadow-none"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-5 h-5" />
+                </Button>
+                <Button
+                  size="default"
+                  variant="outline"
+                  onClick={() => onLoadDraft(draft)}
+                  className="px-6 py-2 text-xl font-medium text-white bg-black rounded-full border-none shadow-none hover:bg-black/80 disabled:opacity-50 hover:text-white"
+                >
+                  불러오기
                 </Button>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    )
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-5xl max-h-[85vh]">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-3xl font-bold text-slate-900">임시저장 목록</DialogTitle>
+        </DialogHeader>
+        {renderContent()}
+      </DialogContent>
+    </Dialog>
   )
 }

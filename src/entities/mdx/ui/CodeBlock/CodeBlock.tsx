@@ -237,7 +237,7 @@ export const CodeBlock = ({
           margin: 0,
           borderRadius:
             language && language !== 'text' ? '0 0 0.5rem 0.5rem' : '0.5rem',
-          fontSize: '0.875rem',
+          fontSize: '1.25rem',
           lineHeight: '1.5'
         }}
         showLineNumbers={displayCode.split('\n').length > 5}

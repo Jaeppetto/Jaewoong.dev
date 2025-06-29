@@ -44,7 +44,7 @@ const FoldableCard = ({
                 {label}
               </span>
             )}
-            {title && <span className="text-xl font-bold">{title}</span>}
+            {title && <span className="text-2xl font-bold">{title}</span>}
           </div>
           {isFoldable && (
             <div
@@ -66,7 +66,7 @@ const FoldableCard = ({
       </div>
 
       {isFoldable && isOpen && content && (
-        <span className="w-full text-left text-lg">{content}</span>
+        <span className="w-full text-left text-2xl">{content}</span>
       )}
     </Button>
   )

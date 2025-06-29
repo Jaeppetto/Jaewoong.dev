@@ -9,7 +9,6 @@ import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
 import { useHeaderContext } from '@/shared/context'
 import { MdxRenderer } from '@/widgets'
-import { Separator } from '@radix-ui/react-separator'
 import { Navigate, useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
@@ -68,7 +67,7 @@ const ArticleDetailPage = () => {
           <MdxRenderer content={post.content} />
         </article>
 
-        <Separator className="h-[0.1rem] bg-slate-200" />
+
 
         <PostTags postId={post.id} />
       </main>

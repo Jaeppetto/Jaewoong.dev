@@ -15,6 +15,7 @@ import FoldableCard, {
 import { OptimizedImage } from '../../../../entities/mdx/ui/OptimizedImage'
 import { InlineCode } from '../../../../entities/mdx/ui/InlineCode/InlineCode'
 import { CodeBlock } from '../../../../entities/mdx/ui/CodeBlock/CodeBlock'
+import { Checkbox } from '@/shared/shadcn-ui/ui/checkbox'
 import { cn } from '@/shared/shadcn-ui/util'
 
 interface MdxRendererProps {
@@ -56,19 +57,19 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
     () => ({
       h1: (props: HeadingProps) => (
         <h1
-          className="my-4 text-4xl font-bold text-slate-900"
+          className="my-4 text-5xl font-bold text-slate-900"
           {...props}
         />
       ),
       h2: (props: HeadingProps) => (
         <h2
-          className="my-3 text-3xl font-semibold text-slate-900"
+          className="my-3 text-4xl font-semibold text-slate-900"
           {...props}
         />
       ),
       h3: (props: HeadingProps) => (
         <h3
-          className="my-2 text-2xl font-semibold text-slate-900"
+          className="my-2 text-3xl font-semibold text-slate-900"
           {...props}
         />
       ),
@@ -80,46 +81,65 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       ),
       a: (props: AnchorProps) => (
         <a
-          className="font-bold text-slate-900 hover:text-slate-600 hover:underline"
+          className="text-2xl font-bold text-slate-900 hover:text-slate-600 hover:underline"
           {...props}
         />
       ),
       strong: (props: StrongProps) => (
         <strong
-          className="font-bold text-slate-900"
+          className="text-2xl font-bold text-slate-900"
           {...props}
         />
       ),
       em: (props: EmphasisProps) => (
         <em
-          className="italic text-slate-900"
+          className="text-2xl italic text-slate-900"
           {...props}
         />
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="pl-4 italic font-bold border-l-4 border-slate-900 text-slate-900"
+          className="pl-4 text-2xl italic font-bold border-l-4 border-slate-900 text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 text-lg list-disc list-inside text-slate-900"
+          className="my-2 text-2xl list-disc list-inside text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 text-lg list-decimal list-inside text-slate-900"
+          className="my-2 text-2xl list-decimal list-inside text-slate-900"
           {...props}
         />
       ),
-      li: (props: ListItemProps) => (
-        <li
-          className="my-2 text-lg text-slate-900"
-          {...props}
-        />
-      ),
+      li: (props: ListItemProps) => {
+        const hasCheckbox = props.className?.includes('task-list-item')
+
+        return (
+          <li
+            className={cn(
+              "my-2 text-2xl text-slate-900",
+              hasCheckbox && "list-none"
+            )}
+            {...props}
+          />
+        )
+      },
+      input: (props: ComponentPropsWithoutRef<'input'>) => {
+        if (props.type === 'checkbox') {
+          return (
+            <Checkbox
+              checked={props.checked}
+              disabled={props.disabled}
+              {...(props as ComponentPropsWithoutRef<'button'>)}
+            />
+          )
+        }
+        return <input {...props} />
+      },
       code: (props: ComponentPropsWithoutRef<'code'>) => {
         const isInline = !props.className?.includes('language-')
 
@@ -162,7 +182,6 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
     []
   )
 
-  // Debounce content changes
   useEffect(() => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)

@@ -195,43 +195,47 @@ const ArticleEditContent = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex gap-2 justify-end">
-            <Button
-              onClick={() => {
-                navigate({
-                  to: '/article/$category/$postTitle',
-                  params: {
-                    category: post.categories?.slug || '',
-                    postTitle: post.slug
-                  }
-                })
-              }}
-              className="px-6 py-8 font-bold rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-50">
-              취소
-            </Button>
-            <Button
-              onClick={() => setShowDraftsList(true)}
-              variant="outline"
-              className="px-6 py-8 font-bold rounded-2xl transition-all duration-300 hover:bg-gray-50">
-              <FolderOpen className="mr-2 w-4 h-4" />
-              임시저장 목록
-            </Button>
-            <Button
-              onClick={handleManualSave}
-              disabled={manualSave.isLoading}
-              variant="outline"
-              className="px-6 py-8 font-bold rounded-2xl transition-all duration-300 hover:bg-gray-50 disabled:opacity-50">
-              <Save className="mr-2 w-4 h-4" />
-              {manualSave.isLoading ? '저장 중...' : '임시저장'}
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={
-                updatePost.isPending || !content.trim() || !title || !categoryId
-              }
-              className="px-6 py-8 font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
-              {updatePost.isPending ? '저장 중...' : '수정 완료'}
-            </Button>
+          <div className="flex gap-2 justify-between">
+            <div className="flex gap-2 justify-center items-center">
+              <Button
+                onClick={handleManualSave}
+                disabled={manualSave.isLoading}
+                variant="outline"
+                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                <Save className="w-6 h-6" />
+                {manualSave.isLoading ? '저장 중...' : '임시저장'}
+              </Button>
+              <Button
+                onClick={() => setShowDraftsList(true)}
+                variant="outline"
+                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                <FolderOpen className="w-6 h-6" />
+                임시저장 목록
+              </Button>
+            </div>
+            <div className="flex gap-2 justify-center items-center">
+              <Button
+                onClick={() => {
+                  navigate({
+                    to: '/article/$category/$postTitle',
+                    params: {
+                      category: post.categories?.slug || '',
+                      postTitle: post.slug
+                    }
+                  })
+                }}
+                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                취소
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                disabled={
+                  updatePost.isPending || !content.trim() || !title || !categoryId
+                }
+                className="px-6 py-8 text-xl font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
+                {updatePost.isPending ? '저장 중...' : '수정 완료'}
+              </Button>
+            </div>
           </div>
         </section>
         {isPreview && (
@@ -243,16 +247,11 @@ const ArticleEditContent = () => {
 
       <EditPanel />
 
-      {showDraftsList && (
-        <div className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[80vh] overflow-auto m-4">
-            <DraftsList
-              onLoadDraft={handleLoadDraft}
-              onClose={() => setShowDraftsList(false)}
-            />
-          </div>
-        </div>
-      )}
+      <DraftsList
+        open={showDraftsList}
+        onLoadDraft={handleLoadDraft}
+        onClose={() => setShowDraftsList(false)}
+      />
     </>
   )
 }

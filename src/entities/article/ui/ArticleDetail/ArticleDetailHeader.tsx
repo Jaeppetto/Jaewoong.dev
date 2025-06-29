@@ -28,8 +28,8 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
       setIsPublished(!isPublished)
       toast.success(
         isPublished
-          ? '게시글이 활성화되었습니다.'
-          : '게시글이 비활성화되었습니다.'
+          ? '게시글이 비활성화되었습니다.'
+          : '게시글이 활성화되었습니다.'
       )
     } catch (error) {
       console.error('Failed to toggle published status:', error)
