@@ -7,15 +7,27 @@ import {
 } from '@/entities'
 import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
+import { useHeaderContext } from '@/shared/context'
 import { MdxRenderer } from '@/widgets'
-import { Separator } from '@radix-ui/react-separator'
 import { Navigate, useParams } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 const ArticleDetailPage = () => {
   const { postTitle, category } = useParams({
     from: '/article_/$category_/$postTitle'
   })
   const { data: post, isLoading, isError } = usePostBySlugQuery(postTitle)
+  const { setArticleTitle } = useHeaderContext()
+
+  useEffect(() => {
+    if (post?.title) {
+      setArticleTitle(post.title)
+    }
+
+    return () => {
+      setArticleTitle(null)
+    }
+  }, [post?.title, setArticleTitle])
 
   if (isError) {
     return (
@@ -37,7 +49,7 @@ const ArticleDetailPage = () => {
 
   return (
     <div className="flex justify-center w-full">
-      <aside className="sticky top-[7.6rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
+      <aside className="sticky top-[6.2rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
           currentPost={postTitle}
@@ -55,7 +67,7 @@ const ArticleDetailPage = () => {
           <MdxRenderer content={post.content} />
         </article>
 
-        <Separator className="h-[0.1rem] bg-slate-200" />
+
 
         <PostTags postId={post.id} />
       </main>

@@ -94,7 +94,7 @@ export const useUpdatePost = () => {
   return useMutation<Post, Error, PostUpdate & { id: string }>({
     mutationFn: postApi.update,
     onSuccess: data => {
-      queryClient.invalidateQueries({ queryKey: postKeys.detail(data.id) })
+      queryClient.invalidateQueries({ queryKey: postKeys.details() })
       queryClient.invalidateQueries({ queryKey: postKeys.lists() })
       if (data.category_id) {
         queryClient.invalidateQueries({

@@ -10,7 +10,7 @@ export const Highlight = ({ children, color = 'yellow' }: HighlightProps) => {
   return (
     <span
       className={cn(
-        'rounded-md border px-2 py-1 text-lg font-bold',
+        'px-2 py-1 text-xl font-bold rounded-md border',
         colorMap[color]
       )}>
       {children}

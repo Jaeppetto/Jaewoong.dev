@@ -86,14 +86,14 @@ const TagSelector = ({
               value={newTagName}
               onChange={e => setNewTagName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="h-[2.9rem] w-40 p-0 px-3 text-[1.8rem]"
+              className="h-[2.9rem] w-40 p-0 px-3 text-xl font-bold placeholder:text-xl"
             />
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCreateTag}
               disabled={!newTagName.trim()}
-              className="px-2 py-0 h-8">
+              className="px-2 py-0 h-8 text-xl font-bold">
               추가
             </Button>
             <Button
@@ -103,7 +103,7 @@ const TagSelector = ({
                 setIsAddingTag(false)
                 setNewTagName('')
               }}
-              className="px-2 py-0 h-8">
+              className="px-2 py-0 h-8 text-xl font-bold">
               취소
             </Button>
           </div>

@@ -4,7 +4,7 @@ import {
   usePostQueryById,
   useUpdatePost
 } from '@/features'
-import { Button, generateSlug } from '@/shared'
+import { Button, generateSlug, useAuth } from '@/shared'
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { toast } from 'sonner'
@@ -13,18 +13,44 @@ import rehypeSanitize from 'rehype-sanitize'
 import { cn } from '@/shared/shadcn-ui/util'
 import { useEffect, useState } from 'react'
 import { usePostTagsQuery, useUpdatePostTags } from '@/features/tag'
+import { useAutoSave } from '@/features/article/hooks/useAutoSave'
+import { useDeleteDraftByType } from '@/features/article/api/draftQueries'
+import { DraftsList } from '@/features/article/components/DraftsList'
+import { Save, FolderOpen } from 'lucide-react'
+type DraftWithCategory = {
+  id: string
+  title: string | null
+  content: string | null
+  description: string | null
+  category_id: string | null
+  thumbnail: string | null
+  author_id: string | null
+  draft_type: string
+  created_at: string | null
+  updated_at: string | null
+  expires_at: string | null
+  categories?: {
+    id: string
+    name: string
+    slug: string
+    emoji: string | null
+  } | null
+}
 
 const ArticleEditContent = () => {
   const { postId } = useParams({ from: '/article_/edit_/$postId' })
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   const { data: post, isLoading, isError } = usePostQueryById(postId)
   const { data: postTags, isLoading: isTagsLoading } = usePostTagsQuery(postId)
 
   const updatePost = useUpdatePost()
   const updatePostTags = useUpdatePostTags()
+  const deleteDraftByType = useDeleteDraftByType()
 
   const [isInitialized, setIsInitialized] = useState(false)
+  const [showDraftsList, setShowDraftsList] = useState(false)
 
   const {
     isPreview,
@@ -37,6 +63,28 @@ const ArticleEditContent = () => {
     handleContentChange,
     updateMeta
   } = useEditorContext()
+
+  // 자동 저장
+  useAutoSave({
+    title,
+    content,
+    description: description || '',
+    categoryId,
+    thumbnail,
+    draftType: 'auto',
+    enabled: isInitialized,
+  })
+
+
+  const manualSave = useAutoSave({
+    title,
+    content,
+    description: description || '',
+    categoryId,
+    thumbnail,
+    draftType: 'manual',
+    enabled: true,
+  })
 
   const handleSubmit = async () => {
     try {
@@ -60,6 +108,13 @@ const ArticleEditContent = () => {
         tagIds: tagIds
       })
 
+      if (user?.id) {
+        await Promise.all([
+          deleteDraftByType.mutateAsync({ authorId: user.id, draftType: 'auto' }),
+          deleteDraftByType.mutateAsync({ authorId: user.id, draftType: 'manual' })
+        ])
+      }
+
       toast.success('게시글이 성공적으로 수정되었습니다.')
       navigate({
         to: '/article/$category/$postTitle',
@@ -72,6 +127,27 @@ const ArticleEditContent = () => {
       console.error('게시글 수정 실패:', error)
       toast.error('게시글 수정에 실패했습니다.')
     }
+  }
+
+  const handleManualSave = async () => {
+    try {
+      await manualSave.manualSave()
+      toast.success('임시저장이 완료되었습니다.')
+    } catch (error) {
+      console.error('Failed to save draft:', error)
+      toast.error('임시저장에 실패했습니다.')
+    }
+  }
+
+  const handleLoadDraft = (draft: DraftWithCategory) => {
+    if (draft.title) updateMeta({ title: draft.title })
+    if (draft.content) handleContentChange(draft.content)
+    if (draft.description) updateMeta({ description: draft.description })
+    if (draft.category_id) updateMeta({ categoryId: draft.category_id })
+    if (draft.thumbnail) updateMeta({ thumbnail: draft.thumbnail })
+
+    setShowDraftsList(false)
+    toast.success('임시저장된 글을 불러왔습니다.')
   }
 
   useEffect(() => {
@@ -119,28 +195,47 @@ const ArticleEditContent = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex gap-2 justify-end">
-            <Button
-              onClick={() => {
-                navigate({
-                  to: '/article/$category/$postTitle',
-                  params: {
-                    category: post.categories?.slug || '',
-                    postTitle: post.slug
-                  }
-                })
-              }}
-              className="px-6 py-8 font-bold rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-50">
-              취소
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={
-                updatePost.isPending || !content.trim() || !title || !categoryId
-              }
-              className="px-6 py-8 font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
-              {updatePost.isPending ? '저장 중...' : '수정 완료'}
-            </Button>
+          <div className="flex gap-2 justify-between">
+            <div className="flex gap-2 justify-center items-center">
+              <Button
+                onClick={handleManualSave}
+                disabled={manualSave.isLoading}
+                variant="outline"
+                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                <Save className="w-6 h-6" />
+                {manualSave.isLoading ? '저장 중...' : '임시저장'}
+              </Button>
+              <Button
+                onClick={() => setShowDraftsList(true)}
+                variant="outline"
+                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                <FolderOpen className="w-6 h-6" />
+                임시저장 목록
+              </Button>
+            </div>
+            <div className="flex gap-2 justify-center items-center">
+              <Button
+                onClick={() => {
+                  navigate({
+                    to: '/article/$category/$postTitle',
+                    params: {
+                      category: post.categories?.slug || '',
+                      postTitle: post.slug
+                    }
+                  })
+                }}
+                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                취소
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                disabled={
+                  updatePost.isPending || !content.trim() || !title || !categoryId
+                }
+                className="px-6 py-8 text-xl font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
+                {updatePost.isPending ? '저장 중...' : '수정 완료'}
+              </Button>
+            </div>
           </div>
         </section>
         {isPreview && (
@@ -151,6 +246,12 @@ const ArticleEditContent = () => {
       </main>
 
       <EditPanel />
+
+      <DraftsList
+        open={showDraftsList}
+        onLoadDraft={handleLoadDraft}
+        onClose={() => setShowDraftsList(false)}
+      />
     </>
   )
 }

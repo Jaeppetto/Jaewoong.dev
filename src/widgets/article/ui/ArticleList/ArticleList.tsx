@@ -38,6 +38,7 @@ const ArticleList = ({
     ? isTagLoading || isTagPending
     : isCategoryLoading || isCategoryPending
   const data = isTagType ? tagData?.data : categoryData?.data
+  const total = isTagType ? tagData?.total : categoryData?.total
 
   if (isLoading)
     return <ArticleListSkeleton length={type === 'recommend' ? 2 : undefined} />
@@ -79,7 +80,7 @@ const ArticleList = ({
       <Pagination
         page={page}
         pageSize={pageSize}
-        totalItems={data?.length ?? 0}
+        totalItems={total ?? 0}
         className="flex w-full justify-center"
       />
     </>
