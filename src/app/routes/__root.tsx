@@ -9,7 +9,7 @@ export const Route = createRootRoute({
     <HeaderProvider>
       <ScrollArea className="flex h-[100dvh] w-full flex-1  justify-between bg-white">
         <Header />
-        <main className="mt-[7.6rem] flex min-h-[calc(100dvh-15rem)] w-full flex-1 justify-center px-10">
+        <main className="mt-[6.2rem] flex min-h-[calc(100dvh-13.6rem)] w-full flex-1 justify-center px-10">
           <Outlet />
         </main>
         <Footer />

@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <div
       className={cn(
-        'fixed left-0 right-0 top-0 z-50 flex h-[7.6rem] w-[100dvw] items-center justify-center border-b border-none bg-white/70 backdrop-blur-sm transition-shadow duration-300'
+        'fixed left-0 right-0 top-0 z-50 flex h-[6.2rem] w-[100dvw] items-center justify-center border-b border-none bg-white/70 backdrop-blur-sm transition-shadow duration-300'
       )}>
       <div className="flex h-full w-full max-w-[108rem] items-center justify-between px-10">
         <div className="relative flex w-full items-center gap-[3.2rem]">

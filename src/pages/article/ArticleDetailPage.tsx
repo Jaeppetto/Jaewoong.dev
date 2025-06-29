@@ -50,7 +50,7 @@ const ArticleDetailPage = () => {
 
   return (
     <div className="flex justify-center w-full">
-      <aside className="sticky top-[7.6rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
+      <aside className="sticky top-[6.2rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
           currentPost={postTitle}
