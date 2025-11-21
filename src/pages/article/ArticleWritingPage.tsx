@@ -4,8 +4,6 @@ import { Button, generateSlug, useAuth } from '@/shared'
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import MDEditor from '@uiw/react-md-editor'
-import rehypeSanitize from 'rehype-sanitize'
 import { cn } from '@/shared/shadcn-ui/util'
 import { useUpdatePostTags } from '@/features/tag'
 import { useAutoSave } from '@/features/article/hooks/useAutoSave'
@@ -13,6 +11,7 @@ import { useDeleteDraftByType } from '@/features/article/api/draftQueries'
 import { DraftsList } from '@/features/article/components/DraftsList'
 import { Save, FolderOpen } from 'lucide-react'
 import { useState } from 'react'
+import { SimpleEditor } from '@/shared/tiptap/templates/simple/simple-editor'
 type DraftWithCategory = {
   id: string
   title: string | null
@@ -60,7 +59,7 @@ const ArticleWritingPageContent = () => {
     categoryId,
     thumbnail,
     draftType: 'auto',
-    enabled: true,
+    enabled: true
   })
 
   const manualSave = useAutoSave({
@@ -70,7 +69,7 @@ const ArticleWritingPageContent = () => {
     categoryId,
     thumbnail,
     draftType: 'manual',
-    enabled: true,
+    enabled: true
   })
 
   const handleSubmit = async () => {
@@ -95,8 +94,14 @@ const ArticleWritingPageContent = () => {
 
       if (user?.id) {
         await Promise.all([
-          deleteDraftByType.mutateAsync({ authorId: user.id, draftType: 'auto' }),
-          deleteDraftByType.mutateAsync({ authorId: user.id, draftType: 'manual' })
+          deleteDraftByType.mutateAsync({
+            authorId: user.id,
+            draftType: 'auto'
+          }),
+          deleteDraftByType.mutateAsync({
+            authorId: user.id,
+            draftType: 'manual'
+          })
         ])
       }
 
@@ -149,30 +154,25 @@ const ArticleWritingPageContent = () => {
             tagIds={tagIds}
             onMetaChange={(field, value) => updateMeta(field, value)}
           />
-          <MDEditor
+          <SimpleEditor
             value={content}
-            highlightEnable
-            onChange={handleContentChange}
-            preview="edit"
+            onChange={nextValue => handleContentChange(nextValue)}
             className="min-h-[40rem]"
-            previewOptions={{
-              rehypePlugins: [[rehypeSanitize]]
-            }}
           />
-          <div className="flex gap-2 justify-between">
-            <div className="flex gap-2 justify-center items-center">
+          <div className="flex justify-between gap-2">
+            <div className="flex items-center justify-center gap-2">
               <Button
                 onClick={handleManualSave}
                 disabled={manualSave.isLoading}
                 variant="outline"
-                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                className="px-6 py-8 text-xl font-bold text-black transition-all duration-300 border-none shadow-none rounded-2xl bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
                 <Save className="w-6 h-6" />
                 {manualSave.isLoading ? '저장 중...' : '임시저장'}
               </Button>
               <Button
                 onClick={() => setShowDraftsList(true)}
                 variant="outline"
-                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                className="px-6 py-8 text-xl font-bold text-black transition-all duration-300 border-none shadow-none rounded-2xl bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
                 <FolderOpen className="w-6 h-6" />
                 임시저장 목록
               </Button>
@@ -182,7 +182,7 @@ const ArticleWritingPageContent = () => {
               disabled={
                 createPost.isPending || !content.trim() || !title || !categoryId
               }
-              className="px-6 py-8 text-xl font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
+              className="px-6 py-8 text-xl font-bold text-white transition-all duration-300 bg-black rounded-2xl hover:bg-black/80 disabled:opacity-50">
               {createPost.isPending ? '저장 중...' : '발행'}
             </Button>
           </div>

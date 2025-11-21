@@ -8,8 +8,6 @@ import { Button, generateSlug, useAuth } from '@/shared'
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import MDEditor from '@uiw/react-md-editor'
-import rehypeSanitize from 'rehype-sanitize'
 import { cn } from '@/shared/shadcn-ui/util'
 import { useEffect, useState } from 'react'
 import { usePostTagsQuery, useUpdatePostTags } from '@/features/tag'
@@ -17,6 +15,7 @@ import { useAutoSave } from '@/features/article/hooks/useAutoSave'
 import { useDeleteDraftByType } from '@/features/article/api/draftQueries'
 import { DraftsList } from '@/features/article/components/DraftsList'
 import { Save, FolderOpen } from 'lucide-react'
+import { SimpleEditor } from '@/shared/tiptap/templates/simple/simple-editor'
 type DraftWithCategory = {
   id: string
   title: string | null
@@ -185,15 +184,10 @@ const ArticleEditContent = () => {
             tagIds={tagIds}
             onMetaChange={(field, value) => updateMeta(field, value)}
           />
-          <MDEditor
+          <SimpleEditor
             value={content}
-            highlightEnable
-            onChange={handleContentChange}
-            preview="edit"
+            onChange={nextValue => handleContentChange(nextValue)}
             className="min-h-[40rem]"
-            previewOptions={{
-              rehypePlugins: [[rehypeSanitize]]
-            }}
           />
           <div className="flex gap-2 justify-between">
             <div className="flex gap-2 justify-center items-center">

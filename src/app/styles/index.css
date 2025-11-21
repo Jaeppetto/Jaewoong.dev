@@ -1,3 +1,6 @@
+@import '../../styles/_variables.scss';
+@import '../../styles/_keyframe-animations.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -148,8 +151,6 @@ h1 {
     @apply bg-background text-foreground;
   }
 }
-
-
 
 @layer base {
   * {
