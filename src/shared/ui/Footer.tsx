@@ -100,7 +100,7 @@ const Footer = () => {
           )}
         </div>
         <span className="text-lg text-slate-400">
-          copyright ©2025 All rights reserved by Jaeppetto(황재웅)
+          copyright ©2025-2026 All rights reserved by Jaeppetto(황재웅)
         </span>
       </div>
     </div>

@@ -277,32 +277,33 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="pl-4 text-2xl italic font-bold border-l-4 border-slate-900 text-slate-900"
+          className="border-l-4 border-slate-900 pl-4 text-2xl font-bold italic text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 text-2xl list-disc list-inside text-slate-900"
+          className="my-2 list-inside list-disc text-2xl text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 text-2xl list-decimal list-inside text-slate-900"
+          className="my-2 list-inside list-decimal text-2xl text-slate-900"
           {...props}
         />
       ),
-      li: (props: ListItemProps) => {
-        const hasCheckbox = props.className?.includes('task-list-item')
+      li: ({ className, ...rest }: ListItemProps) => {
+        const hasCheckbox = className?.includes('task-list-item')
 
         return (
           <li
             className={cn(
               'my-2 text-2xl text-slate-900',
+              className,
               hasCheckbox && 'list-none'
             )}
-            {...props}
+            {...rest}
           />
         )
       },
@@ -448,7 +449,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
     <MDXProvider components={components}>
       <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
         {isLoading && (
-          <div className="absolute px-2 py-1 text-xs text-gray-500 bg-white rounded shadow right-2 top-2 dark:bg-gray-800">
+          <div className="absolute right-2 top-2 rounded bg-white px-2 py-1 text-xs text-gray-500 shadow dark:bg-gray-800">
             업데이트 중...
           </div>
         )}
