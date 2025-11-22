@@ -230,15 +230,10 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
             }}
             className={cn(
               baseClassName,
-              'group relative cursor-pointer focus:outline-none',
+              'cursor-pointer focus:outline-none',
               className
             )}
             onClick={handleClick}>
-            <span
-              aria-hidden="true"
-              className="absolute text-xl transition-opacity opacity-0 -left-6 top-1 text-slate-400 group-hover:opacity-100">
-              #
-            </span>
             {children}
           </Tag>
         )

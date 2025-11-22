@@ -1,4 +1,4 @@
-const DEFAULT_SCROLL_OFFSET = 160
+const DEFAULT_SCROLL_OFFSET = 60
 
 type ScrollIntoViewOptions = {
   offset?: number
@@ -42,7 +42,10 @@ const getScrollContainer = (
 
 export const scrollIntoViewWithOffset = (
   element: HTMLElement,
-  { offset = DEFAULT_SCROLL_OFFSET, behavior = 'smooth' }: ScrollIntoViewOptions = {}
+  {
+    offset = DEFAULT_SCROLL_OFFSET,
+    behavior = 'smooth'
+  }: ScrollIntoViewOptions = {}
 ) => {
   if (typeof window === 'undefined' || !element) {
     return

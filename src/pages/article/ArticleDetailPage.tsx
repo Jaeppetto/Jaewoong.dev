@@ -9,7 +9,7 @@ import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
 import { scrollIntoViewWithOffset } from '@/shared/util'
 import { useHeaderContext } from '@/shared/context'
-import { MdxRenderer } from '@/widgets'
+import { MdxRenderer, FloatingIndex } from '@/widgets'
 import { Navigate, useParams } from '@tanstack/react-router'
 import { useCallback, useEffect } from 'react'
 
@@ -102,7 +102,7 @@ const ArticleDetailPage = () => {
   }
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex w-full justify-center">
       <aside className="sticky top-[6.2rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
@@ -122,6 +122,8 @@ const ArticleDetailPage = () => {
         </article>
         <PostTags postId={post.id} />
       </main>
+
+      <FloatingIndex />
     </div>
   )
 }
