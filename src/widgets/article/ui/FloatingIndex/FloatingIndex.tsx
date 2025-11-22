@@ -51,7 +51,7 @@ const FloatingIndex = ({ className }: FloatingIndexProps) => {
   return (
     <aside
       className={cn(
-        'sticky top-[6.2rem] hidden h-fit max-h-[calc(100vh-8rem)] p-[2rem] pr-0 xl:block',
+        'sticky top-[6.2rem] hidden h-fit max-h-[calc(100vh-8rem)] p-[2rem] pr-0 pt-[1.4rem] xl:block',
         className
       )}>
       <nav className="h-full w-[18rem]">
@@ -65,7 +65,7 @@ const FloatingIndex = ({ className }: FloatingIndexProps) => {
                 key={heading.id}
                 className={cn(
                   getLevelClassName(heading.level),
-                  'rounded-lg bg-white hover:bg-slate-50'
+                  'rounded-[0.8rem] bg-white hover:bg-slate-50'
                 )}>
                 <button
                   onClick={() => handleHeadingClick(heading.id)}

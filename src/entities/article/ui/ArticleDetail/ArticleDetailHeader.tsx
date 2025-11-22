@@ -37,7 +37,7 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
   }
 
   return (
-    <header className="flex flex-col gap-3">
+    <header className="flex flex-col gap-6">
       {post.categories && (
         <div className="inline">
           <Link
@@ -59,14 +59,14 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
           </span>
         )}
 
-        <div className="flex gap-2 justify-between items-center">
+        <div className="flex items-center justify-between gap-2">
           {post.created_at && (
             <time className="text-[1.4rem] font-normal leading-[1.6rem] text-slate-400">
               {dayjs(post.created_at).format('YYYY.MM.DD')}
             </time>
           )}
           {isAdmin && (
-            <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 size="icon"

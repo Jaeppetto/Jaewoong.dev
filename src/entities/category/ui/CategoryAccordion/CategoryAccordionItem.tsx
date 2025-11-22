@@ -23,12 +23,12 @@ const CategoryAccordionItem = ({
   const { data: posts } = usePostsByCategoryQuery(category.id)
 
   return (
-    <ul>
+    <ul className="space-y-2">
       {posts?.map(post => (
         <li key={post.id}>
           <Button
             variant="link"
-            className="flex w-full items-center justify-start gap-2 bg-transparent px-0 text-[1.2rem] font-normal leading-[1.6rem] transition-all hover:font-bold hover:no-underline"
+            className="flex w-full items-center justify-start gap-2 bg-transparent px-0 pl-4 text-[1.4rem] font-normal leading-[1.6rem] transition-all hover:translate-x-1 hover:font-bold hover:no-underline"
             onClick={() => {
               navigate({
                 to: '/article/$category/$postTitle',

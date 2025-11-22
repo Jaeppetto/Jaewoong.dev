@@ -1,4 +1,4 @@
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import { GitHubLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons'
 
 import {
   Avatar,
@@ -32,9 +32,18 @@ const Footer = () => {
             <GitHubLogoIcon
               width={20}
               height={20}
-              className="text-slate-400 transition-colors duration-300 ease-in-out"
+              className="text-slate-400 transition-colors duration-300 ease-in-out hover:text-slate-500"
             />
-            <span className="text-lg text-slate-400">깃허브</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/jaeppetto/"
+            target="_blank"
+            className="flex items-center gap-2">
+            <LinkedInLogoIcon
+              width={20}
+              height={20}
+              className="text-slate-400 transition-colors duration-300 ease-in-out hover:text-slate-500"
+            />
           </a>
           <a
             href="mailto:noa9925@gmail.com"
@@ -43,9 +52,8 @@ const Footer = () => {
             <Mailbox
               width={20}
               height={20}
-              className="text-slate-400"
+              className="text-slate-400 transition-colors duration-300 ease-in-out hover:text-slate-500"
             />
-            <span className="text-lg text-slate-400">메일</span>
           </a>
           {isAuthenticated ? (
             <DropdownMenu>
@@ -86,6 +94,7 @@ const Footer = () => {
                 height={18}
                 className="text-slate-400"
               />
+
               <span className="text-lg text-slate-400">로그인</span>
             </Button>
           )}
