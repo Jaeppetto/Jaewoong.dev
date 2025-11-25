@@ -1,4 +1,11 @@
-import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+  memo
+} from 'react'
 import * as runtime from 'react/jsx-runtime'
 import { evaluate } from '@mdx-js/mdx'
 import { MDXProvider } from '@mdx-js/react'
@@ -17,6 +24,7 @@ import { InlineCode } from '../../../../entities/mdx/ui/InlineCode/InlineCode'
 import { CodeBlock } from '../../../../entities/mdx/ui/CodeBlock/CodeBlock'
 import { Checkbox } from '@/shared/shadcn-ui/ui/checkbox'
 import { cn } from '@/shared/shadcn-ui/util'
+import { scrollIntoViewWithOffset } from '@/shared/util'
 
 interface MdxRendererProps {
   content: string
@@ -25,6 +33,93 @@ interface MdxRendererProps {
 
 const mdxCache = new Map<string, React.ComponentType>()
 const MAX_CACHE_SIZE = 50
+
+const slugifyHeadingText = (value: string) => {
+  const sanitized = value
+    .trim()
+    .replace(/[^\p{L}\p{N}\s_-]/gu, '')
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+
+  return sanitized || 'heading'
+}
+
+const extractTextFromChildren = (children: React.ReactNode): string => {
+  if (children === null || children === undefined) {
+    return ''
+  }
+
+  if (typeof children === 'string' || typeof children === 'number') {
+    return String(children)
+  }
+
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join('')
+  }
+
+  if (React.isValidElement(children)) {
+    return extractTextFromChildren(children.props.children)
+  }
+
+  return ''
+}
+
+type MdastNode = {
+  type?: string
+  children?: MdastNode[]
+  value?: string
+  data?: {
+    hProperties?: Record<string, unknown>
+  }
+}
+
+const remarkHeadingIds = () => {
+  return (tree: MdastNode) => {
+    const slugCounts = new Map<string, number>()
+
+    const getText = (node?: MdastNode): string => {
+      if (!node) {
+        return ''
+      }
+
+      if (typeof node.value === 'string') {
+        return node.value
+      }
+
+      if (Array.isArray(node.children)) {
+        return node.children.map(getText).join('')
+      }
+
+      return ''
+    }
+
+    const visitNode = (node?: MdastNode) => {
+      if (!node) {
+        return
+      }
+
+      if (node.type === 'heading') {
+        const headingText = getText(node)
+        const baseSlug = slugifyHeadingText(headingText || 'heading')
+        const count = slugCounts.get(baseSlug) ?? 0
+        slugCounts.set(baseSlug, count + 1)
+        const slug = count === 0 ? baseSlug : `${baseSlug}-${count}`
+
+        node.data = {
+          ...(node.data || {}),
+          hProperties: {
+            ...(node.data?.hProperties || {}),
+            id: node.data?.hProperties?.id ?? slug
+          }
+        }
+      }
+
+      node.children?.forEach(visitNode)
+    }
+
+    visitNode(tree)
+  }
+}
 
 const cleanupCache = () => {
   if (mdxCache.size > MAX_CACHE_SIZE) {
@@ -52,27 +147,110 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [debouncedContent, setDebouncedContent] = useState(content)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const copyHeadingLink = useCallback(async (headingId: string) => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    const { origin, pathname, search } = window.location
+    const encodedHash = `#${encodeURIComponent(headingId)}`
+    const url = `${origin}${pathname}${search}${encodedHash}`
+
+    window.history.replaceState(null, '', `${pathname}${search}${encodedHash}`)
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(url)
+        return
+      } catch (error) {
+        console.error('Clipboard copy failed:', error)
+      }
+    }
+
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    try {
+      const textarea = document.createElement('textarea')
+      textarea.value = url
+      textarea.setAttribute('readonly', '')
+      textarea.style.position = 'absolute'
+      textarea.style.left = '-9999px'
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+    } catch (error) {
+      console.error('Fallback copy failed:', error)
+    }
+  }, [])
+  const createHeading = useCallback(
+    (Tag: 'h1' | 'h2' | 'h3', baseClassName: string) => {
+      const HeadingComponent = (props: HeadingProps) => {
+        const { children, className, id, onClick, ...rest } = props
+        const fallbackIdRef = useRef<string | undefined>()
+        const headingElementRef = useRef<HTMLHeadingElement | null>(null)
+
+        if (!fallbackIdRef.current) {
+          const text = extractTextFromChildren(children)
+          fallbackIdRef.current = text ? slugifyHeadingText(text) : undefined
+        }
+
+        const headingId = id || fallbackIdRef.current
+
+        const handleClick = (event: React.MouseEvent<HTMLHeadingElement>) => {
+          onClick?.(event)
+
+          if (event.defaultPrevented || !headingId) {
+            return
+          }
+
+          void copyHeadingLink(headingId)
+
+          const target = headingElementRef.current
+
+          if (target) {
+            scrollIntoViewWithOffset(target)
+
+            if ('focus' in target && typeof target.focus === 'function') {
+              target.focus({ preventScroll: true })
+            }
+          }
+        }
+
+        return (
+          <Tag
+            {...rest}
+            id={headingId}
+            tabIndex={-1}
+            title="헤더 링크 복사"
+            ref={node => {
+              headingElementRef.current = node
+            }}
+            className={cn(
+              baseClassName,
+              'cursor-pointer focus:outline-none',
+              className
+            )}
+            onClick={handleClick}>
+            {children}
+          </Tag>
+        )
+      }
+
+      HeadingComponent.displayName = `Heading${Tag.toUpperCase()}`
+
+      return HeadingComponent
+    },
+    [copyHeadingLink]
+  )
 
   const components = useMemo<MDXComponents>(
     () => ({
-      h1: (props: HeadingProps) => (
-        <h1
-          className="my-4 text-5xl font-bold text-slate-900"
-          {...props}
-        />
-      ),
-      h2: (props: HeadingProps) => (
-        <h2
-          className="my-3 text-4xl font-semibold text-slate-900"
-          {...props}
-        />
-      ),
-      h3: (props: HeadingProps) => (
-        <h3
-          className="my-2 text-3xl font-semibold text-slate-900"
-          {...props}
-        />
-      ),
+      h1: createHeading('h1', 'my-4 text-5xl font-bold text-slate-900'),
+      h2: createHeading('h2', 'my-3 text-4xl font-semibold text-slate-900'),
+      h3: createHeading('h3', 'my-2 text-3xl font-semibold text-slate-900'),
       p: (props: ParagraphProps) => (
         <p
           className="my-3 text-2xl text-slate-900"
@@ -99,32 +277,33 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="pl-4 text-2xl italic font-bold border-l-4 border-slate-900 text-slate-900"
+          className="border-l-4 border-slate-900 pl-4 text-2xl font-bold italic text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 text-2xl list-disc list-inside text-slate-900"
+          className="my-2 list-inside list-disc text-2xl text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 text-2xl list-decimal list-inside text-slate-900"
+          className="my-2 list-inside list-decimal text-2xl text-slate-900"
           {...props}
         />
       ),
-      li: (props: ListItemProps) => {
-        const hasCheckbox = props.className?.includes('task-list-item')
+      li: ({ className, ...rest }: ListItemProps) => {
+        const hasCheckbox = className?.includes('task-list-item')
 
         return (
           <li
             className={cn(
-              "my-2 text-2xl text-slate-900",
-              hasCheckbox && "list-none"
+              'my-2 text-2xl text-slate-900',
+              className,
+              hasCheckbox && 'list-none'
             )}
-            {...props}
+            {...rest}
           />
         )
       },
@@ -179,7 +358,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
         <CodeBlock {...props} />
       )
     }),
-    []
+    [createHeading]
   )
 
   useEffect(() => {
@@ -210,7 +389,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       try {
         const { default: MDXContent } = await evaluate(mdxContent, {
           ...runtime,
-          remarkPlugins: [remarkGfm],
+          remarkPlugins: [remarkGfm, remarkHeadingIds],
           useMDXComponents: () => components
         })
 
@@ -259,7 +438,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
   if (!Content) {
     return (
       <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
-        <div className="flex justify-center items-center py-8 text-gray-500">
+        <div className="flex items-center justify-center py-8 text-gray-500">
           로딩 중...
         </div>
       </div>
@@ -270,7 +449,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
     <MDXProvider components={components}>
       <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
         {isLoading && (
-          <div className="absolute top-2 right-2 px-2 py-1 text-xs text-gray-500 bg-white rounded shadow dark:bg-gray-800">
+          <div className="absolute right-2 top-2 rounded bg-white px-2 py-1 text-xs text-gray-500 shadow dark:bg-gray-800">
             업데이트 중...
           </div>
         )}

@@ -72,10 +72,10 @@ const OptimizedImage = ({
     return (
       <span
         className={cn(
-          'flex gap-2 items-center text-sm text-slate-500',
+          'flex w-fit items-center gap-2 rounded-lg bg-slate-50 p-2 text-[1.4rem] font-semibold text-slate-500',
           className
         )}>
-        <ImageIcon className="size-4" />
+        <ImageIcon className="size-10" />
         이미지를 불러올 수 없습니다
       </span>
     )
@@ -95,7 +95,7 @@ const OptimizedImage = ({
       onLoad={handleLoad}
       onError={handleError}
       className={cn(
-        'block max-w-full h-auto rounded-lg transition-opacity duration-300',
+        'block h-auto max-w-full rounded-lg transition-opacity duration-300',
         isLoaded ? 'opacity-100' : 'opacity-30',
         className
       )}

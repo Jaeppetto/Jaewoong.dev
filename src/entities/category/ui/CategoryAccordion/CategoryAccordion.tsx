@@ -28,11 +28,11 @@ export const CategoryAccordion = ({
         <AccordionItem
           value={category.slug}
           key={category.id}
-          className="border-slate-200">
-          <AccordionTrigger className="border-b bg-transparent py-[1.2rem] text-[1.4rem] font-normal leading-[2rem] text-slate-900 hover:font-bold hover:no-underline">
+          className="pb-4">
+          <AccordionTrigger className="group/category-accordion-trigger bg-transparent py-0 pb-1 text-[1.6rem] font-normal leading-[2rem] text-slate-900 hover:no-underline">
             {category.name}
           </AccordionTrigger>
-          <AccordionContent className="w-full bg-transparent border-b">
+          <AccordionContent className="w-full bg-transparent">
             <CategoryAccordionItem
               category={category}
               currentPost={currentPost}

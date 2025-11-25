@@ -7,10 +7,11 @@ import {
 } from '@/entities'
 import { usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
+import { scrollIntoViewWithOffset } from '@/shared/util'
 import { useHeaderContext } from '@/shared/context'
-import { MdxRenderer } from '@/widgets'
+import { MdxRenderer, FloatingIndex } from '@/widgets'
 import { Navigate, useParams } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 const ArticleDetailPage = () => {
   const { postTitle, category } = useParams({
@@ -18,6 +19,41 @@ const ArticleDetailPage = () => {
   })
   const { data: post, isLoading, isError } = usePostBySlugQuery(postTitle)
   const { setArticleTitle } = useHeaderContext()
+
+  const timeoutIdRef = useRef<number | null>(null)
+
+  const scrollToHash = useCallback((attempt = 0) => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    const rawHash = window.location.hash
+    if (!rawHash) {
+      return
+    }
+
+    const targetId = decodeURIComponent(rawHash.replace('#', ''))
+    if (!targetId) {
+      return
+    }
+
+    const target = document.getElementById(targetId)
+    if (target) {
+      scrollIntoViewWithOffset(target)
+
+      if ('focus' in target && typeof target.focus === 'function') {
+        target.focus({ preventScroll: true })
+      }
+
+      return
+    }
+
+    if (attempt < 10) {
+      timeoutIdRef.current = window.setTimeout(() => {
+        scrollToHash(attempt + 1)
+      }, 100)
+    }
+  }, [])
 
   useEffect(() => {
     if (post?.title) {
@@ -28,6 +64,33 @@ const ArticleDetailPage = () => {
       setArticleTitle(null)
     }
   }, [post?.title, setArticleTitle])
+
+  useEffect(() => {
+    if (!post?.content) {
+      return
+    }
+
+    scrollToHash()
+
+    const handleHashChange = () => {
+      scrollToHash()
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+    }
+  }, [post?.content, scrollToHash])
+
+  useEffect(() => {
+    return () => {
+      if (timeoutIdRef.current) {
+        window.clearTimeout(timeoutIdRef.current)
+        timeoutIdRef.current = null
+      }
+    }
+  }, [])
 
   if (isError) {
     return (
@@ -66,11 +129,10 @@ const ArticleDetailPage = () => {
           )}>
           <MdxRenderer content={post.content} />
         </article>
-
-
-
         <PostTags postId={post.id} />
       </main>
+
+      <FloatingIndex />
     </div>
   )
 }
