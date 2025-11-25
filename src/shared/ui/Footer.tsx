@@ -28,31 +28,34 @@ const Footer = () => {
           <a
             href="https://github.com/Jaeppetto"
             target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2">
             <GitHubLogoIcon
               width={20}
               height={20}
-              className="text-slate-400 transition-colors duration-300 ease-in-out hover:text-slate-500"
+              className="transition-colors duration-300 ease-in-out text-slate-400 hover:text-slate-500"
             />
           </a>
           <a
             href="https://www.linkedin.com/in/jaeppetto/"
             target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2">
             <LinkedInLogoIcon
               width={20}
               height={20}
-              className="text-slate-400 transition-colors duration-300 ease-in-out hover:text-slate-500"
+              className="transition-colors duration-300 ease-in-out text-slate-400 hover:text-slate-500"
             />
           </a>
           <a
             href="mailto:noa9925@gmail.com"
             target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2">
             <Mailbox
               width={20}
               height={20}
-              className="text-slate-400 transition-colors duration-300 ease-in-out hover:text-slate-500"
+              className="transition-colors duration-300 ease-in-out text-slate-400 hover:text-slate-500"
             />
           </a>
           {isAuthenticated ? (
@@ -60,8 +63,8 @@ const Footer = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-8 w-8 min-w-0 rounded-full p-2">
-                  <Avatar className="h-8 w-8">
+                  className="relative w-8 h-8 min-w-0 p-2 rounded-full">
+                  <Avatar className="w-8 h-8">
                     <AvatarImage
                       src={user?.user_metadata.avatar_url}
                       alt={user?.email}
@@ -87,7 +90,7 @@ const Footer = () => {
             </DropdownMenu>
           ) : (
             <Button
-              className="flex min-h-0 items-center gap-2 border-none bg-transparent p-0 text-slate-400 shadow-none hover:bg-transparent"
+              className="flex items-center min-h-0 gap-2 p-0 bg-transparent border-none shadow-none text-slate-400 hover:bg-transparent"
               onClick={signInWithGoogle}>
               <KeyRound
                 width={18}

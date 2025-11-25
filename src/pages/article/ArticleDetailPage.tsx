@@ -11,7 +11,7 @@ import { scrollIntoViewWithOffset } from '@/shared/util'
 import { useHeaderContext } from '@/shared/context'
 import { MdxRenderer, FloatingIndex } from '@/widgets'
 import { Navigate, useParams } from '@tanstack/react-router'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 const ArticleDetailPage = () => {
   const { postTitle, category } = useParams({
@@ -19,6 +19,8 @@ const ArticleDetailPage = () => {
   })
   const { data: post, isLoading, isError } = usePostBySlugQuery(postTitle)
   const { setArticleTitle } = useHeaderContext()
+
+  const timeoutIdRef = useRef<number | null>(null)
 
   const scrollToHash = useCallback((attempt = 0) => {
     if (typeof window === 'undefined') {
@@ -47,7 +49,9 @@ const ArticleDetailPage = () => {
     }
 
     if (attempt < 10) {
-      window.setTimeout(() => scrollToHash(attempt + 1), 100)
+      timeoutIdRef.current = window.setTimeout(() => {
+        scrollToHash(attempt + 1)
+      }, 100)
     }
   }, [])
 
@@ -68,10 +72,6 @@ const ArticleDetailPage = () => {
 
     scrollToHash()
 
-    if (typeof window === 'undefined') {
-      return
-    }
-
     const handleHashChange = () => {
       scrollToHash()
     }
@@ -82,6 +82,15 @@ const ArticleDetailPage = () => {
       window.removeEventListener('hashchange', handleHashChange)
     }
   }, [post?.content, scrollToHash])
+
+  useEffect(() => {
+    return () => {
+      if (timeoutIdRef.current) {
+        window.clearTimeout(timeoutIdRef.current)
+        timeoutIdRef.current = null
+      }
+    }
+  }, [])
 
   if (isError) {
     return (
@@ -102,7 +111,7 @@ const ArticleDetailPage = () => {
   }
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex justify-center w-full">
       <aside className="sticky top-[6.2rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
