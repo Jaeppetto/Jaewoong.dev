@@ -33,6 +33,18 @@ const resolveUrl = (pathOrUrl?: string) => {
   return baseUrl ? `${baseUrl}${normalizedPath}` : normalizedPath
 }
 
+const buildOgImagePath = (title: string) => {
+  const segments = title
+    .split(/[\s/]+/)
+    .map(segment => segment.trim())
+    .filter(Boolean)
+    .map(segment => encodeURIComponent(segment))
+  const path = segments.length
+    ? segments.join('/')
+    : encodeURIComponent(SITE_NAME)
+  return `/api/og/${path}`
+}
+
 const formatTitle = (title: string) => {
   if (!title) {
     return SITE_NAME
@@ -58,7 +70,8 @@ export const buildMeta = ({
   const resolvedTitle = formatTitle(title)
   const resolvedDescription = description?.trim() || DEFAULT_DESCRIPTION
   const resolvedUrl = resolveUrl(url || path)
-  const resolvedImage = resolveUrl(image || DEFAULT_IMAGE)
+  const ogTitle = title?.trim() || SITE_NAME
+  const resolvedImage = resolveUrl(image || buildOgImagePath(ogTitle))
 
   return {
     title: resolvedTitle,
@@ -99,12 +112,16 @@ export const buildArticleJsonLd = ({
   publishedTime?: string | null
   modifiedTime?: string | null
 }) => {
+  const resolvedImage = image
+    ? resolveUrl(image)
+    : resolveUrl(buildOgImagePath(title))
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: title,
     description: description?.trim() || DEFAULT_DESCRIPTION,
-    image: image ? [resolveUrl(image)] : undefined,
+    image: resolvedImage ? [resolvedImage] : undefined,
     datePublished: publishedTime || undefined,
     dateModified: modifiedTime || undefined,
     mainEntityOfPage: url

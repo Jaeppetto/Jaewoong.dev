@@ -73,7 +73,11 @@ const buildSitemap = ({ urls }) => {
 }
 
 const buildRobots = siteUrl => {
+  const disallowPaths = ['/auth/', '/article/edit/', '/article/writing']
   const lines = ['User-agent: *', 'Allow: /']
+  disallowPaths.forEach(pathname => {
+    lines.push(`Disallow: ${pathname}`)
+  })
   if (siteUrl) {
     lines.push(`Sitemap: ${siteUrl}/sitemap.xml`)
   }
