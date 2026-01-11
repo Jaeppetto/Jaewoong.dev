@@ -1,4 +1,5 @@
 import { ArticleCategoryPage } from '@/pages/article'
+import { buildMeta } from '@/shared/util'
 import { createFileRoute } from '@tanstack/react-router'
 
 /**
@@ -11,6 +12,12 @@ export const Route = createFileRoute('/article_/$category')({
   loader: ({ params }) => ({
     categorySlug: params.category
   }),
+  head: ({ params }) =>
+    buildMeta({
+      title: `${params.category} 카테고리`,
+      description: `${params.category} 카테고리의 게시글 목록입니다.`,
+      path: `/article/${params.category}`
+    }),
   validateSearch: (search: Record<string, unknown>): { page: number } => {
     return { page: Number(search?.page ?? 1) }
   }

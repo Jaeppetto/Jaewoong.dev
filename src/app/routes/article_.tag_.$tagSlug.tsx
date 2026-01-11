@@ -1,4 +1,5 @@
 import { ArticleTagPage } from '@/pages'
+import { buildMeta } from '@/shared/util'
 import { createFileRoute } from '@tanstack/react-router'
 
 /**
@@ -11,6 +12,12 @@ export const Route = createFileRoute('/article_/tag_/$tagSlug')({
   loader: ({ params }) => ({
     tagSlug: params.tagSlug
   }),
+  head: ({ params }) =>
+    buildMeta({
+      title: `#${params.tagSlug} 태그`,
+      description: `${params.tagSlug} 태그가 포함된 게시글 목록입니다.`,
+      path: `/article/tag/${params.tagSlug}`
+    }),
   validateSearch: (search: Record<string, unknown>): { page: number } => {
     return { page: Number(search?.page ?? 1) }
   }

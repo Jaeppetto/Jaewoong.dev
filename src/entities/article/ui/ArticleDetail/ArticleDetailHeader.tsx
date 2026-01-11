@@ -41,7 +41,9 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
       {post.categories && (
         <div className="inline">
           <Link
-            to={`/article/${post.categories.slug}`}
+            search={{ page: 1 }}
+            to={`/article/$category`}
+            params={{ category: post.categories.slug }}
             className="rounded-[0.8rem] px-4 py-2 text-[1.6rem] font-normal leading-[2rem] text-slate-900 hover:bg-slate-50 hover:text-slate-900">
             {post.categories.emoji} {post.categories.name}
           </Link>
