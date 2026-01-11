@@ -58,7 +58,9 @@ const extractTextFromChildren = (children: React.ReactNode): string => {
   }
 
   if (React.isValidElement(children)) {
-    return extractTextFromChildren(children.props.children)
+    return extractTextFromChildren(
+      (children.props as { children: React.ReactNode }).children
+    )
   }
 
   return ''
@@ -146,7 +148,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
   const [Content, setContent] = useState<React.ComponentType | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [debouncedContent, setDebouncedContent] = useState(content)
-  const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const copyHeadingLink = useCallback(async (headingId: string) => {
     if (typeof window === 'undefined') {
       return
@@ -189,7 +191,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
     (Tag: 'h1' | 'h2' | 'h3', baseClassName: string) => {
       const HeadingComponent = (props: HeadingProps) => {
         const { children, className, id, onClick, ...rest } = props
-        const fallbackIdRef = useRef<string | undefined>()
+        const fallbackIdRef = useRef<string | undefined>(undefined)
         const headingElementRef = useRef<HTMLHeadingElement | null>(null)
 
         if (!fallbackIdRef.current) {
