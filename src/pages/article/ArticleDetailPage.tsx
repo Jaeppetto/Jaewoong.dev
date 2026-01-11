@@ -5,18 +5,19 @@ import {
   CategoryAccordionSkeleton,
   PostTags
 } from '@/entities'
-import { usePostBySlugQuery } from '@/features'
+import { ArticleComments, usePostBySlugQuery } from '@/features'
 import { cn } from '@/shared/shadcn-ui/util'
 import { scrollIntoViewWithOffset } from '@/shared/util'
 import { useHeaderContext } from '@/shared/context'
 import { MdxRenderer, FloatingIndex } from '@/widgets'
-import { Navigate, useParams } from '@tanstack/react-router'
+import { Navigate, useLocation, useParams } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef } from 'react'
 
 const ArticleDetailPage = () => {
   const { postTitle, category } = useParams({
     from: '/article_/$category_/$postTitle'
   })
+  const location = useLocation()
   const { data: post, isLoading, isError } = usePostBySlugQuery(postTitle)
   const { setArticleTitle } = useHeaderContext()
 
@@ -111,7 +112,7 @@ const ArticleDetailPage = () => {
   }
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex w-full justify-center">
       <aside className="sticky top-[6.2rem] hidden h-fit py-[2rem] pr-[2rem] sm:block">
         <CategoryAccordion
           currentCategory={category}
@@ -130,6 +131,9 @@ const ArticleDetailPage = () => {
           <MdxRenderer content={post.content} />
         </article>
         <PostTags postId={post.id} />
+        <section className="mt-10 px-[1rem]">
+          <ArticleComments pathname={location.pathname} />
+        </section>
       </main>
 
       <FloatingIndex />

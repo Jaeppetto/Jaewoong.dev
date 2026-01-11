@@ -33,8 +33,8 @@ const ArticleCard = ({ category, post, className }: ArticleCardProps) => {
         'flex h-[14.2rem] w-full cursor-pointer rounded-[1.2rem] border border-slate-200 bg-white p-[1.4rem] shadow-default transition-all duration-300 ease-in-out hover:bg-slate-50',
         className
       )}>
-      <div className="flex flex-col flex-1 gap-3 justify-between items-start">
-        <div className="flex flex-col gap-1 items-start">
+      <div className="flex flex-1 flex-col items-start justify-between gap-3">
+        <div className="flex flex-col items-start gap-1">
           <button
             className="rounded-[0.8rem] bg-transparent px-4 py-1 text-[1.2rem] font-normal leading-[2rem] text-slate-900 underline-offset-[6px] transition-colors hover:bg-slate-200/50"
             onClick={handleCategoryClick}>
@@ -68,7 +68,7 @@ const ArticleCard = ({ category, post, className }: ArticleCardProps) => {
         <img
           src={post?.thumbnail ?? ''}
           alt={post?.title ?? ''}
-          className="hidden object-cover rounded-lg object-fit sm:block"
+          className="object-fit hidden rounded-lg object-cover sm:block"
         />
       )}
     </div>
