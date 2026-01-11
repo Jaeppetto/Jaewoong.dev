@@ -1,6 +1,16 @@
 import { Post, PostInsert, PostUpdate, PostWithRelations } from '@/entities'
 import { supabase } from './supabase/client'
 
+export class PostNotFoundError extends Error {
+  constructor(message: string = 'Post not found') {
+    super(message)
+    this.name = 'PostNotFoundError'
+  }
+}
+
+const isPostNotFoundError = (error: { code?: string; status?: number }) =>
+  error.code === 'PGRST116' || error.status === 404
+
 export const postApi = {
   getAll: async (): Promise<PostWithRelations[]> => {
     const { data, error } = await supabase
@@ -87,7 +97,12 @@ export const postApi = {
       .eq('slug', slug)
       .single()
 
-    if (error) throw error
+    if (error) {
+      if (isPostNotFoundError(error)) {
+        throw new PostNotFoundError()
+      }
+      throw error
+    }
     return data
   },
 

@@ -28,9 +28,18 @@ export default async function handler(req: Request) {
   const title = getTitleFromPath(pathname)
 
   const [titleFont, bodyFont] = await Promise.all([
-    fetch(TITLE_FONT_URL).then(res => res.arrayBuffer()),
-    fetch(BODY_FONT_URL).then(res => res.arrayBuffer())
-  ])
+    fetch(TITLE_FONT_URL).then(res => {
+      if (!res.ok) throw new Error(`Failed to fetch title font: ${res.status}`)
+      return res.arrayBuffer()
+    }),
+    fetch(BODY_FONT_URL).then(res => {
+      if (!res.ok) throw new Error(`Failed to fetch body font: ${res.status}`)
+      return res.arrayBuffer()
+    })
+  ]).catch(error => {
+    console.error('Font fetch failed:', error)
+    throw new Response('Failed to load fonts', { status: 500 })
+  })
 
   const siteUrl = process.env.VITE_SITE_URL || origin
   const faviconUrl = `${siteUrl.replace(/\/$/, '')}/favicon.svg`

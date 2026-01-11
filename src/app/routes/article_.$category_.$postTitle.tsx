@@ -1,12 +1,12 @@
 import { ArticleDetailPage } from '@/pages/article'
-import { postApi } from '@/shared/api/posts'
+import { PostNotFoundError, postApi } from '@/shared/api/posts'
 import {
   buildArticleJsonLd,
   buildJsonLdScript,
   buildMeta,
   buildOgImagePath
 } from '@/shared/util'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, notFound } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/article_/$category_/$postTitle')({
   component: ArticleDetailPage,
@@ -18,12 +18,11 @@ export const Route = createFileRoute('/article_/$category_/$postTitle')({
         category: params.category,
         post
       }
-    } catch {
-      return {
-        postTitle: params.postTitle,
-        category: params.category,
-        post: null
+    } catch (error) {
+      if (error instanceof PostNotFoundError) {
+        throw notFound()
       }
+      throw error
     }
   },
   head: ({ loaderData, params }) => {

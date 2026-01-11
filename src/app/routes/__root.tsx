@@ -21,7 +21,7 @@ export const Route = createRootRoute({
         <Footer />
         <ScrollBar orientation="vertical" />
       </ScrollArea>
-      <TanStackRouterDevtools />
+      {process.env.NODE_ENV !== 'production' && <TanStackRouterDevtools />}
     </HeaderProvider>
   ),
   notFoundComponent: () => (
