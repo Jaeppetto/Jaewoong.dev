@@ -33,7 +33,7 @@ const resolveUrl = (pathOrUrl?: string) => {
   return baseUrl ? `${baseUrl}${normalizedPath}` : normalizedPath
 }
 
-const buildOgImagePath = (title: string) => {
+export const buildOgImagePath = (title: string) => {
   const segments = title
     .split(/[\s/]+/)
     .map(segment => segment.trim())
@@ -103,7 +103,10 @@ export const buildArticleJsonLd = ({
   url,
   image,
   publishedTime,
-  modifiedTime
+  modifiedTime,
+  authorName,
+  category,
+  tags
 }: {
   title: string
   description?: string | null
@@ -111,10 +114,18 @@ export const buildArticleJsonLd = ({
   image?: string | null
   publishedTime?: string | null
   modifiedTime?: string | null
+  authorName?: string
+  category?: string | null
+  tags?: string[] | null
 }) => {
   const resolvedImage = image
     ? resolveUrl(image)
     : resolveUrl(buildOgImagePath(title))
+  const resolvedSiteUrl = normalizeSiteUrl()
+  const keywords = [
+    ...(tags ?? []),
+    ...(category ? [category] : [])
+  ].filter(Boolean)
 
   return {
     '@context': 'https://schema.org',
@@ -124,6 +135,12 @@ export const buildArticleJsonLd = ({
     image: resolvedImage ? [resolvedImage] : undefined,
     datePublished: publishedTime || undefined,
     dateModified: modifiedTime || undefined,
+    articleSection: category || undefined,
+    keywords: keywords.length ? keywords.join(', ') : undefined,
+    author: {
+      '@type': 'Person',
+      name: authorName || SITE_NAME
+    },
     mainEntityOfPage: url
       ? {
           '@type': 'WebPage',
@@ -132,7 +149,13 @@ export const buildArticleJsonLd = ({
       : undefined,
     publisher: {
       '@type': 'Organization',
-      name: SITE_NAME
+      name: SITE_NAME,
+      logo: resolvedSiteUrl
+        ? {
+            '@type': 'ImageObject',
+            url: `${resolvedSiteUrl}/favicon.svg`
+          }
+        : undefined
     }
   }
 }

@@ -3,7 +3,8 @@ import { postApi } from '@/shared/api/posts'
 import {
   buildArticleJsonLd,
   buildJsonLdScript,
-  buildMeta
+  buildMeta,
+  buildOgImagePath
 } from '@/shared/util'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -28,10 +29,13 @@ export const Route = createFileRoute('/article_/$category_/$postTitle')({
   head: ({ loaderData, params }) => {
     const post = loaderData?.post ?? null
     const path = `/article/${params.category}/${params.postTitle}`
+    const ogImagePath = buildOgImagePath(
+      `${params.category}/${post?.slug || params.postTitle}`
+    )
     const meta = buildMeta({
       title: post?.title || params.postTitle,
       description: post?.description,
-      image: post?.thumbnail,
+      image: post?.thumbnail || ogImagePath,
       path,
       type: post ? 'article' : 'website',
       publishedTime: post?.created_at,
@@ -46,9 +50,11 @@ export const Route = createFileRoute('/article_/$category_/$postTitle')({
       title: post.title,
       description: post.description,
       url: path,
-      image: post.thumbnail,
+      image: post.thumbnail || ogImagePath,
       publishedTime: post.created_at,
-      modifiedTime: post.updated_at
+      modifiedTime: post.updated_at,
+      category: post.categories?.name ?? null,
+      tags: post.tags?.map(tag => tag.name) ?? null
     })
 
     return {
