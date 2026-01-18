@@ -45,7 +45,7 @@ export const ImageUploader = ({
       onChange={handleFileChange}
       disabled={uploadImage.isPending}
       className={cn(
-        'file:cursor-pointer file:rounded-md file:border-none file:bg-slate-900 file:px-4 file:py-2 file:text-lg file:font-bold file:text-white file:hover:bg-slate-700',
+        'file:cursor-pointer file:rounded-md file:border-none file:bg-slate-900 file:px-4 file:py-2 file:!text-body3 file:font-bold file:text-white file:hover:bg-slate-700',
         className
       )}
       aria-label={`${type} 이미지 업로드`}

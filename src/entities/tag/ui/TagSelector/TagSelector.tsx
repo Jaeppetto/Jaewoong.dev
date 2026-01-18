@@ -58,7 +58,7 @@ const TagSelector = ({
 
   if (isLoading) {
     return (
-      <div className="flex items-center h-10 text-sm text-slate-500">
+      <div className="flex items-center h-10 !text-body3 text-slate-500">
         태그 로딩 중...
       </div>
     )
@@ -86,14 +86,14 @@ const TagSelector = ({
               value={newTagName}
               onChange={e => setNewTagName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="h-[2.9rem] w-40 p-0 px-3 text-xl font-bold placeholder:text-xl"
+              className="h-[2.9rem] w-40 p-0 px-3 !text-body3 font-bold placeholder:!text-body3"
             />
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCreateTag}
               disabled={!newTagName.trim()}
-              className="px-2 py-0 h-8 text-xl font-bold">
+              className="px-2 py-0 h-8 !text-body3 font-bold">
               추가
             </Button>
             <Button
@@ -103,7 +103,7 @@ const TagSelector = ({
                 setIsAddingTag(false)
                 setNewTagName('')
               }}
-              className="px-2 py-0 h-8 text-xl font-bold">
+              className="px-2 py-0 h-8 !text-body3 font-bold">
               취소
             </Button>
           </div>
@@ -111,7 +111,7 @@ const TagSelector = ({
           <Button
             variant="outline"
             onClick={() => setIsAddingTag(true)}
-            className="flex h-[2.9rem] w-12 items-center gap-1 rounded-full p-0 text-sm">
+            className="flex h-[2.9rem] w-12 items-center gap-1 rounded-full p-0 !text-body3">
             <Plus className="w-6 h-6" />
           </Button>
         )}

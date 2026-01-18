@@ -37,14 +37,14 @@ const FoldableCard = ({
           <div className="flex w-full flex-col items-start gap-2">
             {label && (
               <span
-                className="text-2xl font-extrabold"
+                className="!text-body2 font-extrabold"
                 style={{
                   color: foldableCardColorMap[color].title
                 }}>
                 {label}
               </span>
             )}
-            {title && <span className="text-2xl font-bold">{title}</span>}
+            {title && <span className="!text-body2 font-bold">{title}</span>}
           </div>
           {isFoldable && (
             <div
@@ -66,7 +66,7 @@ const FoldableCard = ({
       </div>
 
       {isFoldable && isOpen && content && (
-        <span className="w-full text-left text-2xl">{content}</span>
+        <span className="w-full text-left !text-body2">{content}</span>
       )}
     </Button>
   )

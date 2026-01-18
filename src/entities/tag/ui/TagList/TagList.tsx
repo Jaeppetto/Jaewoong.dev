@@ -12,7 +12,7 @@ const TagList = ({ className }: TagListProps) => {
 
   return (
     <div className={cn('flex w-full flex-col gap-[2rem]', className)}>
-      <h2 className="select-none text-[2rem] font-normal leading-[2rem] text-slate-900">
+      <h2 className="select-none !text-h3 font-normal text-slate-900">
         태그로 모아보기
       </h2>
       <div className="flex flex-wrap gap-[0.8rem]">

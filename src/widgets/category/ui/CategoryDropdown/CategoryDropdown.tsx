@@ -20,7 +20,7 @@ const CategoryDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-1 bg-transparent focus:outline-none">
-        <span className="text-[2rem] font-extrabold leading-[2rem] text-slate-900">
+        <span className="!text-h3 font-extrabold text-slate-900">
           {categories?.find(c => c.slug === currentCategory)?.name}
         </span>
         <ChevronDown className="size-4 text-slate-900" />
@@ -36,7 +36,7 @@ const CategoryDropdown = () => {
               to={ArticleCategoryRoute.to}
               params={{ category: category.slug }}
               search={{ page: 1 }}
-              className="flex w-full items-center justify-between gap-[1.2rem] px-[0.8rem] py-[0.4rem] text-[1.4rem] font-normal leading-[1.6rem] text-slate-900 hover:text-slate-900">
+              className="flex w-full items-center justify-between gap-[1.2rem] px-[0.8rem] py-[0.4rem] !text-body3 font-normal text-slate-900 hover:text-slate-900">
               {category.name}
               {currentCategory === category.slug && (
                 <Check className="size-4 text-slate-900" />

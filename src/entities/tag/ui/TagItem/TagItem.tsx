@@ -19,7 +19,7 @@ const TagItem = ({
   onDeselect
 }: TagItemProps) => {
   const commonClasses = cn(
-    'flex cursor-pointer items-center gap-2 rounded-full px-5 py-1 text-[1.2rem]',
+    'flex cursor-pointer items-center gap-2 rounded-full px-5 py-1 !text-body3',
     mode === 'link'
       ? 'bg-slate-950 hover:bg-slate-800'
       : isSelected

@@ -31,7 +31,7 @@ interface ArchiveCardProps {
 
 const StackBadge = ({ stack }: { stack: string }) => {
   return (
-    <div className="flex select-none items-center justify-center rounded-[0.6rem] bg-slate-100 px-[0.6rem] py-[0.2rem] text-[1.4rem] leading-[2rem]">
+    <div className="flex select-none items-center justify-center rounded-[0.6rem] bg-slate-100 px-[0.6rem] py-[0.2rem] !text-body3">
       {stack}
     </div>
   )
@@ -86,7 +86,7 @@ const ArchiveCard = ({
           )}
         </div>
         <div>
-          <h3 className="relative mb-[0.5rem] inline-block text-[2rem] font-bold leading-[2rem] text-slate-900">
+          <h3 className="relative mb-[0.5rem] inline-block !text-h3 font-bold text-slate-900">
             <span className="relative z-10">{title}</span>
             <div
               className={cn(
@@ -98,13 +98,13 @@ const ArchiveCard = ({
           </h3>
         </div>
 
-        <p className="text-[1.4rem] font-normal leading-[2rem]">
+        <p className="!text-body3 font-normal">
           {description}
         </p>
-        <div className="flex items-center gap-[0.4rem] text-[1.4rem] leading-[2rem]">
+        <div className="flex items-center gap-[0.4rem] !text-body3">
           <CalendarDays
             size={16}
-            className="text-[1.2rem] font-normal leading-[1.6rem] text-slate-500"
+            className="!text-body3 font-normal text-slate-500"
           />
           <span className="text-slate-500">
             {dayjs(date?.from).format('YYYY.MM.DD')} ~{' '}

@@ -77,7 +77,7 @@ const Footer = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem className="gap-2">
-                  <span className="text-sm text-muted-foreground">
+                  <span className="!text-body3 text-muted-foreground">
                     {user?.email}
                   </span>
                 </DropdownMenuItem>
@@ -98,11 +98,11 @@ const Footer = () => {
                 className="text-slate-400"
               />
 
-              <span className="text-lg text-slate-400">로그인</span>
+              <span className="!text-body3 text-slate-400">로그인</span>
             </Button>
           )}
         </div>
-        <span className="text-lg text-slate-400">
+        <span className="!text-body3 text-slate-400">
           copyright ©2025-2026 All rights reserved by Jaeppetto(황재웅)
         </span>
       </div>

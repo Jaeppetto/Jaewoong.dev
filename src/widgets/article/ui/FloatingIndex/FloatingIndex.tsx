@@ -55,7 +55,7 @@ const FloatingIndex = ({ className }: FloatingIndexProps) => {
         className
       )}>
       <nav className="h-full w-[18rem]">
-        <h2 className="text-[1.6rem] font-semibold text-slate-900 dark:text-slate-100">
+        <h2 className="!text-body2 font-semibold text-slate-900 dark:text-slate-100">
           목차
         </h2>
         <ScrollArea className="h-[calc(100vh-40vh)] min-h-60">
@@ -70,7 +70,7 @@ const FloatingIndex = ({ className }: FloatingIndexProps) => {
                 <button
                   onClick={() => handleHeadingClick(heading.id)}
                   className={cn(
-                    'w-full truncate bg-transparent text-left text-[1.4rem] transition-colors',
+                    'w-full truncate bg-transparent text-left !text-body3 transition-colors',
                     activeId === heading.id
                       ? 'font-semibold text-slate-900 dark:text-slate-100'
                       : 'text-slate-600 dark:text-slate-400'

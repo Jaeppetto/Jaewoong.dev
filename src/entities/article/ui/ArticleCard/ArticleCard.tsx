@@ -45,25 +45,25 @@ const ArticleCard = ({ category, post, className }: ArticleCardProps) => {
             <div className="flex flex-1 flex-col items-start justify-between gap-3">
               <div className="flex flex-col items-start gap-1">
                 <button
-                  className="rounded-[0.8rem] bg-transparent px-4 py-1 text-[1.2rem] font-normal leading-[2rem] text-slate-900 underline-offset-[6px] transition-colors hover:bg-slate-200/50"
+                  className="rounded-[0.8rem] bg-transparent px-4 py-1 !text-body3 font-normal text-slate-900 underline-offset-[6px] transition-colors hover:bg-slate-200/50"
                   onClick={handleCategoryClick}>
                   {category?.emoji ?? '-'} {category?.name ?? '-'}
                 </button>
 
-                <h3 className="line-clamp-1 text-ellipsis px-4 text-[2rem] font-bold leading-[2.4rem] text-slate-900">
+                <h3 className="line-clamp-1 text-ellipsis px-4 !text-h3 font-bold text-slate-900">
                   {post?.title ?? '-'}
                 </h3>
 
-                <p className="line-clamp-1 text-ellipsis px-4 text-[1.4rem] font-normal leading-[2rem] text-slate-600">
+                <p className="line-clamp-1 text-ellipsis px-4 !text-body2 font-normal text-slate-600">
                   {post?.description ?? '-'}
                 </p>
               </div>
 
               {post?.created_at && dayjs(post.created_at).isValid() && (
-                <div className="flex items-center gap-[0.4rem] px-4 text-[1.4rem] leading-[2rem]">
+                <div className="flex items-center gap-[0.4rem] px-4 !text-body3">
                   <CalendarDays
                     size={16}
-                    className="text-[1.2rem] font-normal leading-[1.6rem] text-slate-600"
+                    className="!text-body3 font-normal text-slate-600"
                   />
                   <span className="text-slate-600">
                     {post?.created_at && dayjs(post.created_at).isValid()
@@ -83,7 +83,7 @@ const ArticleCard = ({ category, post, className }: ArticleCardProps) => {
           </div>
         </TooltipTrigger>
         <TooltipContent side="top">
-          <span className="text-[1.3rem] leading-[1.8rem]">
+          <span className="!text-body3">
             {post?.title ?? '-'}
           </span>
         </TooltipContent>

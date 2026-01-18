@@ -11,7 +11,7 @@ const ArticleTagPage = () => {
   return (
     <div className="flex h-full w-full max-w-[108rem] flex-col gap-[8rem] py-[2rem] pb-[4rem]">
       <section className="flex flex-col gap-[2rem]">
-        <h1 className="flex select-none items-center gap-2 text-[2rem] font-normal leading-[2rem] text-slate-900">
+        <h1 className="flex select-none items-center gap-2 !text-h3 font-normal text-slate-900">
           <span className="font-bold">
             {isLoading ? <TagItemSkeleton /> : `${tag?.name}`}
           </span>
