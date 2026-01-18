@@ -4,6 +4,14 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontSize: {
+        body1: ['1.4rem', { lineHeight: '1.7' }],
+        body2: ['1.6rem', { lineHeight: '1.75' }],
+        body3: ['1.8rem', { lineHeight: '1.75' }],
+        h1: ['3rem', { lineHeight: '1' }],
+        h2: ['2.25rem', { lineHeight: '1' }],
+        h3: ['1.875rem', { lineHeight: '1.2' }]
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
