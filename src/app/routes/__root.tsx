@@ -33,7 +33,7 @@ export const Route = createRootRoute({
           autoplay
         />
       </div>
-      <span className="mt-10 text-2xl font-bold">
+      <span className="mt-10 !text-body2 font-bold">
         올바르지 않은 페이지 접근입니다.
       </span>
       <Link

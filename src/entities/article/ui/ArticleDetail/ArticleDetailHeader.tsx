@@ -44,26 +44,26 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
             search={{ page: 1 }}
             to={`/article/$category`}
             params={{ category: post.categories.slug }}
-            className="rounded-[0.8rem] px-4 py-2 text-[1.6rem] font-normal leading-[2rem] text-slate-900 hover:bg-slate-50 hover:text-slate-900">
+            className="rounded-[0.8rem] px-4 py-2 !text-body2 font-normal text-slate-900 hover:bg-slate-50 hover:text-slate-900">
             {post.categories.emoji} {post.categories.name}
           </Link>
         </div>
       )}
 
       <div className="flex flex-col gap-[0.6rem] px-[1rem]">
-        <h1 className="break-all text-[3.2rem] font-extrabold leading-[3.8rem] text-slate-900">
+        <h1 className="break-all !text-h1 font-extrabold text-slate-900">
           {post.title}
         </h1>
 
         {post.description && (
-          <span className="break-all text-[1.6rem] font-normal leading-[1.8rem] text-slate-900">
+          <span className="break-all !text-body1 font-normal text-slate-900">
             {post.description}
           </span>
         )}
 
         <div className="flex items-center justify-between gap-2">
           {post.created_at && (
-            <time className="text-[1.4rem] font-normal leading-[1.6rem] text-slate-400">
+            <time className="!text-body3 font-normal text-slate-400">
               {dayjs(post.created_at).format('YYYY.MM.DD')}
             </time>
           )}
@@ -72,14 +72,14 @@ const ArticleDetailHeader = ({ post }: ArticleDetailHeaderProps) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="bg-transparent p-0 text-[1.4rem] font-normal leading-[1.6rem] text-slate-400 transition-none hover:bg-transparent"
+                className="bg-transparent p-0 !text-body3 font-normal text-slate-400 transition-none hover:bg-transparent"
                 onClick={handleTogglePublished}>
                 {isPublished ? <span>전체공개</span> : <span>비공개</span>}
               </Button>
               <Link
                 to="/article/edit/$postId"
                 params={{ postId: post.id }}
-                className="bg-transparent p-0 text-[1.4rem] font-normal leading-[1.6rem] text-slate-400 transition-none hover:bg-transparent hover:text-slate-900">
+                className="bg-transparent p-0 !text-body3 font-normal text-slate-400 transition-none hover:bg-transparent hover:text-slate-900">
                 <span>수정하기</span>
               </Link>
             </div>

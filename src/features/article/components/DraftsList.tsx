@@ -66,7 +66,7 @@ export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
     if (isLoading) {
       return (
         <div className="flex justify-center items-center py-12">
-          <div className="text-xl text-slate-500">임시저장 목록을 불러오는 중...</div>
+          <div className="!text-body3 text-slate-500">임시저장 목록을 불러오는 중...</div>
         </div>
       )
     }
@@ -75,7 +75,7 @@ export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
       return (
         <div className="flex flex-col justify-center items-center py-12 text-slate-500">
           <FileText className="mb-4 w-16 h-16 opacity-50" />
-          <p className="text-xl">저장된 임시글이 없습니다</p>
+          <p className="!text-body3">저장된 임시글이 없습니다</p>
         </div>
       )
     }
@@ -90,7 +90,7 @@ export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
             <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0">
                 <div className="flex gap-3 items-center mb-3">
-                  <h4 className="text-2xl font-bold truncate text-slate-900">
+                  <h4 className="!text-body2 font-bold truncate text-slate-900">
                     {draft.title || '제목 없음'}
                   </h4>
                   <span className="px-2 font-medium rounded-md text-md bg-slate-100 text-slate-700">
@@ -98,19 +98,19 @@ export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
                   </span>
                 </div>
 
-                <p className="mb-3 text-xl leading-relaxed text-slate-600">
+                <p className="mb-3 !text-body3 text-slate-600">
                   {getDraftPreview(draft.content)}
                 </p>
 
-                <div className="flex gap-6 items-center text-sm text-slate-500">
+                <div className="flex gap-6 items-center !text-body3 text-slate-500">
                   <div className="flex gap-2 items-center">
                     <Clock className="w-5 h-5" />
-                    <span className="text-xl">{draft.updated_at ? new Date(draft.updated_at).toLocaleString('ko-KR') : '시간 정보 없음'}</span>
+                    <span className="!text-body3">{draft.updated_at ? new Date(draft.updated_at).toLocaleString('ko-KR') : '시간 정보 없음'}</span>
                   </div>
                   {draft.categories && (
                     <div className="flex gap-2 items-center">
-                      <span className="text-xl">{draft.categories.emoji}</span>
-                      <span className="text-xl font-medium">{draft.categories.name}</span>
+                      <span className="!text-body3">{draft.categories.emoji}</span>
+                      <span className="!text-body3 font-medium">{draft.categories.name}</span>
                     </div>
                   )}
                 </div>
@@ -130,7 +130,7 @@ export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
                   size="default"
                   variant="outline"
                   onClick={() => onLoadDraft(draft)}
-                  className="px-6 py-2 text-xl font-medium text-white bg-black rounded-full border-none shadow-none hover:bg-black/80 disabled:opacity-50 hover:text-white"
+                  className="px-6 py-2 !text-body3 font-medium text-white bg-black rounded-full border-none shadow-none hover:bg-black/80 disabled:opacity-50 hover:text-white"
                 >
                   불러오기
                 </Button>
@@ -146,7 +146,7 @@ export const DraftsList = ({ onLoadDraft, onClose, open }: DraftsListProps) => {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl max-h-[85vh]">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-3xl font-bold text-slate-900">임시저장 목록</DialogTitle>
+          <DialogTitle className="!text-h3 font-bold text-slate-900">임시저장 목록</DialogTitle>
         </DialogHeader>
         {renderContent()}
       </DialogContent>

@@ -5,12 +5,12 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/shared/shadcn-ui/util'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md !text-body3 font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default:
-          'flex cursor-pointer items-center justify-center border border-slate-200 bg-white p-[2.4rem] px-[4.2rem] py-[2rem] shadow-default text-2xl text-slate-900 hover:bg-slate-50',
+          'flex cursor-pointer items-center justify-center border border-slate-200 bg-white p-[2.4rem] px-[4.2rem] py-[2rem] shadow-default !text-body2 text-slate-900 hover:bg-slate-50',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:

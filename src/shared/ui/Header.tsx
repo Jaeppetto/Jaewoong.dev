@@ -70,7 +70,7 @@ const Header = () => {
                 disabled={isArticleDetailPage && isScrolled}
                 search={{ page: 1 }}
                 className={cn(
-                  'text-[1.8rem] font-normal leading-[2.1rem] text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900',
+                  '!text-body1 font-normal text-slate-300 transition-colors duration-300 ease-in-out hover:text-slate-900',
                   subPath === 'article' && 'font-extrabold text-slate-900',
                   isScrolled && isArticleDetailPage && 'cursor-default'
                 )}>
@@ -88,7 +88,7 @@ const Header = () => {
             )}>
             <button
               onClick={scrollToTop}
-              className="group flex max-w-[60rem] cursor-pointer items-center justify-center gap-2 truncate border-none bg-transparent px-4 text-center text-[1.8rem] font-bold text-slate-900 transition-colors hover:text-slate-700">
+              className="group flex max-w-[60rem] cursor-pointer items-center justify-center gap-2 truncate border-none bg-transparent px-4 text-center !text-body1 font-bold text-slate-900 transition-colors hover:text-slate-700">
               {articleTitle}
               <ArrowUp
                 size={14}

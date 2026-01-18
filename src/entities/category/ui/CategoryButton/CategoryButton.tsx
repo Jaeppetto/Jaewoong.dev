@@ -17,7 +17,7 @@ const CategoryButton = ({ slug, name, className }: CategoryButtonProps) => {
         'ease-[cubic-bezier(0.34,1.56,0.64,1)] flex cursor-pointer items-center justify-center rounded-[10rem] border border-slate-200 bg-white p-[2.4rem] px-[2.8rem] py-[1.6rem] shadow-default transition-all duration-500 hover:scale-[1.03]',
         className
       )}>
-      <p className="text-[2rem] font-extrabold leading-[2rem] text-slate-900">
+      <p className="!text-h3 font-extrabold text-slate-900">
         {name}
       </p>
     </Link>

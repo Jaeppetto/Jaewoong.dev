@@ -255,43 +255,43 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       h3: createHeading('h3', 'mt-8 mb-2 !text-h3 font-semibold text-slate-900'),
       p: (props: ParagraphProps) => (
         <p
-          className="my-6 leading-relaxed text-body2 text-slate-900"
+          className="my-6 !text-body2 text-slate-900"
           {...props}
         />
       ),
       a: (props: AnchorProps) => (
         <a
-          className="text-body2 font-bold text-slate-900 hover:text-slate-600 hover:underline"
+          className="!text-body2 font-bold text-slate-900 hover:text-slate-600 hover:underline"
           {...props}
         />
       ),
       strong: (props: StrongProps) => (
         <strong
-          className="text-body2 font-bold text-slate-900"
+          className="!text-body2 font-bold text-slate-900"
           {...props}
         />
       ),
       em: (props: EmphasisProps) => (
         <em
-          className="text-body2 italic text-slate-900"
+          className="!text-body2 italic text-slate-900"
           {...props}
         />
       ),
       blockquote: (props: BlockquoteProps) => (
         <blockquote
-          className="border-l-4 border-slate-900 pl-4 text-body2 font-bold italic text-slate-900"
+          className="border-l-4 border-slate-900 pl-4 !text-body2 font-bold italic text-slate-900"
           {...props}
         />
       ),
       ul: (props: ListProps) => (
         <ul
-          className="my-2 list-inside list-disc text-body2 text-slate-900"
+          className="my-2 list-inside list-disc !text-body2 text-slate-900"
           {...props}
         />
       ),
       ol: (props: ListProps) => (
         <ol
-          className="my-2 list-inside list-decimal text-body2 text-slate-900"
+          className="my-2 list-inside list-decimal !text-body2 text-slate-900"
           {...props}
         />
       ),
@@ -301,7 +301,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
         return (
           <li
             className={cn(
-              'my-2 text-body2 text-slate-900',
+              'my-2 !text-body2 text-slate-900',
               className,
               hasCheckbox && 'list-none'
             )}
@@ -451,7 +451,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
     <MDXProvider components={components}>
       <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
         {isLoading && (
-          <div className="absolute right-2 top-2 rounded bg-white px-2 py-1 text-xs text-gray-500 shadow dark:bg-gray-800">
+          <div className="absolute right-2 top-2 rounded bg-white px-2 py-1 !text-body3 text-gray-500 shadow dark:bg-gray-800">
             업데이트 중...
           </div>
         )}

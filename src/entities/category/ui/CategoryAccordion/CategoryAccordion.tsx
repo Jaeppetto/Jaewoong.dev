@@ -29,7 +29,7 @@ export const CategoryAccordion = ({
           value={category.slug}
           key={category.id}
           className="pb-4">
-          <AccordionTrigger className="group/category-accordion-trigger bg-transparent py-0 pb-1 text-[1.6rem] font-normal leading-[2rem] text-slate-900 hover:no-underline">
+          <AccordionTrigger className="group/category-accordion-trigger bg-transparent py-0 pb-1 !text-body2 font-normal text-slate-900 hover:no-underline">
             {category.name}
           </AccordionTrigger>
           <AccordionContent className="w-full bg-transparent">

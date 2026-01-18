@@ -46,14 +46,14 @@ const EditController = ({
         <Select
           value={categoryId || ''}
           onValueChange={value => onMetaChange('categoryId', value || null)}>
-          <SelectTrigger className="w-48 max-w-xs text-lg outline-none">
+          <SelectTrigger className="w-48 max-w-xs !text-body3 outline-none">
             <SelectValue placeholder="카테고리 선택" />
           </SelectTrigger>
           <SelectContent>
             {categories?.map(category => (
               <SelectItem
                 className={cn(
-                  'text-lg',
+                  '!text-body3',
                   category.id === categoryId && 'bg-slate-100 font-bold'
                 )}
                 key={category.id}
@@ -81,14 +81,14 @@ const EditController = ({
         <Input
           type="text"
           placeholder="제목"
-          className="p-0 text-4xl font-bold border-none outline-none focus-visible:ring-0 md:text-4xl"
+          className="p-0 !text-h2 font-bold border-none outline-none focus-visible:ring-0 md:!text-h2"
           maxLength={100}
           value={title}
           onChange={e => onMetaChange('title', e.target.value)}
         />
         <Input
           placeholder="한줄 요약.."
-          className="break-all border-none p-0 text-3xl font-normal leading-[1.8rem] text-slate-900 outline-none focus-visible:ring-0 md:text-3xl"
+          className="break-all border-none p-0 !text-h3 font-normal text-slate-900 outline-none focus-visible:ring-0 md:!text-h3"
           maxLength={200}
           value={description}
           onChange={e => onMetaChange('description', e.target.value)}

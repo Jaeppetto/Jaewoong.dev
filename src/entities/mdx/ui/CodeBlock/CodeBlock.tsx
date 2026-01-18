@@ -215,15 +215,15 @@ export const CodeBlock = ({
       )}>
       {language && language !== 'text' && (
         <div className="flex justify-between items-center px-4 py-2 bg-gray-50 dark:bg-gray-800">
-          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <span className="!text-body3 font-medium text-gray-600 dark:text-gray-400">
             {language}
             {!isFormatted && (
-              <span className="ml-2 text-xs opacity-60">(formatting...)</span>
+              <span className="ml-2 !text-body3 opacity-60">(formatting...)</span>
             )}
           </span>
           <button
             onClick={copyToClipboard}
-            className="flex gap-1 items-center px-2 py-1 text-xs text-gray-600 rounded hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700"
+            className="flex gap-1 items-center px-2 py-1 !text-body3 text-gray-600 rounded hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700"
             title="Copy code">
             <Copy className="w-3 h-3" />
             Copy

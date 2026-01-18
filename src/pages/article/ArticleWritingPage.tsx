@@ -165,14 +165,14 @@ const ArticleWritingPageContent = () => {
                 onClick={handleManualSave}
                 disabled={manualSave.isLoading}
                 variant="outline"
-                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                className="px-6 py-8 !text-body3 font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
                 <Save className="w-6 h-6" />
                 {manualSave.isLoading ? '저장 중...' : '임시저장'}
               </Button>
               <Button
                 onClick={() => setShowDraftsList(true)}
                 variant="outline"
-                className="px-6 py-8 text-xl font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
+                className="px-6 py-8 !text-body3 font-bold text-black rounded-2xl border-none shadow-none transition-all duration-300 bg-slate-100 hover:bg-slate-200 disabled:opacity-50">
                 <FolderOpen className="w-6 h-6" />
                 임시저장 목록
               </Button>
@@ -182,7 +182,7 @@ const ArticleWritingPageContent = () => {
               disabled={
                 createPost.isPending || !content.trim() || !title || !categoryId
               }
-              className="px-6 py-8 text-xl font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
+              className="px-6 py-8 !text-body3 font-bold text-white bg-black rounded-2xl transition-all duration-300 hover:bg-black/80 disabled:opacity-50">
               {createPost.isPending ? '저장 중...' : '발행'}
             </Button>
           </div>

@@ -72,7 +72,7 @@ const OptimizedImage = ({
     return (
       <span
         className={cn(
-          'flex w-fit items-center gap-2 rounded-lg bg-slate-50 p-2 text-[1.4rem] font-semibold text-slate-500',
+          'flex w-fit items-center gap-2 rounded-lg bg-slate-50 p-2 !text-body3 font-semibold text-slate-500',
           className
         )}>
         <ImageIcon className="size-10" />
