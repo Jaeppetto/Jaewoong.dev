@@ -250,12 +250,12 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
 
   const components = useMemo<MDXComponents>(
     () => ({
-      h1: createHeading('h1', 'mt-12 mb-4 !text-h1 font-bold text-slate-900'),
-      h2: createHeading('h2', 'mt-10 mb-3 !text-h2 font-semibold text-slate-900'),
-      h3: createHeading('h3', 'mt-8 mb-2 !text-h3 font-semibold text-slate-900'),
+      h1: createHeading('h1', 'mt-16 mb-4 !text-h1 font-bold text-slate-900'),
+      h2: createHeading('h2', 'mt-14 mb-3 !text-h2 font-semibold text-slate-900'),
+      h3: createHeading('h3', 'mt-12 mb-2 !text-h3 font-semibold text-slate-900'),
       p: (props: ParagraphProps) => (
         <p
-          className="my-6 !text-body2 text-slate-900"
+          className="my-8 !text-body2 text-slate-900"
           {...props}
         />
       ),
@@ -343,14 +343,24 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
           </CodeBlock>
         )
       },
-      img: (props: ImageProps) => (
-        <OptimizedImage
-          src={props.src || ''}
-          alt={props.alt || ''}
-          className="my-6"
-          {...props}
-        />
-      ),
+      img: (props: ImageProps) => {
+        const { alt, ...restProps } = props
+
+        return (
+          <figure className="my-6">
+            <OptimizedImage
+              src={props.src || ''}
+              alt={alt || ''}
+              {...restProps}
+            />
+            {alt && (
+              <figcaption className="mt-2 text-center !text-body3 text-slate-400">
+                {alt}
+              </figcaption>
+            )}
+          </figure>
+        )
+      },
       Highlight: (props: HighlightProps) => <Highlight {...props} />,
       FoldableCard: (props: FoldableCardProps) => <FoldableCard {...props} />,
       InlineCode: (props: ComponentPropsWithoutRef<'code'>) => (

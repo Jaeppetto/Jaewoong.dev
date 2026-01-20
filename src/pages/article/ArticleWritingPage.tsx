@@ -1,5 +1,5 @@
 import { EditorProvider, useCreatePost, useEditorContext } from '@/features'
-import { Button, generateSlug, useAuth } from '@/shared'
+import { Button, generateSlug, ScrollArea, useAuth } from '@/shared'
 
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 import { useNavigate } from '@tanstack/react-router'
@@ -159,8 +159,8 @@ const ArticleWritingPageContent = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex gap-2 justify-between">
-            <div className="flex gap-2 justify-center items-center">
+          <div className="flex justify-between gap-2">
+            <div className="flex items-center justify-center gap-2">
               <Button
                 onClick={handleManualSave}
                 disabled={manualSave.isLoading}
@@ -188,9 +188,9 @@ const ArticleWritingPageContent = () => {
           </div>
         </section>
         {isPreview && (
-          <section className="w-1/2">
-            <MdxRenderer content={content} />
-          </section>
+          <ScrollArea className="w-1/2 max-h-[60rem]">
+            <MdxRenderer content={content}/>
+          </ScrollArea>
         )}
       </main>
 

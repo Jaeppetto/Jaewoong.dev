@@ -4,7 +4,7 @@ import {
   usePostQueryById,
   useUpdatePost
 } from '@/features'
-import { Button, generateSlug, useAuth } from '@/shared'
+import { Button, generateSlug, ScrollArea, useAuth } from '@/shared'
 import { EditController, EditPanel, MdxRenderer } from '@/widgets'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { toast } from 'sonner'
@@ -195,8 +195,8 @@ const ArticleEditContent = () => {
               rehypePlugins: [[rehypeSanitize]]
             }}
           />
-          <div className="flex gap-2 justify-between">
-            <div className="flex gap-2 justify-center items-center">
+          <div className="flex justify-between gap-2">
+            <div className="flex items-center justify-center gap-2">
               <Button
                 onClick={handleManualSave}
                 disabled={manualSave.isLoading}
@@ -213,7 +213,7 @@ const ArticleEditContent = () => {
                 임시저장 목록
               </Button>
             </div>
-            <div className="flex gap-2 justify-center items-center">
+            <div className="flex items-center justify-center gap-2">
               <Button
                 onClick={() => {
                   navigate({
@@ -239,9 +239,9 @@ const ArticleEditContent = () => {
           </div>
         </section>
         {isPreview && (
-          <section className="w-1/2">
+          <ScrollArea className="w-1/2 max-h-[60rem]">
             <MdxRenderer content={content} />
-          </section>
+          </ScrollArea>
         )}
       </main>
 
