@@ -146,9 +146,13 @@ type ImageProps = ComponentPropsWithoutRef<'img'>
 
 const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
   const [Content, setContent] = useState<React.ComponentType | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
   const [debouncedContent, setDebouncedContent] = useState(content)
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null)
+  
+  const [isLoading, setIsLoading] = useState(false)
+  
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const copyHeadingLink = useCallback(async (headingId: string) => {
     if (typeof window === 'undefined') {
       return
@@ -255,7 +259,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       h3: createHeading('h3', 'mt-12 mb-2 !text-h3 font-semibold text-slate-900'),
       p: (props: ParagraphProps) => (
         <p
-          className="my-8 !text-body2 text-slate-900"
+          className="mb-8 !text-body2 text-slate-900"
           {...props}
         />
       ),
@@ -348,11 +352,15 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
 
         return (
           <figure className="my-6">
-            <OptimizedImage
-              src={props.src || ''}
-              alt={alt || ''}
-              {...restProps}
-            />
+            <div
+              className="cursor-pointer"
+              onClick={() => setLightboxImage({ src: props.src || '', alt: alt || '' })}>
+              <OptimizedImage
+                src={props.src || ''}
+                alt={alt || ''}
+                {...restProps}
+              />
+            </div>
             {alt && (
               <figcaption className="mt-2 text-center !text-body3 text-slate-400">
                 {alt}
@@ -388,6 +396,19 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
       }
     }
   }, [content, debounceMs])
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLightboxImage(null)
+      }
+    }
+
+    if (lightboxImage) {
+      document.addEventListener('keydown', handleEscape)
+      return () => document.removeEventListener('keydown', handleEscape)
+    }
+  }, [lightboxImage])
 
   const compileMDX = useCallback(
     async (mdxContent: string) => {
@@ -458,16 +479,37 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
   }
 
   return (
-    <MDXProvider components={components}>
-      <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
-        {isLoading && (
-          <div className="absolute right-2 top-2 rounded bg-white px-2 py-1 !text-body3 text-gray-500 shadow dark:bg-gray-800">
-            업데이트 중...
+    <>
+      <MDXProvider components={components}>
+        <div className={cn('prose prose-slate dark:prose-invert', 'max-w-none')}>
+          {isLoading && (
+            <div className="absolute right-2 top-2 rounded bg-white px-2 py-1 !text-body3 text-gray-500 shadow dark:bg-gray-800">
+              업데이트 중...
+            </div>
+          )}
+          <Content />
+        </div>
+      </MDXProvider>
+
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          onClick={() => setLightboxImage(null)}>
+          <div className="relative max-h-[90vh] max-w-[90vw]">
+            <img
+              src={lightboxImage.src}
+              alt={lightboxImage.alt}
+              className="max-h-[90vh] max-w-[90vw] object-contain"
+            />
+            {lightboxImage.alt && (
+              <div className="mt-4 text-center !text-body2 text-white">
+                {lightboxImage.alt}
+              </div>
+            )}
           </div>
-        )}
-        <Content />
-      </div>
-    </MDXProvider>
+        </div>
+      )}
+    </>
   )
 })
 
