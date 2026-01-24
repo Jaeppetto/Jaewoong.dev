@@ -31,3 +31,5 @@ CLAUDE.md
 
 robots.txt
 sitemap.xml
+*storybook.log
+storybook-static
