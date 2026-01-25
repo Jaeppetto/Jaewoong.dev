@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
 import {
   Dialog,
   DialogTrigger,
@@ -121,4 +122,94 @@ export const Confirmation: Story = {
       </DialogContent>
     </Dialog>
   )
+}
+
+// Interaction Test Examples
+export const OpenDialogInteraction: Story = {
+  render: () => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">다이얼로그 열기</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>인터랙션 테스트</DialogTitle>
+          <DialogDescription>
+            이 다이얼로그는 Interaction Test로 자동으로 열립니다.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">닫기</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // 트리거 버튼 찾기
+    const triggerButton = canvas.getByRole('button', { name: /다이얼로그 열기/i })
+    await expect(triggerButton).toBeInTheDocument()
+
+    // 다이얼로그 열기
+    await userEvent.click(triggerButton)
+
+    // 다이얼로그가 열렸는지 확인 (body에서 검색)
+    const dialog = await within(document.body).findByRole('dialog')
+    await expect(dialog).toBeInTheDocument()
+
+    // 다이얼로그 제목 확인
+    const title = within(dialog).getByText('인터랙션 테스트')
+    await expect(title).toBeInTheDocument()
+  }
+}
+
+export const CloseDialogInteraction: Story = {
+  render: () => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>열기</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>닫기 테스트</DialogTitle>
+          <DialogDescription>닫기 버튼을 클릭하면 다이얼로그가 닫힙니다.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">닫기</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // 다이얼로그 열기
+    const triggerButton = canvas.getByRole('button', { name: /열기/i })
+    await userEvent.click(triggerButton)
+
+    // 다이얼로그가 열렸는지 확인
+    const dialog = await within(document.body).findByRole('dialog')
+    await expect(dialog).toBeInTheDocument()
+
+    // 다이얼로그 제목 확인
+    const title = within(dialog).getByText('닫기 테스트')
+    await expect(title).toBeInTheDocument()
+
+    // 닫기 버튼 클릭
+    const closeButton = within(dialog).getByRole('button', { name: /닫기/i })
+    await userEvent.click(closeButton)
+
+    // 다이얼로그가 닫혔는지 확인 (애니메이션 완료 대기)
+    await waitFor(
+      () => {
+        expect(within(document.body).queryByRole('dialog')).not.toBeInTheDocument()
+      },
+      { timeout: 1000 }
+    )
+  }
 }

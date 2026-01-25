@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, fn, userEvent, within } from 'storybook/test'
 import Button from './button'
 
 const meta: Meta<typeof Button> = {
@@ -102,5 +103,52 @@ export const Disabled: Story = {
   args: {
     children: 'Disabled',
     disabled: true
+  }
+}
+
+// Interaction Test Examples
+export const ClickInteraction: Story = {
+  args: {
+    children: 'Click me',
+    onClick: fn()
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /click me/i })
+
+    // 버튼이 렌더링되었는지 확인
+    await expect(button).toBeInTheDocument()
+
+    // 버튼 클릭
+    await userEvent.click(button)
+
+    // onClick이 호출되었는지 확인
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
+  }
+}
+
+export const DisabledInteraction: Story = {
+  args: {
+    children: 'Cannot click',
+    disabled: true,
+    onClick: fn()
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /cannot click/i })
+
+    // 버튼이 렌더링되었는지 확인
+    await expect(button).toBeInTheDocument()
+
+    // 버튼이 비활성화 상태인지 확인
+    await expect(button).toBeDisabled()
+
+    // 비활성화된 버튼은 pointer-events: none으로 클릭 불가
+    // userEvent.click은 이 경우 에러를 발생시키므로, 클릭 시도하지 않음
+    // 대신 onClick이 초기 상태에서 호출되지 않았는지 확인
+    await expect(args.onClick).not.toHaveBeenCalled()
+
+    // aria-disabled 속성 확인
+    await expect(button).toHaveAttribute('disabled')
   }
 }
