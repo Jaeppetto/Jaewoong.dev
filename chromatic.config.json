@@ -1,5 +1,5 @@
 {
+  "buildScriptName": "build-storybook",
   "onlyChanged": true,
-  "projectId": "Project:6718ff4712308ece5afadc12",
-  "zip": true
+  "externals": ["public/**"]
 }

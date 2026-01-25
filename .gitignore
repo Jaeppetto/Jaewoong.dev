@@ -26,6 +26,10 @@ dist-ssr
 
 .env*
 
-*storybook.log
 .mcp.json
 CLAUDE.md
+
+robots.txt
+sitemap.xml
+*storybook.log
+storybook-static
