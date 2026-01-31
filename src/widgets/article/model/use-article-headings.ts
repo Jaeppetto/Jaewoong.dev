@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { DEFAULT_SCROLL_OFFSET } from '@/shared/util'
 
 export interface ArticleHeading {
   id: string
@@ -65,7 +66,7 @@ export const useArticleHeadings = (containerSelector: string = 'article') => {
         }
       },
       {
-        rootMargin: '-80px 0px -80% 0px',
+        rootMargin: `-${DEFAULT_SCROLL_OFFSET}px 0px -80% 0px`,
         threshold: [0, 1]
       }
     )
@@ -82,5 +83,5 @@ export const useArticleHeadings = (containerSelector: string = 'article') => {
     }
   }, [headings])
 
-  return { headings, activeId }
+  return { headings, activeId, setActiveId }
 }

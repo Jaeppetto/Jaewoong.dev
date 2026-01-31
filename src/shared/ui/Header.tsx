@@ -81,19 +81,19 @@ const Header = () => {
 
           <div
             className={cn(
-              'flex absolute inset-0 justify-center items-center transition-all duration-500 ease-in-out',
+              'absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out',
               shouldShowArticleTitle
-                ? 'opacity-100 translate-y-0 pointer-events-auto'
-                : 'opacity-0 translate-y-full pointer-events-none'
+                ? 'pointer-events-auto translate-y-0 opacity-100'
+                : 'pointer-events-none translate-y-full opacity-0'
             )}>
             <button
               onClick={scrollToTop}
-              className="group flex max-w-[60rem] cursor-pointer items-center justify-center gap-2 truncate border-none bg-transparent px-4 text-center !text-body1 font-bold text-slate-900 transition-colors hover:text-slate-700">
-              {articleTitle}
+              className="group flex max-w-[60rem] cursor-pointer items-center justify-center gap-2 truncate border-none bg-transparent px-4  !text-body1 font-bold text-slate-900 transition-colors hover:text-slate-700">
+              <span className="truncate text-start">{articleTitle}</span>
               <ArrowUp
                 size={14}
                 strokeWidth={3}
-                className="opacity-50 transition-opacity text-slate-400 group-hover:opacity-100"
+                className="shrink-0 text-slate-400 opacity-50 transition-opacity group-hover:opacity-100"
               />
             </button>
           </div>
@@ -101,7 +101,7 @@ const Header = () => {
 
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="block p-2 bg-transparent hover:bg-slate-50 sm:hidden"
+          className="block bg-transparent p-2 hover:bg-slate-50 sm:hidden"
           aria-label="메뉴 열기">
           <Menu
             size={24}
