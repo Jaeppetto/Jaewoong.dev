@@ -40,11 +40,17 @@ const ArticleDetailPage = () => {
 
     const target = document.getElementById(targetId)
     if (target) {
-      scrollIntoViewWithOffset(target)
-
       if ('focus' in target && typeof target.focus === 'function') {
-        target.focus({ preventScroll: true })
+        try {
+          target.focus({ preventScroll: true })
+        } catch {
+          target.focus()
+        }
       }
+
+      requestAnimationFrame(() => {
+        scrollIntoViewWithOffset(target)
+      })
 
       return
     }

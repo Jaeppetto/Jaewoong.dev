@@ -217,11 +217,17 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
           const target = headingElementRef.current
 
           if (target) {
-            scrollIntoViewWithOffset(target)
-
             if ('focus' in target && typeof target.focus === 'function') {
-              target.focus({ preventScroll: true })
+              try {
+                target.focus({ preventScroll: true })
+              } catch {
+                target.focus()
+              }
             }
+
+            requestAnimationFrame(() => {
+              scrollIntoViewWithOffset(target)
+            })
           }
         }
 
@@ -236,7 +242,7 @@ const MdxRenderer = memo(({ content, debounceMs = 300 }: MdxRendererProps) => {
             }}
             className={cn(
               baseClassName,
-              'cursor-pointer focus:outline-none',
+              'cursor-pointer focus:outline-none scroll-mt-[60px]',
               className
             )}
             onClick={handleClick}>

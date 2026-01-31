@@ -11,7 +11,7 @@ interface FloatingIndexProps {
 }
 
 const FloatingIndex = ({ className }: FloatingIndexProps) => {
-  const { headings, activeId } = useArticleHeadings()
+  const { headings, activeId, setActiveId } = useArticleHeadings()
 
   if (headings.length === 0) {
     return null
@@ -21,7 +21,7 @@ const FloatingIndex = ({ className }: FloatingIndexProps) => {
     const element = document.getElementById(headingId)
     if (!element) return
 
-    scrollIntoViewWithOffset(element)
+    setActiveId(headingId)
 
     const encodedHash = `#${encodeURIComponent(headingId)}`
     window.history.replaceState(
@@ -31,8 +31,16 @@ const FloatingIndex = ({ className }: FloatingIndexProps) => {
     )
 
     if ('focus' in element && typeof element.focus === 'function') {
-      element.focus({ preventScroll: true })
+      try {
+        element.focus({ preventScroll: true })
+      } catch {
+        element.focus()
+      }
     }
+
+    requestAnimationFrame(() => {
+      scrollIntoViewWithOffset(element)
+    })
   }
 
   const getLevelClassName = (level: number) => {
