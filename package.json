@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "postbuild": "node scripts/generate-sitemap.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "gen": "pnpm dlx supabase gen types typescript --project-id ajptnmuueutewdopspuk --schema public > src/shared/api/supabase/types.ts",

@@ -1,9 +1,20 @@
 import { createClient } from '@supabase/supabase-js'
-import { readFile, writeFile } from 'node:fs/promises'
+import { readFile, writeFile, access } from 'node:fs/promises'
+import { constants as fsConstants } from 'node:fs'
 import path from 'node:path'
 
 const ROOT_DIR = process.cwd()
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public')
+const DIST_DIR = path.join(ROOT_DIR, 'dist')
+
+const resolveOutputDir = async () => {
+  try {
+    await access(DIST_DIR, fsConstants.F_OK)
+    return DIST_DIR
+  } catch {
+    return PUBLIC_DIR
+  }
+}
 
 const loadEnvFile = async filePath => {
   try {
@@ -139,9 +150,10 @@ const main = async () => {
 
   const sitemapXml = buildSitemap({ urls })
   const robotsTxt = buildRobots(siteUrl)
+  const outputDir = await resolveOutputDir()
 
-  await writeFile(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemapXml, 'utf8')
-  await writeFile(path.join(PUBLIC_DIR, 'robots.txt'), robotsTxt, 'utf8')
+  await writeFile(path.join(outputDir, 'sitemap.xml'), sitemapXml, 'utf8')
+  await writeFile(path.join(outputDir, 'robots.txt'), robotsTxt, 'utf8')
 }
 
 main().catch(error => {

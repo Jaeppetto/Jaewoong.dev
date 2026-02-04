@@ -1,5 +1,18 @@
 {
   "rewrites": [
+    { "source": "/robots.txt", "destination": "/api/robots" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    {
+      "source": "/article/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i)(bot|crawler|spider|facebookexternalhit|twitterbot|slackbot|discordbot|linkedinbot|telegrambot|whatsapp|googlebot|bingbot|yandex|baiduspider|duckduckbot|embedly|skypeuripreview|pinterest|kakaotalk|naver|yeti)"
+        }
+      ],
+      "destination": "/api/prerender?path=/article/$1"
+    },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/" }
   ]
