@@ -264,6 +264,13 @@ export default async function handler(req: Request) {
     data.thumbnail || ogImagePath || DEFAULT_IMAGE
   )
 
+  const category = Array.isArray(data.categories)
+    ? data.categories[0] ?? null
+    : data.categories ?? null
+  const tagNames = Array.isArray(data.tags)
+    ? data.tags.map(tag => tag.name).filter(Boolean)
+    : []
+
   const contentText = truncate(stripMarkdown(data.content || ''), 4000)
   const descriptionSource =
     data.description?.trim() || contentText.slice(0, 180) || DEFAULT_DESCRIPTION
@@ -276,8 +283,8 @@ export default async function handler(req: Request) {
     image,
     publishedTime: toIso(data.created_at),
     modifiedTime: toIso(data.updated_at || data.created_at),
-    category: data.categories?.name ?? null,
-    tags: data.tags?.map(tag => tag.name) ?? null
+    category: category?.name ?? null,
+    tags: tagNames.length ? tagNames : null
   })
 
   const html = buildHtml({
@@ -288,8 +295,8 @@ export default async function handler(req: Request) {
     image,
     publishedTime: toIso(data.created_at) || null,
     modifiedTime: toIso(data.updated_at || data.created_at) || null,
-    category: data.categories?.name ?? null,
-    tags: data.tags?.map(tag => tag.name) ?? null,
+    category: category?.name ?? null,
+    tags: tagNames.length ? tagNames : null,
     content: contentText,
     jsonLd
   })

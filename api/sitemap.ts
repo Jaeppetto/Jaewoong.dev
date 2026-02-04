@@ -67,7 +67,9 @@ export default async function handler(req: Request) {
   )
 
   data?.forEach(post => {
-    const categorySlug = post.categories?.slug
+    const category =
+      Array.isArray(post.categories) ? post.categories[0] ?? null : post.categories ?? null
+    const categorySlug = category?.slug
     if (!post.slug || !categorySlug) return
     const pathname = `/article/${encodeURIComponent(
       categorySlug
