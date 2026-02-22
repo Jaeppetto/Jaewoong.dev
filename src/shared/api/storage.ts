@@ -20,24 +20,37 @@ export const storageApi = {
     maxWidth = type === 'thumbnail' ? 800 : 1200
   }: UploadImageOptions): Promise<string> => {
     try {
-      const compressedFile = await imageCompression(file, {
-        maxSizeMB,
-        maxWidthOrHeight: maxWidth,
-        useWebWorker: true
-      })
+      const isGif = file.type === 'image/gif'
 
-      const webpBlob = await convertToWebP(compressedFile)
+      let uploadBlob: Blob
+      let ext: string
+      let contentType: string
+
+      if (isGif) {
+        uploadBlob = file
+        ext = 'gif'
+        contentType = 'image/gif'
+      } else {
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB,
+          maxWidthOrHeight: maxWidth,
+          useWebWorker: true
+        })
+        uploadBlob = await convertToWebP(compressedFile)
+        ext = 'webp'
+        contentType = 'image/webp'
+      }
 
       const fileName =
-        type === 'thumbnail' ? 'thumbnail.webp' : `${crypto.randomUUID()}.webp`
+        type === 'thumbnail' ? `thumbnail.${ext}` : `${crypto.randomUUID()}.${ext}`
 
       const filePath = `posts/${tempId}/${type === 'thumbnail' ? fileName : `content/${fileName}`}`
 
       const { error } = await supabase.storage
         .from('blog-images')
-        .upload(filePath, webpBlob, {
+        .upload(filePath, uploadBlob, {
           upsert: type === 'thumbnail',
-          contentType: 'image/webp'
+          contentType
         })
 
       if (error) throw error
