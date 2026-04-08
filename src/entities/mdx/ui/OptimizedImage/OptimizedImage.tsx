@@ -1,10 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/shared/shadcn-ui/util'
-import {
-  generateResponsiveImageSet,
-  getImageSizes,
-  getOptimizedImageUrl
-} from '@/shared/util'
 import { ImageIcon } from 'lucide-react'
 
 interface OptimizedImageProps {
@@ -26,30 +21,11 @@ const OptimizedImage = ({
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isError, setIsError] = useState(false)
-  const [isInView, setIsInView] = useState(priority)
-  const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    if (priority) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-          observer.disconnect()
-        }
-      },
-      {
-        rootMargin: '50px'
-      }
-    )
-
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [priority])
+    setIsLoaded(false)
+    setIsError(false)
+  }, [src])
 
   const handleLoad = () => {
     setIsLoaded(true)
@@ -58,15 +34,6 @@ const OptimizedImage = ({
   const handleError = () => {
     setIsError(true)
   }
-
-  const optimizedSrc = getOptimizedImageUrl(src, {
-    width: typeof width === 'number' ? width : undefined,
-    height: typeof height === 'number' ? height : undefined,
-    quality: 100
-  })
-
-  const srcSet = generateResponsiveImageSet(src)
-  const sizes = getImageSizes()
 
   if (isError) {
     return (
@@ -83,10 +50,7 @@ const OptimizedImage = ({
 
   return (
     <img
-      ref={imgRef}
-      src={isInView ? optimizedSrc : undefined}
-      srcSet={isInView ? srcSet : undefined}
-      sizes={isInView ? sizes : undefined}
+      src={src}
       alt={alt}
       width={width}
       height={height}
